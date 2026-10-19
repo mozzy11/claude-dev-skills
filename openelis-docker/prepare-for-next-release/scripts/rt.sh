@@ -272,7 +272,8 @@ PY
   say "-- other running containers and their memory (Docker total above)"
   local stats; stats=$(dock 30 docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' 2>/dev/null | grep -v "openelisglobal-\|external-fhir-api\|oe-certs\|autoheal-oe" || true)
   if [ -n "$stats" ]; then printf '%s\n' "$stats" | sed 's/^/  /'; else say "  none"; fi
-  python3 -I - "$stats" <<'PY'
+  local engine_mem; engine_mem=$(dock 20 docker info --format '{{.MemTotal}}' 2>/dev/null || echo 0)
+  python3 -I - "$stats" "$engine_mem" <<'PY'
 import re, sys
 def gib(s):
     m = re.match(r"([\d.]+)([KMG]i?B)", s.strip())
@@ -284,6 +285,9 @@ for ln in sys.argv[1].splitlines():
     parts = ln.split()
     if len(parts) >= 4 and parts[2] == "/":
         used += gib(parts[1]); total = gib(parts[3])
+if total == 0.0:
+    try: total = float(sys.argv[2]) / 1024 / 1024 / 1024
+    except (IndexError, ValueError): total = 0.0
 room = total - used
 print(f"  other containers use {used:.1f} GiB of {total:.1f} GiB; room for the release stack (about 4 GiB): {'yes' if room >= 4.5 else 'NO, stop or free memory first'}")
 PY
@@ -871,7 +875,8 @@ cmd_creds() {
 
 cmd_screenshots() {
   local src=${1:?dir}; local dir; dir=$(run_dir); local n=0
-  while IFS= read -r f; do cp "$f" "$dir/screenshots/" && n=$((n+1)); done < <(find "$src" -maxdepth 2 -type f \( -name '*.png' -o -name '*.jpeg' -o -name '*.jpg' \) -newer "$dir/state.json" 2>/dev/null)
+  local ref="$dir/compose.override.yml"; [ -f "$ref" ] || ref="$dir/state.json"
+  while IFS= read -r f; do cp "$f" "$dir/screenshots/" && n=$((n+1)); done < <(find "$src" -maxdepth 2 -type f \( -name '*.png' -o -name '*.jpeg' -o -name '*.jpg' \) -newer "$ref" 2>/dev/null)
   say "copied $n screenshots into $dir/screenshots/"
 }
 
