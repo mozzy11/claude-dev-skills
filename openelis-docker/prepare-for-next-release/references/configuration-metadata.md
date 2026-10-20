@@ -110,6 +110,18 @@ Every develop domain must have at least one file in the run configuration:
 - A develop domain with no example in the deployment repository is also a
   deployment finding when the repository ships examples for comparable
   domains: fix it in Phase 10.5 (PR to openelis-docker).
+- Facts from the 2026-10-19 run that shape the files: a roles CSV needs a
+  `groupingParent` the user form knows ("Global Roles" or a lab-unit parent),
+  or the role is created but offered nowhere; person names in any file or
+  demonstration record must respect the configured name charsets (no digits,
+  only the accented letters the setting lists); an environmental order needs
+  a program (Admin > Programs, or a programs file) before any test is offered,
+  so seed one; a header-only example CSV in the deployment shadows the
+  application's bundled file for that domain (the observation-types example
+  left 25 of 62 types unseeded until changeset 022), so an example file is
+  either complete or absent; `site_information` values set by a CSV are
+  overwritten at boot by `TotalSystemConfiguration.properties` in the run's
+  properties directory, which `rt.sh backup` saves and `restore-run` restores.
 
 ## 4. Verify the load at every boot
 

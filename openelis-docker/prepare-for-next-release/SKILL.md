@@ -43,7 +43,10 @@ If Playwright MCP is unavailable, the affected tests are BLOCKED, not passed.
   of that project: it lives in the skills repository
   `/Users/mosesmutesasira/Desktop/DEV/Projects/claude-dev-skills`
   (`openelis-docker/prepare-for-next-release/`, GitHub
-  `mozzy11/claude-dev-skills`), symlinked into `~/.claude/skills`. Run
+  `mozzy11/claude-dev-skills`), symlinked into `~/.claude/skills`. Edit the
+  skill, its references and `rt.sh` only through the skills repository path
+  (the `~/.claude/skills/...` symlink is a protected path and every edit
+  through it asks for permission: two prompts on 2026-10-19). Run
   outputs (`release-reports/`, `release-test/`) stay in the docker checkout,
   ignored through its `.git/info/exclude`, never through its `.gitignore`.
 - Application source for fixes: `/Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/develop/OpenELIS-Global-2`
@@ -84,7 +87,21 @@ If Playwright MCP is unavailable, the affected tests are BLOCKED, not passed.
      (`$RT state log "stopped <names> for the run"`), and start them again in
      Phase 12. If you cannot tell who owns them, stop and report.
    - Disk: under 10 GB free is a reason to stop; the images are about 4 GB
-     per tag and the backup needs space too.
+     per tag and the backup needs space too. Preflight also prints the size
+     of Docker's `Docker.raw`: every Testcontainers suite run and WAR build
+     grows it, and on 2026-10-19 three suite runs beside the stack took it
+     to 60 GB, left 3 GB on the host and gave the engine and the test
+     Postgres I/O errors (2,246 connection failures, `docker exec` dead).
+     Keep 15 GB free before each suite run or WAR build (Phase 10), delete
+     each isolated copy right after its run, and never run the full suite
+     more than once per push.
+   - Docker Desktop hangs: a `docker info` that does not answer in 20 s is
+     a hang, not a slow start. Never wait on it in a foreground loop (a
+     restart script waited 4 hours on 2026-10-20). Force-kill the
+     `com.docker.*` processes, `open -a Docker`, poll with time-boxed
+     `docker info` calls (`dock 20`), and expect the stack to come back by
+     restart policy on the host bind mount; then `$RT wait` and
+     `$RT verify-running`.
 2. Resume check: `$RT resume` (or `ls release-reports/`). If a run is in
    progress, its phase and events tell you where it stopped. Continue from
    the next safe step it prints; never re-run `up <release>` after the
@@ -299,6 +316,23 @@ Do not claim the whole application was tested when a subset was: the report
 lists what was and was not exercised, per tier, with the Tier 1 case counts
 per functionality.
 
+Before a FAIL goes into the log as a defect, verify it the way 10.1 describes
+(the user asked for this on 2026-10-19 after two findings were withdrawn:
+"please carefully test so that you don't incorrectly assume a bug"). A
+reviewer agent (Phase 10.3 step 6) drives the same Playwright MCP browser as
+this session: while one is active, run no browser step here (on 2026-10-20 a
+walk script landed on the reviewer's page and a stray click opened a new
+order); queue the step until the agent reports.
+
+Status updates: at the end of every phase, and whenever a background wait
+(suite, build, CI, Docker) runs past ten minutes, post a short status block
+to the user: phase and verdicts so far, what was tested and what passed, the
+defects found and which are being fixed, where the fixes are (branch, PR,
+commits), what is waiting on what. The user asked for this three times during
+the 2026-10-19 run and twice in the 2026-10-18 session ("what's the current
+status of things", "tell me a detailed status, what you tested, what passed,
+what you're fixing", "where are you pushing the fixes").
+
 The same tiers apply to every fix in Phase 10: the regression matrix after a
 fix re-runs the Tier 1 cases of every core functionality the changed files
 reach, not only the failed case.
@@ -352,6 +386,17 @@ test data when it disappears with consistent data:
    it is a defect, continue with 10.2 / 10.3.
 4. If the same data failed the same way on the release baseline (Phase 4),
    that points at the data too; record it.
+5. Configuration default or UI step, not a defect? Before registering a UI
+   finding: screenshot and read the page after the action; answer every
+   modal (the result alert modal left unanswered looked like "an
+   out-of-range value is silently discarded"); re-read any two-step control
+   ("Send for retest needs two clicks" was its visible confirmation step);
+   check the `site_information` setting behind the behaviour (name
+   charsets, allow duplicate national ids, alertWhenInvalidResult: duplicate
+   ids and dropped accented characters were defaults, not bugs); read the
+   handler code; reproduce once more from a fresh page. A single occurrence
+   is "observed once", not a defect. (2026-10-19: VAL-2 and RES-2 withdrawn,
+   PAT-1/PAT-2 reclassified after the user asked for careful testing.)
 
 For TEST DATA: correct the run's data or file the proper way (through the UI,
 or a corrected file plus a reload), re-test the affected cases live, record it
@@ -381,9 +426,11 @@ created and filled.
    the WAR is mounted over the webapp's WAR path in this compose project
    (`compose.local-fix.yml`). `unzip -l` the WAR to confirm the new changeset
    is inside.
-4. Rerun the whole upgrade from the release state: `$RT restore-run`, restore
-   `backup/configuration/` into the run configuration directory, `$RT switch
-   develop`, `$RT wait 540` (repeat on exit 4), `$RT logs develop-boot-retry<n>`,
+4. Rerun the whole upgrade from the release state: `$RT restore-run` (it
+   restores the database, the run configuration directory and the run
+   properties directory from `backup/`; on 2026-10-19 the properties files
+   of attempt 1 leaked into the retry and set site information at boot
+   before the fix did that), `$RT switch develop`, `$RT wait 540` (repeat on exit 4), `$RT logs develop-boot-retry<n>`,
    `$RT verify-running develop`, `$RT liquibase-verify` (expected set from the
    local WAR), configuration load verification, `$RT snapshot after`,
    `$RT compare before after`, the metadata migration checks, and the
@@ -411,6 +458,18 @@ application checkout:
    migrated database, it is a migration defect after all (10.2).
 3. Failing test first, then the fix; targeted tests, the full backend suite in
    an isolated copy, front-end tests and lint where touched, formatting.
+   The isolated copy is an rsync that excludes only `.git`, `target`,
+   `frontend/node_modules`, `frontend/build` and `projects/catalyst`, never
+   `projects/` as a whole (HarnessDictionaryIntegrationTest and
+   MenuConfigurationLoaderTest read `projects/analyzer-harness`; two false
+   failures on 2026-10-19). The full suite runs once per push, before the
+   first push of the PR and before a push that touches test infrastructure;
+   a follow-up commit gets the classes its files reach plus the new tests,
+   red on the previous code then green. Delete the copy's `target/` when
+   done (disk, Phase 0). Cold spotless: the maven container has no npm, so
+   the Markdown step fails on every run; use the scoped helper
+   `claude-work/bin/spotless-docker.sh check <app> <base> <head>` (or
+   `apply`), which limits spotless to the changed Java and XML files.
 4. Live test on the dev stack, through Playwright MCP and the API: the fixed
    case, every function the changed files reach, and a regression matrix of
    every existing workflow and scenario those files touch (order, results,
@@ -420,7 +479,11 @@ application checkout:
 6. Independent review: spin up a separate reviewer, a fresh session with no
    context from this run (the `review-pr` skill on the PR, through the
    headless reviewer CLI or a fresh agent), and address every finding with
-   the same test and live-test gates.
+   the same test and live-test gates. Tell the reviewer the PR head to pin
+   and that the release stack is read-only for it; it shares this session's
+   Playwright MCP browser, so no browser step runs here until it reports
+   (Phase 9). Optional findings that name a real defect are fixed in the
+   response commit too (2026-10-20: five optional findings, all real).
 7. Confirm on the upgraded instance: build the WAR, `$RT start`,
    `$RT local-fix war <war>` (front-end fixes: `local-fix frontend`), and
    re-run the failed test cases and their neighbours through Playwright MCP.
@@ -509,7 +572,10 @@ judgement:
 ## Phase 12: final state and clean-up
 
 Default: `$RT teardown` (containers and network removed, named volumes, the
-database directories and the backup kept). If the user asked to keep the
+database directories and the backup kept; it also restores the two tracked
+log placeholders `configs/logs/oeLogs/log` and `configs/logs/tomcatLogs/log`
+the webapp writes into, so the docker checkout is clean again, as on
+2026-10-20). If the user asked to keep the
 stack running for their own look, `$RT stop`/leave it and say so. Restart any
 container you stopped in Phase 0. State in the final message: which tag is
 running or that the stack is down, which local fix was mounted, the database

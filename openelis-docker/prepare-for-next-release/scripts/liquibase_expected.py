@@ -287,8 +287,12 @@ def main():
         reasons.append(f"{len(unexpected)} applied rows were not predicted from the changelog tree (logicalFilePath or context differences; listed below)")
     if not order_ok:
         reasons.append("ORDEREXECUTED of the applied rows is not a contiguous increasing range")
-    if after_start:
-        reasons.append(f"{len(after_start)} applied rows carry a DATEEXECUTED before the recorded upgrade start")
+    if after_start and len(after_start) < len(applied):
+        # DATEEXECUTED is written in the webapp JVM's zone while upgrade_started_at is the
+        # database's now(); when every applied row is "before" the start the zones differ
+        # (2026-10-19: all 200 rows, -0400 vs UTC) and the note is noise, so it is only
+        # raised for a subset, which is what a stale row would look like.
+        reasons.append(f"{len(after_start)} applied rows carry a DATEEXECUTED before the recorded upgrade start (zones: JVM vs database)")
     if pre_existing_gaps:
         reasons.append(f"{len(pre_existing_gaps)} changesets of the previous release's tree were never in the old database (pre-existing, not caused by this upgrade)")
 

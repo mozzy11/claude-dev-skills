@@ -212,7 +212,7 @@ preflight_body() {
   say "branch: $(git -C "$REPO" branch --show-current)  head: $(git -C "$REPO" rev-parse --short HEAD)"
   git -C "$REPO" remote -v | sed 's/^/remote: /'
   dock 60 git -C "$REPO" fetch --all --prune --tags >/dev/null 2>&1 || warn "git fetch failed (offline?)"
-  local dirty; dirty=$(git -C "$REPO" status --porcelain | grep -v '^?? release-reports/\|^?? release-test/\|^?? .claude/' || true)
+  local dirty; dirty=$(git -C "$REPO" status --porcelain | grep -v '^?? release-reports/\|^?? release-test/\|^?? .claude/\| configs/logs/oeLogs/log$\| configs/logs/tomcatLogs/log$' || true)
   if [ -n "$dirty" ]; then say "uncommitted changes (preserved, never reset):"; printf '%s\n' "$dirty" | sed 's/^/  /'; else say "working tree: clean"; fi
   for ref in upstream/main origin/main; do
     if git -C "$REPO" rev-parse -q --verify "$ref" >/dev/null 2>&1; then
@@ -293,12 +293,15 @@ print(f"  other containers use {used:.1f} GiB of {total:.1f} GiB; room for the r
 PY
   say "-- disk"
   df -h / | awk 'NR==2{print "  free on /: "$4" ("$5" used)"}'
+  local raw="$HOME/Library/Containers/com.docker.docker/Data/vms/0/data/Docker.raw"
+  [ -f "$raw" ] && say "  Docker.raw: $(du -h "$raw" | cut -f1) (grows with every Testcontainers suite run and WAR build; keep 15 GB free on / before each)"
   dock 60 docker system df 2>/dev/null | sed 's/^/  /'
+  say "-- tracked files the stack writes into (restored by teardown, not local changes): configs/logs/oeLogs/log configs/logs/tomcatLogs/log"
   say "-- tools: gh $(command -v gh >/dev/null && gh auth status >/dev/null 2>&1 && echo ok || echo 'absent or not logged in (GitHub API falls back to anonymous curl)')"
 }
 
 cmd_sync() {
-  local dirty; dirty=$(git -C "$REPO" status --porcelain | grep -v '^?? release-reports/\|^?? release-test/\|^?? .claude/' || true)
+  local dirty; dirty=$(git -C "$REPO" status --porcelain | grep -v '^?? release-reports/\|^?? release-test/\|^?? .claude/\| configs/logs/oeLogs/log$\| configs/logs/tomcatLogs/log$' || true)
   [ -z "$dirty" ] || { warn "working tree has local changes; not syncing (they are preserved):"; printf '%s\n' "$dirty"; return 2; }
   dock 60 git -C "$REPO" fetch upstream --tags >/dev/null 2>&1 || dock 60 git -C "$REPO" fetch origin --tags >/dev/null 2>&1 || die "fetch failed"
   local ref=upstream/main; git -C "$REPO" rev-parse -q --verify "$ref" >/dev/null 2>&1 || ref=origin/main
@@ -467,9 +470,12 @@ cmd_pull() {
   state_log "pull $tag started"
   compose "$tag" pull 2>&1 | tail -20
   [ "${PIPESTATUS[0]}" = 0 ] || die "pull failed for $tag"
-  for i in $(cat "$dir/env/images-$tag.txt"); do
-    say "  $i -> $(docker image inspect "$i" --format '{{.Id}} {{join .RepoDigests ","}}' 2>/dev/null || echo 'NOT PRESENT')"
-  done | tee "$dir/env/digests-$tag.txt"
+  local i d
+  while IFS= read -r i; do
+    [ -n "$i" ] || continue
+    d=$(dock 30 docker image inspect "$i" --format '{{.Id}} {{join .RepoDigests ","}}' 2>/dev/null | head -1)
+    say "  $i -> ${d:-NOT PRESENT}"
+  done < "$dir/env/images-$tag.txt" | tee "$dir/env/digests-$tag.txt"
   state_log "pull $tag finished"
 }
 
@@ -626,6 +632,12 @@ cmd_backup() {
   say "  $f ($(du -h "$f" | cut -f1)) sha256 $(shasum -a 256 "$f" | cut -c1-16)"
   say "  $g ($(du -h "$g" | cut -f1))"
   state_set backup.path "$f"; state_set backup.globals "$g"; state_set backup.verified false
+  local sub
+  for sub in configuration properties; do
+    if [ -d "$RUNS/$(run_id)/$sub" ]; then
+      rm -rf "$dir/backup/$sub"; cp -R "$RUNS/$(run_id)/$sub" "$dir/backup/$sub" && say "  run $sub directory copied to backup/$sub (restored by restore-run)"
+    fi
+  done
   cmd_verify_backup
 }
 
@@ -810,6 +822,15 @@ json.dump(d, open(p, "w"), indent=2, sort_keys=True)
 PY
   state_set db_data_dir "$new"; state_set restore_attempts "$n"; state_set current_tag "$rel"; state_set upgrade_started_at ""; state_set phase backed-up
   state_log "restore-run: previous database directory kept at $old (migrated state, evidence); new directory $new"
+  local sub
+  for sub in configuration properties; do
+    if [ -d "$dir/backup/$sub" ]; then
+      rm -rf "$RUNS/$(run_id)/$sub.attempt-$n"; [ -d "$RUNS/$(run_id)/$sub" ] && mv "$RUNS/$(run_id)/$sub" "$RUNS/$(run_id)/$sub.attempt-$n"
+      cp -R "$dir/backup/$sub" "$RUNS/$(run_id)/$sub" && state_log "restore-run: run $sub directory restored from backup/$sub (the previous one kept as $sub.attempt-$n)"
+    else
+      warn "no backup/$sub to restore: the run $sub directory keeps the previous attempt's files (checksums, properties)"
+    fi
+  done
   compose "$rel" up -d --no-deps "$(svc db)" || die "could not start the $rel database image on $new"
   wait_db 420 || die "database not ready on the new directory"
   local c; c=$(cid db)
@@ -867,9 +888,10 @@ cmd_liquibase_verify() {
 cmd_creds() {
   local tag; tag=$(current_tag)
   local pw; pw=$(compose "$tag" config --format json 2>/dev/null | python3 -I -c 'import json,sys; d=json.load(sys.stdin); s=d["services"][sys.argv[1]]; e=s.get("environment") or {}; print((e.get("DEFAULT_PW") if isinstance(e,dict) else next((x.split("=",1)[1] for x in e if x.startswith("DEFAULT_PW=")),"")) or "")' "$(svc app)")
+  local changed; changed=$(state_get ui.admin_password)
   say "login name: admin (the seeded administrator)"
-  say "password: ${pw:-<DEFAULT_PW not set in the compose file>}  (from DEFAULT_PW in docker-compose.yml; if the UI forces a change on first login, record the new one with: rt.sh state set ui.admin_password <value>)"
-  local changed; changed=$(state_get ui.admin_password); [ -n "$changed" ] && say "password changed during this run to: $changed"
+  say "password=${changed:-${pw:-}}"
+  say "source: ${changed:+changed during this run (ui.admin_password); originally }DEFAULT_PW in docker-compose.yml${pw:+}; if the UI forces a change on first login, record the new one with: rt.sh state set ui.admin_password <value>"
   say "url: https://localhost/"
 }
 
@@ -920,6 +942,12 @@ cmd_teardown() {
     compose "$tag" down --remove-orphans; state_log "teardown: containers and network removed, named volumes and the database directory kept"
   fi
   state_set phase torn-down
+  local ph
+  for ph in configs/logs/oeLogs/log configs/logs/tomcatLogs/log; do
+    if git -C "$REPO" ls-files --error-unmatch "$ph" >/dev/null 2>&1 && ! git -C "$REPO" diff --quiet -- "$ph"; then
+      git -C "$REPO" checkout -- "$ph" && say "restored the tracked log placeholder $ph the webapp wrote into (the run's logs are under logs/)"
+    fi
+  done
   say "database directory kept at $(state_get db_data_dir); backup at $(state_get backup.path)"
 }
 

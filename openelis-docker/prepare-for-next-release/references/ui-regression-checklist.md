@@ -42,8 +42,51 @@ may confirm it as well but never replace the UI read-back.
   actions last and read state in the next call. A dirty form raises a
   `beforeunload` dialog that blocks the next navigation: handle it with
   `browser_handle_dialog`.
-- Patient name fields drop digits; use letters-only names and carry the run
-  stamp in the national id.
+- Hang pattern (two 1800 s losses on 2026-10-19): a script that awaits
+  `page.waitForResponse(...)` around a click that closes a Carbon modal
+  (dictionary Update, provider Add) never returns. Collect responses with
+  `page.on('response', r => seen.push(...))` before the click, click with
+  `{ noWaitAfter: true }`, then poll `seen` in a bounded `waitForTimeout`
+  loop; never await a response promise created before a click that may not
+  fire it. `getByLabel('Password')` also matches the show-password toggle:
+  use `#password`. The session logs out after 30 minutes idle and whenever
+  the webapp is recreated: a script that lands on `/login` logs in again
+  first.
+- API fallback for setup only (never for a PASS): the login is form-encoded,
+  `curl -sk -c jar -X POST 'https://localhost/api/OpenELIS-Global/ValidateLogin?apiCall=true'
+  --data-urlencode loginName=admin --data-urlencode 'password=...'` (a JSON
+  body answers 401), then the CSRF token is the `csrf` field of
+  `/api/OpenELIS-Global/session`, sent as `X-CSRF-Token` on writes; a forced
+  loader reload is `POST /rest/configuration/domains/reload
+  {"domains":[...],"force":true}`.
+- Selectors that cost retries on 2026-10-19: Carbon date inputs on this
+  deployment take dd/mm/yyyy (read the placeholder first, then
+  `pressSequentially`); the validation queue is a card list with a Review
+  button per order, not a table, and "Release all clear" has its own modal
+  button (`.cds--modal-container button`); the Results page is
+  `getByRole('searchbox', { name: 'Search by lab number' })` + Enter, then
+  wait for `/rest/LogbookResults`; the result alert modal
+  (`[data-testid="result-alert-modal"]`) must be acknowledged or the value is
+  not stored; Enter Order generates a lab number on every page load (read
+  the field after the generate response, and expect each abandoned load to
+  consume a number); element ids starting with a digit need
+  `[id="0_name"]`; Carbon toggles are clicked through `#<id>_label`; logout
+  is `#user-Icon` then `li[data-cy="logOut"]` (a GET to `/Logout` does not
+  log out).
+- Environmental and vector flows (v4): the orders dashboard is
+  `/order/environmental` (Continue per row reaches `/label?order=` and
+  `/qa?order=`); the compliance dashboard is `/EnvironmentalDashboard`. A
+  deep link to a step page bounces to a fresh Enter Order and consumes a lab
+  number: always go through Continue. Label & Store:
+  `label[for="skip-storage-checkbox"]`, Save & Next. The order needs a
+  program (Admin > Programs) before any test is offered, a sampling site and
+  a compliance standard; the compliance evaluation shows only after a result
+  is released (summary at `/rest/compliance/dashboard/summary`).
+- Patient and provider name fields drop every character outside the
+  configured charset (`site_information` firstNameCharset / lastNameCharset:
+  digits and letters such as ú, Ø, å by default); use letters-only names,
+  carry the run stamp in the national id, and treat dropped characters as a
+  configuration default unless the charset allows them.
 - Legacy order entry (`/SamplePatientEntry`) creates analyses on submit; the
   newer clinical order flow (`/order/clinical/enter`) stores only sample type
   requests until the Collect step, so for results the order must be collected
