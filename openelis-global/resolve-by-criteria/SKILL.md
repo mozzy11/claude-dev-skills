@@ -102,7 +102,11 @@ here in full. This file only adds what is specific to batch mode.
   would corrupt the first PR. If the next issue is started while the PR
   waits on review or CI, its commit is parked with the flow in memory
   `project-parked-commit-one-pr-at-a-time` (tag, rebase the fix onto the PR
-  head, cherry-pick after the merge), and every status update says that the
+  head, cherry-pick after the merge; fold a review fix into the PR commit
+  with `git commit --fixup` + `GIT_SEQUENCE_EDITOR=true git rebase -i
+  --autosquash`, never with a copy-aside then `git reset --hard`: on
+  2026-10-20 zsh did not split `$FILES`, the copy failed and the reset
+  dropped the edits, see memory `zsh-no-word-split-reset-trap`), and every status update says that the
   working tree holds the next issue's staged work and why (2026-10-16: the
   user asked "what are these changes for ie the staged changes").
 - **Two live-test rounds per issue, both mandatory, both careful.**
@@ -449,6 +453,18 @@ gh pr merge <n> --repo DIGI-UW/OpenELIS-Global-2 --squash \
   terms, PR link, one line on verification, any QA heads-up) and transition
   to **In Review**, read back. The move to Acceptance happens in §4 once the
   change is actually on testing.
+- **Watch the merge sha's push-triggered runs right after the merge**
+  (2026-10-20: the user asked "can you see the ci failed on merge of 1514"
+  an hour after the merge; E2E / Tests had failed on runner problems and so
+  Publish images never deployed testing). Arm a monitor on
+  `gh api "repos/DIGI-UW/OpenELIS-Global-2/actions/runs?head_sha=<merge sha>"`
+  until E2E / Tests and Publish images / Deploy testing (both
+  `workflow_run`, event of the push) settle. A red one is triaged at once:
+  a code cause gets a fix, a runner cause gets the general workflow fix plus
+  `gh run rerun <id> --failed` of the E2E run, then of the publish run.
+  CI fixes found while a PR is in flight go into that PR (user, same day:
+  "push the fix as part of the current PR"). Runs whose head is the merge
+  sha but whose event is `pull_request` are the next PR's, not the merge's.
 - Clean up live-test data (probe orders, patients, results) so the next
   issue's reproduction starts from a known state. Log `merged` with the PR
   link and the merge sha.

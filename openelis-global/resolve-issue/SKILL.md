@@ -130,7 +130,19 @@ question.
   compile + the affected module's tests locally. CI is not the compile check.
   (A PreToolUse hook — `~/.claude/hooks/pre-push-gate.sh` — enforces
   compile + cold-format on `git push`; treat a block as your own failed gate:
-  fix and re-verify, never work around the hook.)
+  fix and re-verify, never work around the hook.) When the diff removes or
+  renames an export, grep the old name across `frontend/src` (tests included)
+  and run the whole vitest suite before the first push (2026-10-20: CI's
+  Static failed on `sortableHeaders.test.js` still importing a removed
+  `OrderPossibleTestsHeaders`; only the targeted tests had run). The
+  `spotless-docker.sh apply` with no refs skips files already committed, so
+  pass `upstream/develop <head>` before the first push.
+- **Spec waits and locators that hold in CI.** Register
+  `page.waitForResponse` before the click or navigation that fires the
+  request, and pick the control by role (`getByRole("combobox", { name })`,
+  attribute checks) rather than `getByText` on a label that a table header
+  can repeat once CI's database has rows (2026-10-20: the OGC-431 tile test
+  passed locally and failed in CI on both counts).
 - **Live-test the whole affected workflow before every push: UI *and* API,
   every changed function, carefully** (user instruction, repeated 2026-09-18,
   2026-09-21 and 2026-09-26: the step most often skipped and the one that has
