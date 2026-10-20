@@ -253,7 +253,17 @@ Run these before reading logic:
   strictly, function by function, through the UI and the API**, and the
   verdict follows what the browser and the API showed. A PR that only
   touches docs, CI, or an isolated pure function may skip it; say so in the
-  review.
+  review. A seed or deploy script that calls the REST API still gets run:
+  copy it out of the repo (so the repo's `.env` cannot point it at a real
+  stack), serve a small stub of the endpoints it calls, and run it from each
+  starting state, the old script included, comparing the logged writes
+  (#4773, 2026-10-20: five states plus the old seed, no stack needed while
+  the shared one was lent out). `.github/scripts` tests need `pyyaml`: run
+  them from a scratchpad venv, or three modules fail to import.
+- **A green CI job counts only for the steps it ran.** Path filters skip
+  jobs: read the run's job list before citing it as evidence (#4773: "03 -
+  E2E" ran Detect Changes and Shared Build only, and the draft had claimed
+  its seed step).
 - **Any change YOU author is live-tested end to end before you push it
   (user instruction, 2026-09-23 — the rule broken most often, and the one
   the user has had to repeat).** Reviewing someone else's code and pushing

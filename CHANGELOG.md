@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-20 (session fc5d90d4 review-pr #4773 self-review)
+
+- review-pr §3: deploy and seed scripts are run against a stub API from every starting state, old script included, from a copy outside the repo (no stack: the shared one was lent to a migration test); `.github/scripts` tests need pyyaml in a scratchpad venv.
+- review-pr §3: a green CI job counts only for the steps it ran (the PR's E2E run ran the shared build only; the draft's "E2E ran the seed" was caught before posting).
+- Observation: the user merged the PR while the review waited on that E2E run; the review was posted after the merge with its points framed as follow-ups. No rule change.
+
 ## 2026-10-20 (queue: session 033ce28e, part after its 06:08 retro)
 
 - prepare-for-next-release Final message: a PR comment on the run is the report summary only, about 15 lines, no retro content (the first post on #4766 carried the full closing message; user: "i mean onky the review comments, not the retro thing. i mean just give a report summary").
