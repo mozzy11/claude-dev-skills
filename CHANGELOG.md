@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-20 (queue: session e12ccec5)
+
+- e12ccec5 was already reviewed in-session (70f3117); no further skill changes.
+- Permission log: two `mcp__claude-vscode__getDiagnostics` requests from session 8a67dc7d; allow rules added for the claude-vscode MCP tools in `~/.claude/settings.json`, log cleared.
+
 ## 2026-10-20 (session e12ccec5 review-pr #4769 self-review)
 
 - review-pr §2: grep every removed symbol at the head and run each hit's tests (`OrderPossibleTestsHeaders` was still imported by `sortableHeaders.test.js`, the only red file in CI's Static job; caught by a grep during the review).
