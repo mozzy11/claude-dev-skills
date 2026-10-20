@@ -50,6 +50,9 @@ an improvement makes the work better or faster, never sloppier.
   queue.
 - Skip sessions under 20 transcript lines, and headless reviewer runs
   (`claude -p ... review-pr`) unless their review was later corrected.
+- A queued session whose id already heads a CHANGELOG entry had its retro
+  in-session: drop its line without re-reading the transcript (2026-10-20,
+  e12ccec5 was queued by the SessionEnd hook after its own retro).
 
 ## 2. Extract the signals
 

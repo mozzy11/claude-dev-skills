@@ -230,6 +230,9 @@ Run these before reading logic:
   copy** via `claude-work/bin/iso-suite.sh <repo> <sha> <copy> <log>` (never
   in-repo: IDE rebuilds corrupt `target/`; never a `cd <copy> && mvn` chain),
   and the frontend suite with `npm --prefix frontend run test`.
+  Start it with Bash `run_in_background` right after the read and let its
+  completion notice end the wait; a Monitor caps at 10 minutes, and on #4771
+  (2026-10-20) four re-armed Monitors covered one 50-minute suite.
 - A test that fails after you did inversion-style experiments may be running
   **stale bytecode** — rerun in a clean copy before believing it.
 - **Live test: mandatory when the PR is cross-stack, behavior-facing, or
@@ -294,7 +297,10 @@ Run these before reading logic:
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
   single-file WAR mount, and `dev-stack up` needs mkcert or
   `DEV_STACK_TLS=self-signed`). On #4755 (2026-10-16) the stack served a
-  WAR from before two amends.
+  WAR from before two amends. After a rebase or reset every commit carries
+  the amend time, so the times prove nothing: unzip the PR's classes and
+  `grep -rla <new method or message key>` them (#4771, 2026-10-20: a 09:18
+  WAR held all of an 11:12 head's code).
 - **Shared stack already serving the PR (check first).** When the PR head
   is already on local develop and deployed, and `git diff <head> HEAD` shows
   that no later commit or working-tree change touches the PR's files or
@@ -469,7 +475,9 @@ Run these before reading logic:
     than the retry delay: the WAR runs two workers in one JVM, and on
     #4755 (2026-10-16) a 120 s lease over a 20-row batch let both send
     the same message.
-    Inside `browser_run_code_unsafe`, `page.request` needs absolute URLs.
+    Inside `browser_run_code_unsafe`, `page.request` needs absolute URLs, and
+    `require` and `URL` are undefined: a print clicked before such a line
+    still happened (#4771). Fetch PDFs with curl by version id instead.
   - **Printed reports:** click Generate in the MCP, take the `ReportPrint?...`
     URL from the popup, fetch it with `curl -k -b JSESSIONID=<from
     context.cookies()>` and read it with `claude-work/bin/pdftext.sh` (page

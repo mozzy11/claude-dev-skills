@@ -2,6 +2,14 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-20 (session 5e073d11 review-pr #4771 self-review)
+
+- review-pr §3: start the isolated suite in the background and wait on its completion notice (four 10-minute Monitors re-armed over one 50-minute suite).
+- review-pr §3 served WAR: after a rebase the commit times prove nothing; grep the WAR's classes for PR-only symbols (09:18 WAR vs an 11:12 head, all code present).
+- review-pr §3 API: `require`/`URL` are undefined in `browser_run_code_unsafe`, and a print clicked before the failing line still ran; fetch PDFs by version id with curl.
+- session-retro §1: drop queued sessions already reviewed in-session (e12ccec5).
+- Good outcome kept: discriminating probes (requester with 49 duplicate records, mixed-width range) found both Required items; happy paths all passed.
+
 ## 2026-10-20 (queue: session e12ccec5)
 
 - e12ccec5 was already reviewed in-session (70f3117); no further skill changes.
