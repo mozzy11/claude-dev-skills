@@ -794,8 +794,12 @@ cmd_local_fix() {
     clear)
       local affected; affected=$(state_get local_fix)
       local_fix_py clear >/dev/null
-      state_log "local-fix cleared (was: $affected); services recreated from the images"
-      compose "$tag" up -d || die "compose up failed";;
+      if [ -n "$(compose "$tag" ps -q 2>/dev/null)" ]; then
+        state_log "local-fix cleared (was: $affected); services recreated from the images"
+        compose "$tag" up -d || die "compose up failed"
+      else
+        state_log "local-fix cleared (was: $affected); stack not running, nothing recreated"
+      fi;;
     show)
       cat "$dir/compose.local-fix.yml" 2>/dev/null || say "no local fix overrides"
       say "state.local_fix: $(state_get local_fix)";;
@@ -827,8 +831,15 @@ PY
     if [ -d "$dir/backup/$sub" ]; then
       rm -rf "$RUNS/$(run_id)/$sub.attempt-$n"; [ -d "$RUNS/$(run_id)/$sub" ] && mv "$RUNS/$(run_id)/$sub" "$RUNS/$(run_id)/$sub.attempt-$n"
       cp -R "$dir/backup/$sub" "$RUNS/$(run_id)/$sub" && state_log "restore-run: run $sub directory restored from backup/$sub (the previous one kept as $sub.attempt-$n)"
+    elif [ "$sub" = properties ] && [ -d "$RUNS/$(run_id)/properties" ]; then
+      local pd="$RUNS/$(run_id)/properties" f2
+      mkdir -p "$pd.attempt-$n"
+      for f2 in TotalSystemConfiguration.properties ChangedSystemConfiguration.properties; do
+        [ -f "$pd/$f2" ] && mv "$pd/$f2" "$pd.attempt-$n/$f2"
+      done
+      state_log "restore-run: no backup/properties; the boot-written Total/ChangedSystemConfiguration files moved to properties.attempt-$n so the release boot regenerates them"
     else
-      warn "no backup/$sub to restore: the run $sub directory keeps the previous attempt's files (checksums, properties)"
+      warn "no backup/$sub to restore: the run $sub directory keeps the previous attempt's files (checksums)"
     fi
   done
   compose "$rel" up -d --no-deps "$(svc db)" || die "could not start the $rel database image on $new"

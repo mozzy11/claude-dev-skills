@@ -59,6 +59,14 @@ may confirm it as well but never replace the UI read-back.
   `/api/OpenELIS-Global/session`, sent as `X-CSRF-Token` on writes; a forced
   loader reload is `POST /rest/configuration/domains/reload
   {"domains":[...],"force":true}`.
+- Reusable walks (2026-10-20): `browser_run_code_unsafe` with `filename`
+  reads only under the application checkout (`<app>/.playwright-mcp/` works),
+  and the code cannot `import('fs')`; keep one walk script there and run it
+  on both versions. The header search button shadows "Search" (`#local_search`
+  on Patient Management); the lab-unit select is `#unitType` on 3.2.3.0 and
+  `#validationLabUnit` + "Load results" on develop (route
+  `/validation?testSectionId=<id>`); the report PDF opens a popup whose URL
+  `page.request.get` fetches (status, content type, `%PDF-`).
 - Selectors that cost retries on 2026-10-19: Carbon date inputs on this
   deployment take dd/mm/yyyy (read the placeholder first, then
   `pressSequentially`); the validation queue is a card list with a Review

@@ -102,11 +102,42 @@ If Playwright MCP is unavailable, the affected tests are BLOCKED, not passed.
      `docker info` calls (`dock 20`), and expect the stack to come back by
      restart policy on the host bind mount; then `$RT wait` and
      `$RT verify-running`.
+   - The shared dev stack may belong to another live session: `ListAgents`,
+     ask it with `SendMessage` (and `notify_when_idle`) before stopping it,
+     write the stopped names to a file in an existing directory, and restart
+     exactly those names (`docker start` of every exited project container
+     also reruns its one-shot inits; 2026-10-20).
+   - Network clash: the deployment pins `openelis-network` 172.20.1.0/24 and
+     the webapp's `ipv4_address` 172.20.1.121; the dev stack's `analyzer-net`
+     (172.20.0.0/16) overlaps it ("Pool overlaps"), and a subnet override
+     alone then fails on the pinned address. Override both in the run's
+     `compose.override.yml` (subnet 172.31.1.0/24, webapp 172.31.1.121;
+     pg_hba accepts any host). Search the compose file with `grep -n` on
+     named files: a zsh glob in `--include=*.yml` aborts the grep and hid
+     the pinned address on 2026-10-20.
+   - Images pruned since the last run: `up <release>` pulls the missing ones
+     with no output for 10+ minutes. Check `docker images` for both tags
+     first and run `$RT pull <tag>` in the background.
 2. Resume check: `$RT resume` (or `ls release-reports/`). If a run is in
    progress, its phase and events tell you where it stopped. Continue from
    the next safe step it prints; never re-run `up <release>` after the
    database has been migrated, never `init --new` while a previous run's
    containers are up (tear them down first with `$RT teardown`).
+   **Summarized re-check** (the user asks for a short migration-focused
+   pass after a full run, e.g. on republished images, 2026-10-20): reuse
+   the finished run and its verified backup instead of a new run.
+   `local-fix clear` (with the stack down it only empties the overrides),
+   `restore-run` (without `backup/properties` it moves the boot-written
+   Total/ChangedSystemConfiguration files aside), `up <release>` and the
+   baseline walk; `switch develop`,
+   `liquibase-verify`, configuration load from the develop boot log,
+   `snapshot after-retry<n>` compared with `before`; the same retrieval
+   walk on develop; a short Tier 1 pass on pre-migration records (result
+   entry with a reflex, validation, report PDF, Modify Order, admin pages)
+   plus every area the commits since the last run touched. Write the
+   report under a new name (`...-<run>-recheck-<date>.md`). `verify-running`
+   compares digests with the run's earlier `versions`: confirm the image
+   ids against the current Docker Hub tag instead.
 3. New run: `$RT init`. Register nothing that holds the database or the
    backup with the session tracker; scratch extraction directories only.
 4. Playwright MCP: call `browser_tabs` (list). If it fails, UI phases are
@@ -596,6 +627,15 @@ Its findings go into this skill's files in the skills repository
 every other skill change.
 
 ## Final message
+
+When the user asks to bring `main` up to date after a clean run, read the
+app's `RELEASES.md` first: it routes `main` through `release/<X.Y>.x` (the
+`revision` set to the release version, `X.Y.0-rc.N` tags there, merge
+commit into `main`, then tag and publish the GitHub Release on `main`, which
+builds and publishes the versioned images). A `develop` -> `main` PR puts
+the `-SNAPSHOT` revision on `main`; say so before merging, then follow the
+user's choice. Versions are three-part from 3.3.0 (3.2 lines keep four
+parts). (2026-10-20: #4772 develop -> main, merged by the user as fa1366b0ee.)
 
 Written for the release manager, and detailed, not a one-line status. Lead
 with the overall status and the Liquibase and configuration-metadata answers,

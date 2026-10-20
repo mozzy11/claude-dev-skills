@@ -2,6 +2,16 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-20 (session 9cb5c857 prepare-for-next-release summarized re-check, run 2026-10-19-1732 attempt 3)
+
+- prepare-for-next-release Phase 0: summarized re-check recipe (reuse the finished run's verified backup, restore-run, baseline and upgraded walks, short Tier 1 pass on pre-migration records, report under a recheck name); the user asked for a short migration-focused pass after #4766.
+- Phase 0: shared dev stack owned by a live session is lent through SendMessage; stopped names go to a file in an existing directory (the list file was never written, claude-work/logs did not exist) and only those names are restarted (docker start of every exited container reran the one-shot inits).
+- Phase 0: network clash with the dev stack's analyzer-net needs both a subnet and the webapp ipv4_address override (two failed starts); zsh glob in grep --include hid the pinned address; pruned release images made `up 3.2.3.0` pull silently for 10+ minutes.
+- Final message: read RELEASES.md before bringing main up to date (release/<X.Y>.x route, three-part versions from 3.3.0); a develop -> main PR puts -SNAPSHOT on main (#4772, merged by the user).
+- rt.sh: `local-fix clear` recreates services only when the stack runs (it would have started the stack on the migrated directory); `restore-run` without backup/properties moves the boot-written Total/ChangedSystemConfiguration files aside (done by hand this run).
+- ui-regression-checklist: run_code `filename` only under the app checkout, no fs import; #local_search, #unitType (3.2.3.0) vs #validationLabUnit + Load results (develop), report PDF via popup URL + page.request.
+- Queue: fc5d90d4 dropped (already has its own entry).
+
 ## 2026-10-20 (session fc5d90d4 review-pr #4773 self-review)
 
 - review-pr §3: deploy and seed scripts are run against a stub API from every starting state, old script included, from a copy outside the repo (no stack: the shared one was lent to a migration test); `.github/scripts` tests need pyyaml in a scratchpad venv.
