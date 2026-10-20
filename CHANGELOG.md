@@ -270,3 +270,7 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - resolve-issue §5: runner-image Playwright install failure is fixed by a separate workflow PR merged to develop first, since E2E is a workflow_run reading develop's file (#4764).
 - memory: ubuntu 26.04 note resolved (pin, workflow_run rule); MCP save-hang note generalized to the main page (30-min hang on the Aliquot save; waitForRequest + psql worked for every later save).
 - Kept: independent review rounds 2 and 3 each found a real bug (aliquot bypass, aliquot quantity saved as 0); the walk found a stale sibling status in the fix itself before push.
+
+## 2026-10-20 retro (18731779 skill-update session, 3b339755 requeued)
+- Nothing new in the skills: 18731779's two corrections are already applied (skills live in `mozzy11/claude-dev-skills`, never in a product repo: session-retro §0 and memory `feedback-skills-repo-commit-every-change`; "just update the skills" means text edits only, no new tooling: memory `feedback-prepare-for-next-release-skill`). 3b339755 ended with "put down the dev containers" and "Thanks" after its own retro.
+- Permission log: 31 prompts from 18731779 editing the release skill under `openelis-docker/.claude` (resolved by the move), 2 from 033ce28e editing `rt.sh` through the `~/.claude/skills` symlink (rule already in prepare-for-next-release "Where things live", added by 4563287). Log cleared.
