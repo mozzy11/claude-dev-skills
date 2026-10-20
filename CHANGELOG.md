@@ -2,6 +2,14 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-20 (session e12ccec5 review-pr #4769 self-review)
+
+- review-pr §2: grep every removed symbol at the head and run each hit's tests (`OrderPossibleTestsHeaders` was still imported by `sortableHeaders.test.js`, the only red file in CI's Static job; caught by a grep during the review).
+- review-pr §5: re-read `headRefOid` in the call that posts and diff against the reviewed sha (an amend landed seconds before the post; a Required item was already fixed and a correction review was needed).
+- review-pr §3 regression matrix: export `DB_CONTAINER`/`HARNESS_DB_CONTAINER` for the dev-stack DB (`participant-setup` failed on `openelisglobal-database` and skipped all specs). Memory `project_local_e2e_ci_parity` item 5.
+- review-pr §3 UI walk: never pass `filename` to `browser_snapshot` (it wrote `s168.yml` into the product repo root).
+- Permission log: one entry from session 8a67dc7d (`rm -rf ...; cd <repo> && git ...` chain); the absolute-path rule already covers it, log cleared.
+
 ## 2026-10-20 (sessions 033ce28e release-readiness run 2026-10-19-1732, 3b339755 resolve-by-criteria OGC-431/1452/439, 18731779 skill update)
 
 - prepare-for-next-release Phase 9 and 10.1: a FAIL is verified before it becomes a defect (fresh-page reproduction, every modal answered, two-step controls re-read, the site_information setting and the handler code read); two findings were withdrawn and two reclassified as configuration defaults after the user asked "please carefully test so that you don't incorrectly assume a bug" (2026-10-19; the 2026-10-18 session carried the same instruction). Memory `feedback_verify_before_registering_defect`.
