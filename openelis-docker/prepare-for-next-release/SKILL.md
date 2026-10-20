@@ -605,3 +605,10 @@ reruns, the clean result), the issues found with severity and cause class
 live through Playwright MCP and what was not, the counts, the fixes, the PR
 and its review outcome, the report path, and the final state of the
 environment. No passwords, no secrets.
+
+A PR comment on the run (when the user asks to post it on the PR) is the
+report summary only, under about 15 lines: status, the Liquibase and
+configuration answers, the fixes, the open items, the next step and the
+report path. No retro or skill content, no migration narrative (2026-10-20:
+the first post was the full closing message and the user asked for "just a
+report summary").

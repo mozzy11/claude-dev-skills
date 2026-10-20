@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-20 (queue: session 033ce28e, part after its 06:08 retro)
+
+- prepare-for-next-release Final message: a PR comment on the run is the report summary only, about 15 lines, no retro content (the first post on #4766 carried the full closing message; user: "i mean onky the review comments, not the retro thing. i mean just give a report summary").
+- The publish watch after the merge (Dev Images vs deployment images, analyzer smoke red on testing) was recorded in memory during the session; no further change. Permission log empty.
+
 ## 2026-10-20 (session 5e073d11 review-pr #4771 self-review)
 
 - review-pr §3: start the isolated suite in the background and wait on its completion notice (four 10-minute Monitors re-armed over one 50-minute suite).
