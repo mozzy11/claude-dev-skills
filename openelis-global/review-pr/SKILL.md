@@ -391,7 +391,13 @@ Run these before reading logic:
     `browser_take_screenshot`): log in with the `.env` test credentials and
     walk every row, one action at a time (snapshot, act, snapshot, compare
     with the expected result), never chaining actions and checking only the
-    end state. Cover create *and* edit paths, every modal in both states
+    end state. Never put two browser calls in one tool block: they run back
+    to back without waiting, and on #4799 (2026-10-21) a Print click raced
+    the page load and an Edit/fill/Save trio all missed. Seed setup data
+    (orders, results) with a scratch spec instead: a config in the
+    scratchpad with `testDir` there, `node_modules` symlinked from
+    `frontend/`, the helpers imported by absolute path and an explicit login
+    step (the saved storageState answered HTML). Cover create *and* edit paths, every modal in both states
     (fresh, and opened on an existing record), every field round-tripped
     through a save and a reload, happy path and negative paths (invalid
     input, empty required field, duplicate, cancel, boundary value), each
@@ -458,7 +464,9 @@ Run these before reading logic:
   - **API** with the session cookie + `X-CSRF-Token` (the `csrf` field of
     `GET /api/OpenELIS-Global/session`; `source claude-work/bin/oe-probe.sh`
     gives `login <user> <pass>` and `call <METHOD> <path> [json]`, pointed
-    at the dev-stack BASE_URL): one call per function row that
+    at the dev-stack BASE_URL; `call` cuts output at 220 characters, so
+    pipe JSON you parse through plain `curl -b $CJ -H "X-CSRF-Token: $T"`
+    instead): one call per function row that
     lives server-side, including the edge inputs the PR claims to handle
     and the invalid input each validation must reject. Assert the status,
     the body and the persisted row (a GET or `psql` in the database

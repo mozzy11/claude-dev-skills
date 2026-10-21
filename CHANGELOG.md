@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-21 (session 5b2a48b1 review-pr #4799 self-review)
+
+- review-pr §3 UI walk: never two browser calls in one tool block; seed setup data with a scratch-dir spec (symlinked node_modules, absolute helper imports, explicit login). Evidence: a parallel Print click and an Edit/fill/Save batch on #4799 all raced page loads and had to be redone; the saved storageState returned HTML to page.request.
+- review-pr §3 API: oe-probe `call` truncates at 220 characters; parse JSON from plain curl. Evidence: three JSONDecodeErrors on /rest/reportQueue responses.
+- Kept: inversion run (base main code + PR tests, 3 failures) and three hand-walked scenarios (ticket flow, single test, new release while a correction waits); the full-suite CI wait gated Approve.
+
 ## 2026-10-21 (queue: sessions fe696b4e release notes 3.3.0, 8a67dc7d part after its 2026-10-20 retro)
 
 - resolve-by-criteria §3e: PRs with no app code (workflows, deploy scripts, docs) merge once Formatting and their own checks pass; deploy-only fixes are proven on the merge's deploy. Evidence: "the just merge the PR since no app code changes", "then just merge because the PR wont catch it"; #4783 with en.json still waited ("wait for ci to run and then youll merge").
