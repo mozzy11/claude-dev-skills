@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-21 (queue: sessions fe696b4e release notes 3.3.0, 8a67dc7d part after its 2026-10-20 retro)
+
+- resolve-by-criteria §3e: PRs with no app code (workflows, deploy scripts, docs) merge once Formatting and their own checks pass; deploy-only fixes are proven on the merge's deploy. Evidence: "the just merge the PR since no app code changes", "then just merge because the PR wont catch it"; #4783 with en.json still waited ("wait for ci to run and then youll merge").
+- resolve-by-criteria final report: answer the asked question first in plain words. Evidence: "you talked too much i ddnt get your point, be direct", "you ddint answer my question".
+- Kept: the testing deploy analyzer smoke went green at 4909f67 after the seed and smoke fixes (#4773, #4774, #4783).
+- Memory: be-direct, no-app-code-merge-without-full-ci, release-cut-sequence (pom bump -> develop to main -> next SNAPSHOT; Confluence Past Releases parent edited as html after a markdown 422). Permission log empty.
+
 ## 2026-10-20 (session 9cb5c857 prepare-for-next-release summarized re-check, run 2026-10-19-1732 attempt 3)
 
 - prepare-for-next-release Phase 0: summarized re-check recipe (reuse the finished run's verified backup, restore-run, baseline and upgraded walks, short Tier 1 pass on pre-migration records, report under a recheck name); the user asked for a short migration-focused pass after #4766.

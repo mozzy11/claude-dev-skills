@@ -393,6 +393,14 @@ gh pr merge <n> --repo DIGI-UW/OpenELIS-Global-2 --squash \
   state,mergeCommit` until it settles; never send a second merge while the
   first may still land (2026-10-14: a REST retry after a 504'd `gh pr merge`
   added an empty duplicate commit to develop, f863283df, #4728).
+- **No app code, no full-CI wait** (user, 2026-10-20: "just merge the PR
+  since no app code changes"; "then just merge because the PR won't catch
+  it"). A PR touching only workflows, deploy scripts, docs or markdown merges
+  once Formatting and the checks its files feed are green; E2E is not
+  awaited. A deploy-only fix the PR checks cannot exercise is proven on the
+  merge sha's deploy (§3f), not on the PR. Any frontend, backend, message or
+  Liquibase file means the full condition 2 (same day: "wait for ci to run
+  and then you'll merge" on #4783, which carried en.json and a component).
 - The self-review cannot approve (GitHub refuses approval on your own PR),
   so the branch's required approving review is
   never satisfied by this pipeline and GitHub will answer that the PR is not
@@ -538,6 +546,10 @@ final report (user instruction, 2026-10-12):
 - Deployment state: which merges are on testing.openelis-global.org already,
   which are still In Review.
 - Unverified items and anything left for the user.
+- **Answer the question asked, first, in plain words** (2026-10-20: "you
+  talked too much i didn't get your point, be direct"; "you didn't answer
+  my question"). Lead with yes / no or the one-line cause, then at most a
+  few lines of support. No CI job names or run ids unless asked.
 
 ## Retro (always, after the final report)
 
