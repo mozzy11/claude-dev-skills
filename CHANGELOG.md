@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-21 (session df445497 review-pr #4800 self-review)
+
+- review-pr §3 shared stack: prove the served WAR matches the head by `cmp` of every changed class and resource against the isolated copy's build when the WAR predates the commit. Evidence: WAR 12:30 vs commit 13:39, 53 classes identical, walk ran on the shared stack without a redeploy.
+- review-pr §3 regression matrix: a PR that changes how rows are read gets every writer of those rows driven through save and reload. Evidence: Sample Acceptance rename answered 200 but the new SYSTEM-origin read order hid it (reader lead, confirmed live, Required).
+- Kept: two reader subagents as leads only; of their leads, 2 became Required after live proof, 1 (dictionary rename) was refuted by reading the update path. Queue: 5b2a48b1 dropped (own entry). Permission log empty.
+
 ## 2026-10-21 (session 5b2a48b1 review-pr #4799 self-review)
 
 - review-pr §3 UI walk: never two browser calls in one tool block; seed setup data with a scratch-dir spec (symlinked node_modules, absolute helper imports, explicit login). Evidence: a parallel Print click and an Edit/fill/Save batch on #4799 all raced page loads and had to be redone; the saved storageState returned HTML to page.request.

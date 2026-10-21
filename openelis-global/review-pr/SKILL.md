@@ -319,6 +319,11 @@ Run these before reading logic:
   `api#OpenELIS-Global`). This avoids a second stack while another session
   runs testcontainers on 5 GB of free disk (#4694, 2026-10-12). Use
   `git show "<ref>:<path>"` quoted: in zsh `$P:path` is a modifier.
+  When the WAR predates the head's commit time, `cmp` every changed class
+  (`find ... -name 'X.class' -o -name 'X$*.class'`, no zsh glob) from the
+  isolated suite copy's `target/classes` against the unzipped WAR, plus the
+  changed resources: 0 differences proves the stack serves the head (#4800,
+  2026-10-21: 53 classes identical, no redeploy needed).
 - **Low disk, later commits on the PR's paths:** use memory
   `project_light_isolated_stack` (cloned DB in the shared Postgres, one extra
   webapp container, host Vite) instead of `dev-stack up`; it fit in 4 GB free
@@ -428,6 +433,11 @@ Run these before reading logic:
     the list comes out empty and all 484 core-app specs start (#4717,
     2026-10-14), and record consumer -> workflow -> scenario -> expected ->
     observed. A difference the PR does not claim is a regression finding.
+    When the PR changes how stored values are *read* (precedence, origin,
+    fallback), grep every writer of those rows and drive each editor's
+    save then reload: on #4800 (2026-10-21) Sample Acceptance and
+    result-option renames still answered 200 but the new read order hid
+    them, a regression no PR test covered.
     Wait for the run's end with an unanchored `grep -aE '[0-9]+ (passed|failed) \('`:
     the line reporter prefixes ANSI codes, so `^\s*N passed` never matched and
     the waiter ran to its timeout (#4720, 2026-10-14). Run specs without a
