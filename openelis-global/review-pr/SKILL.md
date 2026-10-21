@@ -301,7 +301,12 @@ Run these before reading logic:
     distinct parents when a table is keyed per patient or per order, so a
     stale binding cannot pass for a result. When the live run contradicts an
     earlier claim of yours, the claim was wrong: correct it in the same
-    thread.
+    thread. For a fallback chain (translation, then stored value, then
+    English), drive each step on a record where every source above it is
+    absent, and drive Reset or Undo after an override has replaced the stored
+    value (#4800, 2026-10-21: round one checked Reset on a label Transifex
+    translates; round two found Reset wrote English as the shipped French
+    on every untranslated row).
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
@@ -463,6 +468,9 @@ Run these before reading logic:
     Wait with Monitor, never a foreground `sleep` (the harness blocks it). Pass
     spec basenames as filters (`ogc-1483 ogc-1488`), not absolute paths: run
     from another cwd, absolute paths matched nothing ("No tests found", #4731).
+    Use the full basename and check `--list` first: a bare `ogc-1507` also
+    matched a `manual-only` seeding spec, which wrote an NCE to the shared DB
+    (#4800, 2026-10-21).
     For every user-visible string the PR changes (toast, label, error text),
     grep the old text in `frontend/playwright` (helpers and demo specs too)
     and run each hit: #4731 changed a save toast that a vector seed helper

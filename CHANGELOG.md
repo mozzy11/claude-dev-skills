@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-21 (session ac549c03 review-pr #4800 round two)
+
+- review-pr §3 discriminating checks: drive every step of a fallback chain on a record where the sources above it are absent, and Reset after an override replaced the stored value. Evidence: round one checked Reset on a Transifex-translated label; round two found Reset stores English as the shipped French (Required).
+- review-pr §3 specs: full basename plus `--list` before a run. Evidence: filter `ogc-1507` also ran a manual-only seeding spec that wrote NCE 24 to the shared DB (removed in cleanup).
+- Kept: cmp of the 15 interdiff classes proved the shared stack served the head, no redeploy. Queue: df445497 dropped (own entry). Permission log empty.
+
 ## 2026-10-21 (session df445497 review-pr #4800 self-review)
 
 - review-pr §3 shared stack: prove the served WAR matches the head by `cmp` of every changed class and resource against the isolated copy's build when the WAR predates the commit. Evidence: WAR 12:30 vs commit 13:39, 53 classes identical, walk ran on the shared stack without a redeploy.
