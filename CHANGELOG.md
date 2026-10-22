@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-22 retro of 7289cc13 (resolve-by-criteria OGC-1529 + OGC-1507, both merged; queue: ac549c03 reviewer run, retro already done)
+- resolve-issue 3b: a change to which stored value wins drives every writer, every reader and each reset on the weakest data (no upstream translation, a regional locale); a changed shared component is submitted from every host. Evidence: #4800 review rounds 1 and 2 found dropped editor renames, a fr-HT lockout and Reset storing English; InlineNceForm 400 from five order steps.
+- resolve-issue 3: inversion runs must have really executed (stale report, compile error, zsh `$F`); run each new unit test class alone once. Evidence: two non-runs of the inversion, ShippedLabelsTest passing only after Spring had started.
+- resolve-by-criteria 3e: a required check red from an external outage gets a general fallback in the current PR after about two hours. Evidence: download.eclipse.org down 16 hours, eclipse-p2-mirror fallback in #4800.
+- Memory: project_ci_formatting_eclipse_outage (fallback recipe), project_dev_stack_config_flip_and_fixture_ids (DB_CONTAINER and local fixture ids for spec runs). Settings: allow mcp__claude_ai_Atlassian__* (two getJiraIssue prompts).
+
 ## 2026-10-21 (session ac549c03 review-pr #4800 round two)
 
 - review-pr §3 discriminating checks: drive every step of a fallback chain on a record where the sources above it are absent, and Reset after an override replaced the stored value. Evidence: round one checked Reset on a Transifex-translated label; round two found Reset stores English as the shipped French (Required).

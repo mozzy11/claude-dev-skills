@@ -223,7 +223,13 @@ question.
 - **Tests for every changed behavior**, and **inversion-verify each new test**:
   revert the fix, watch the test fail, restore the fix. After inversion
   testing in an isolated copy, delete `target/` or rerun clean — stale
-  inverted bytecode has produced false failures before.
+  inverted bytecode has produced false failures before. Check the run really
+  executed: a report with the previous run's elapsed time, or a compile
+  error, is no inversion; in zsh list several files literally
+  (`for f in a.java b.java`), since `$F` does not split (2026-10-21, twice).
+  Run each new unit test class alone once (`-Dtest=<Class>`): a class that
+  passes only after another test started Spring is order-dependent
+  (2026-10-21, ShippedLabelsTest).
 - Project specifics that recur (OpenELIS):
   - `frontend/src/languages/en.json`: edit **in place** (targeted
     replace/insert) — never re-serialize the whole file. New keys in en.json
@@ -336,6 +342,18 @@ each of which has bitten:
   Use fresh records on distinct parents when a table is keyed per patient or
   per order. When the live run contradicts an earlier claim of yours, the
   claim was wrong: correct it in the same thread.
+- **A change to which stored value wins drives every writer and every
+  reset.** When the diff changes precedence (an origin flag, a fallback
+  chain, a cache), grep every writer of that storage and save through each
+  editor, reload every reader, and walk each reset or restore after an
+  override on the weakest data: a value with no upstream translation, and a
+  regional locale (for example `fr-HT`) added through Language Management.
+  (2026-10-21, #4800: two review rounds found editor renames dropped, a
+  regional locale locking Translation Management, and Reset storing English,
+  all on paths the walk skipped.)
+- **A changed shared component is submitted from every host that renders
+  it** (grep its imports). (2026-10-21: InlineNceForm answered 400 from five
+  order steps; only the Report NCE page had been walked.)
 
 0. **Order save path changes need a re-save walk.** When the diff touches
    order save validation or a save side effect (notes, EQA rows, overrides),

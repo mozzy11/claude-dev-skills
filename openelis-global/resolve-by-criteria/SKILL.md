@@ -356,6 +356,13 @@ continue with the next issue.
    `gh api repos/DIGI-UW/OpenELIS-Global-2/branches/develop/protection`
    (today: `01 Checkpoint - Backend`, `02 Checkpoint - Frontend`,
    `03 Checkpoint - E2E`), and match it against `statusCheckRollup`.
+   A required check red from an external outage (read the failing job's
+   log first: a vendor download page, a registry 5xx) is still red: rerun
+   once, and if the outage outlasts about two hours put a general fallback
+   in the current PR, proven in a fresh container without caches, rather
+   than waiting on it (2026-10-22: download.eclipse.org down 16 hours,
+   Formatting red on every PR; the eclipse-p2-mirror fallback went into
+   #4800).
 3. The independent review round from `resolve-issue` §7 has happened on this
    head sha (or on a sha differing only by the fixes it asked for), and
    every thread it opened is either fixed or answered, with only acted-on
