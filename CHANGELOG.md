@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 retro of 8e457bae (review-pr #4831, self-review, Request changes)
+- review-pr §3 light stack: boot one webapp per review under ~5 GB free and drive property variants with a unit test in the copy; `docker rm` the container right after the walk. Evidence: one env-variant reboot took free disk 3.2 GB to 385 MB and the guard stopped the run; `docker rm` gave 2.6 GB back. The scratch unit test then found the Required item (empty Bridge URL with a stored pin answers 500).
+- review-pr §3 MCP files: the MCP root follows the session cwd, so screenshots and page/console files land in the product checkout; move or delete them before posting. Evidence: pr4831-unreachable.png in the repo root, 10 files in its .playwright-mcp.
+- Kept: probing the JDK HttpClient exceptions directly (refused, unknown host, timeout, empty URL) pointed at the uncovered empty-URL path before any stack time was spent. Queue line af358344 dropped (own entry). Permission log empty.
+
 ## 2026-10-26 retro of af358344 (review-pr #4824, self-review, Request changes)
 - review-pr §3 light stack: the helper now copies the shared webapp's env, mounts and networks; specs seeding through db-container.ts hit `clinlims`, judge them by CI. Evidence: light-stack-up.sh failed twice (keystore password, encryption key, no DB network); critical-callback seeded the shared DB.
 - review-pr attribution: compare a red E2E spec with another PR's run on the same base before calling it a race. Evidence: the harness shard looked like the known gate race; #4721's run passed the same spec, so "<40.00" was the PR's (author fixed it in 273e82b before the post).

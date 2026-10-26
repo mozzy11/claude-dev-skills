@@ -349,6 +349,12 @@ Run these before reading logic:
   While specs run, arm a background guard that kills the run under 400 MB
   free (`df -m /`): a light-stack review fell from 4.4 GB to 719 MB
   (#4722, 2026-10-14).
+  Every new `pr<N>-webapp` container explodes the WAR again in its own
+  layer (about 2.5 GB of Docker VM growth): under ~5 GB free, boot once,
+  drive config variants (an empty or other property) with a unit test in
+  the copy, and `docker rm` the container as soon as the walk ends (#4831,
+  2026-10-26: one env-variant reboot took 3.2 GB to 385 MB; `docker rm`
+  gave 2.6 GB back).
 - **How to clone and deploy the PR head.**
 
   ```bash
@@ -420,10 +426,12 @@ Run these before reading logic:
     gate, empty states, and the flows adjacent to the change. Read the
     console and network panes after each step; a 4xx/5xx or a React error
     is a finding even when the screen looks right. Give
-    `browser_take_screenshot` a bare filename: the MCP writes only under
-    `claude-work` and `claude-work/.playwright-mcp`, and a scratchpad path is
-    refused (#4728, 2026-10-14). Never pass `filename` to `browser_snapshot`:
-    it wrote `s168.yml` into the product repo root (#4769, 2026-10-20).
+    `browser_take_screenshot` a bare filename (a scratchpad path is refused,
+    #4728) and check where it landed: the MCP's root follows the session's
+    cwd, so from the product checkout the PNG and the page/console files
+    land in the repo root and its `.playwright-mcp` (#4831, 2026-10-26);
+    move them to `claude-work` and delete this session's files before the
+    review is posted. Never pass `filename` to `browser_snapshot` (#4769).
   - **Regression matrix, on every live-tested PR** (user instruction,
     2026-09-26: as much live UI testing through the Playwright MCP as
     possible, every case scenario related to the changed files, so the PR
