@@ -512,6 +512,13 @@ Run these before reading logic:
     For every length limit, also send the maximum with spaces around it:
     a check on `trim().length()` over an untrimmed store passes it and the
     column answers 500 (#4722, 2026-10-14: Storage text, reagent unit).
+    Also type one character past each text column's size into the form:
+    with no `maxLength` and no server check it is a bare 500 (#4833,
+    2026-10-27: a 31-character login showed "Oops, Server error").
+    For a create form keyed by a unique value (login, code, name),
+    double-click Save in the MCP (`doubleClick: true`) and count the rows:
+    on #4833 two `login_user` rows landed in one millisecond and that
+    login could neither sign in nor be opened in Modify User.
     For a numbered or versioned write (version N+1, a sequence per
     parent), fire two identical requests with `Promise.all`; for a state
     the PR derives (printed, amended, partial), drive the in-between
