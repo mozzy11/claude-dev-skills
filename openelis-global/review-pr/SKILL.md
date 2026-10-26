@@ -514,6 +514,10 @@ Run these before reading logic:
     Inside `browser_run_code_unsafe`, `page.request` needs absolute URLs, and
     `require` and `URL` are undefined: a print clicked before such a line
     still happened (#4771). Fetch PDFs with curl by version id instead.
+    Nothing survives between two calls (`globalThis` is fresh), so a race
+    driven with a held `page.route` is held, checked and released in one
+    call, ending with `unrouteAll`; a hold left open hangs that request for
+    good (#4822, 2026-10-26: `__release is not a function`).
   - **Printed reports:** click Generate in the MCP, take the `ReportPrint?...`
     URL from the popup, fetch it with `curl -k -b JSESSIONID=<from
     context.cookies()>` and read it with `claude-work/bin/pdftext.sh` (page

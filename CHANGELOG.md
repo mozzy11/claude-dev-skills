@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 retro of 3feabbb2 (review-pr #4822, self-review, Request changes)
+- review-pr §3 MCP: state does not survive between run_code calls, so a held page.route is held, checked and released in one call. Evidence: `globalThis.__release is not a function` left the order load hung and the walk was redone in one call.
+- Memory: legacy Add Order and Modify Order Current Tests selectors (v4 walk recipe); purge-rows misses sample_requester (no FK), seed it explicitly.
+- Kept: the held-load walk found the loading screen showing "Female" for a male patient (Required); the stale-requester probe ran through the UI by rewriting the POST, so the on-screen message was checked too. Queue and permission log empty. The skills push needs the literal path after `git -C` (the pre-push gate reads the command text; `$R` sent it to the OpenELIS tree).
+
 ## 2026-10-26 retro of 7289cc13 (part after its 2026-10-22 retro: cleanup thread)
 - resolve-by-criteria §3 and resolve-issue live-test data: walk data on the shared dev DB is purged in full with purge-rows.sql (backup, dry run, commit), never left with a question or a volume-reset offer. Evidence: the first "clean the seesion artifatcs" pass asked about 51 test orders; the user repeated "clear the session artifacts".
 - Kept: the purge (pg_dump first, ROLLBACK dry run, dangling-FK check) removed 51 orders, 49 patients, 30 providers and a site with the stack still healthy. Memory project_dev_db_purge_helper already records it. Second queue line was a duplicate of the same session. Permission log empty.
