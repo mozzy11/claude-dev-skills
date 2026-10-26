@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 retro of f46b9b94 (review-pr openelis-docker #61 round two, self-review, Request changes)
+- review-pr openelis-docker: run a release workflow's steps against the inputs it meets after merge (the existing tag's old files), not only the PR head. Evidence: running the step on the real 3.3.0 tag showed pin-versions.sh stopping, the Required finding of the round.
+- Kept: stubbing pull/save in build.sh checked pinning without the disk cost; only small test containers, shared stack untouched. Queue line 23d7154d dropped (own entry). Permission log: 3 hook-approved compound scratchpad commands under bypass mode, no rule needed.
+
 ## 2026-10-26 retro of 23d7154d (review-pr openelis-docker #61, self-review, Request changes)
 - review-pr openelis-docker: drive each documented recovery step on the shipped image, and probe bind mounts written by non-root containers with a root-owned volume. Evidence: the README re-pair (new code + up -d) did nothing on 3.3.0; the Bridge (uid 9257) got Permission denied creating an import folder, hidden by Docker Desktop.
 - Memory project_openelis_docker_review_recipe: runs beside the analyzer-harness dev stack with a subnet/IP override (172.20.0.0/16 overlap), package staging without pulls, Bridge walk recipe (BC-5380 to Connect, MLLP sender, Pair again).

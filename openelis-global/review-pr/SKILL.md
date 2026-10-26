@@ -569,7 +569,10 @@ timeout). Drive every recovery step the README or `.env` comments document
 mount a non-root container writes to with a root-owned named volume:
 Docker Desktop hides Linux ownership (2026-10-26, #61: the documented re-pair
 did nothing on 3.3.0, and the Bridge, uid 9257, could not create import
-folders on Linux).
+folders on Linux). Run a release workflow's steps against the inputs it
+meets after merge (an existing tag checks out that tag's old files and
+scripts), not only the PR head (2026-10-26, #61: pin-versions.sh stops on the
+3.3.0 tag, which has no Bridge service, so the rerun the PR asks for fails).
 
 ### Docs and IG pull requests
 
