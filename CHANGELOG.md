@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 queue check (session 71ffb6d0)
+- Queue line 8e457bae dropped (retro already in its session). Permission log: one hook-approved `rm -f` loop over .playwright-mcp files under bypass mode, from the §3 MCP file cleanup; no rule needed.
+
 ## 2026-10-26 retro of 8e457bae (review-pr #4831, self-review, Request changes)
 - review-pr §3 light stack: boot one webapp per review under ~5 GB free and drive property variants with a unit test in the copy; `docker rm` the container right after the walk. Evidence: one env-variant reboot took free disk 3.2 GB to 385 MB and the guard stopped the run; `docker rm` gave 2.6 GB back. The scratch unit test then found the Required item (empty Bridge URL with a stored pin answers 500).
 - review-pr §3 MCP files: the MCP root follows the session cwd, so screenshots and page/console files land in the product checkout; move or delete them before posting. Evidence: pr4831-unreachable.png in the repo root, 10 files in its .playwright-mcp.
