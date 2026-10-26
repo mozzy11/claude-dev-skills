@@ -298,7 +298,11 @@ question.
     APIs with the session cookie + `X-CSRF-Token` from the `/session` endpoint;
     use documented test credentials from `.env` — never hardcode credentials
     in scripts you commit.
-  - Leave live-test data as you found it; clean up probe rows.
+  - Leave live-test data as you found it; clean up probe rows. Everything a
+    walk created on the shared DB (orders, patients, providers, sites, NCEs)
+    goes at cleanup through `claude-work/bin/purge-rows.sql` (backup, dry
+    run, commit), without asking (2026-10-23: user repeated the request after
+    the cleanup asked about the orders).
 
 ## 3b. Live-test gate (mandatory, before any push, in every pipeline)
 

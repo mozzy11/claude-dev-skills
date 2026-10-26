@@ -483,6 +483,12 @@ gh pr merge <n> --repo DIGI-UW/OpenELIS-Global-2 --squash \
 - Clean up live-test data (probe orders, patients, results) so the next
   issue's reproduction starts from a known state. Log `merged` with the PR
   link and the merge sha.
+- Walk data on the shared dev DB is removed in full, never left behind with a
+  question: every order, patient, provider, site, NCE and dictionary row the
+  run created, by FK closure with `claude-work/bin/purge-rows.sql` after a
+  `pg_dump` to `claude-work/backups/` and a ROLLBACK dry run. Never offer a
+  volume reset instead. (2026-10-23: the cleanup stopped to ask about 51 test
+  orders and the user had to repeat "clear the session artifacts".)
 - Next issue: back to §3a.
 
 ## 4. After the list

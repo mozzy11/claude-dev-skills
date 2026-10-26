@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 retro of 7289cc13 (part after its 2026-10-22 retro: cleanup thread)
+- resolve-by-criteria §3 and resolve-issue live-test data: walk data on the shared dev DB is purged in full with purge-rows.sql (backup, dry run, commit), never left with a question or a volume-reset offer. Evidence: the first "clean the seesion artifatcs" pass asked about 51 test orders; the user repeated "clear the session artifacts".
+- Kept: the purge (pg_dump first, ROLLBACK dry run, dangling-FK check) removed 51 orders, 49 patients, 30 providers and a site with the stack still healthy. Memory project_dev_db_purge_helper already records it. Second queue line was a duplicate of the same session. Permission log empty.
+
 ## 2026-10-22 retro of 7289cc13 (resolve-by-criteria OGC-1529 + OGC-1507, both merged; queue: ac549c03 reviewer run, retro already done)
 - resolve-issue 3b: a change to which stored value wins drives every writer, every reader and each reset on the weakest data (no upstream translation, a regional locale); a changed shared component is submitted from every host. Evidence: #4800 review rounds 1 and 2 found dropped editor renames, a fr-HT lockout and Reset storing English; InlineNceForm 400 from five order steps.
 - resolve-issue 3: inversion runs must have really executed (stale report, compile error, zsh `$F`); run each new unit test class alone once. Evidence: two non-runs of the inversion, ShippedLabelsTest passing only after Spring had started.
