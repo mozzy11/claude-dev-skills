@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 retro of 23d7154d (review-pr openelis-docker #61, self-review, Request changes)
+- review-pr openelis-docker: drive each documented recovery step on the shipped image, and probe bind mounts written by non-root containers with a root-owned volume. Evidence: the README re-pair (new code + up -d) did nothing on 3.3.0; the Bridge (uid 9257) got Permission denied creating an import folder, hidden by Docker Desktop.
+- Memory project_openelis_docker_review_recipe: runs beside the analyzer-harness dev stack with a subnet/IP override (172.20.0.0/16 overlap), package staging without pulls, Bridge walk recipe (BC-5380 to Connect, MLLP sender, Pair again).
+- Kept: the HL7 send from the host port proved the Bridge publication end to end (MSA|AA, 2 analyzer_results rows). Queue line 3feabbb2 dropped (own entry). Permission log empty.
+
 ## 2026-10-26 retro of 3feabbb2 (review-pr #4822, self-review, Request changes)
 - review-pr §3 MCP: state does not survive between run_code calls, so a held page.route is held, checked and released in one call. Evidence: `globalThis.__release is not a function` left the order load hung and the walk was redone in one call.
 - Memory: legacy Add Order and Modify Order Current Tests selectors (v4 walk recipe); purge-rows misses sample_requester (no FK), seed it explicitly.

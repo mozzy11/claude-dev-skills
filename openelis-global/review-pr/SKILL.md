@@ -564,7 +564,12 @@ Run the PR's own compose on fresh volumes with non-default `.env` values and
 build the package; recipe in memory `project-openelis-docker-review-recipe`.
 Its webapp has no healthcheck: wait on the "Server startup in" log line, not
 `.State.Health.Status` (2026-10-16, #60: a health wait ran 10 minutes to its
-timeout).
+timeout). Drive every recovery step the README or `.env` comments document
+(re-pair, volume loss) on the image the package ships, and probe each bind
+mount a non-root container writes to with a root-owned named volume:
+Docker Desktop hides Linux ownership (2026-10-26, #61: the documented re-pair
+did nothing on 3.3.0, and the Bridge, uid 9257, could not create import
+folders on Linux).
 
 ### Docs and IG pull requests
 
