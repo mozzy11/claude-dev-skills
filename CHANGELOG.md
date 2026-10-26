@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-26 retro of af358344 (review-pr #4824, self-review, Request changes)
+- review-pr §3 light stack: the helper now copies the shared webapp's env, mounts and networks; specs seeding through db-container.ts hit `clinlims`, judge them by CI. Evidence: light-stack-up.sh failed twice (keystore password, encryption key, no DB network); critical-callback seeded the shared DB.
+- review-pr attribution: compare a red E2E spec with another PR's run on the same base before calling it a race. Evidence: the harness shard looked like the known gate race; #4721's run passed the same spec, so "<40.00" was the PR's (author fixed it in 273e82b before the post).
+- resolve-issue live-test data: walk-created configuration (calculations, reflex rules, ranges) is removed in the cleanup. Evidence: an "OGC1544 calc walk" calculation left on the shared DB blanked released Creatinine results.
+- Helpers: claude-work/bin/light-stack-up.sh and teardown-light-stack.sh find the dev-stack DB/webapp containers. Kept: headRefOid re-read before posting caught the amend; the review was rebased on 273e82b.
+
 ## 2026-10-26 retro of f46b9b94 (review-pr openelis-docker #61 round two, self-review, Request changes)
 - review-pr openelis-docker: run a release workflow's steps against the inputs it meets after merge (the existing tag's old files), not only the PR head. Evidence: running the step on the real 3.3.0 tag showed pin-versions.sh stopping, the Required finding of the round.
 - Kept: stubbing pull/save in build.sh checked pinning without the disk cost; only small test containers, shared stack untouched. Queue line 23d7154d dropped (own entry). Permission log: 3 hook-approved compound scratchpad commands under bypass mode, no rule needed.

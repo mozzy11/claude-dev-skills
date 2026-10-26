@@ -335,7 +335,12 @@ Run these before reading logic:
   next to another session's stack (#4700, 2026-10-13). After `git archive`
   and the WAR build, `claude-work/bin/light-stack-up.sh <N>` clones the DB,
   starts the webapp and writes the Vite config (#4713); tear it down with
-  `claude-work/bin/teardown-light-stack.sh <N>`.
+  `claude-work/bin/teardown-light-stack.sh <N>`. The helper copies the shared
+  webapp's env, mounts and networks (2026-10-26, #4824: a hand-written env
+  failed on the keystore password and the installation encryption key). Specs
+  that seed through `docker exec psql` (`helpers/db-container.ts`) write to
+  `clinlims`, not the clone: judge those by CI (critical-callback seeded the
+  shared DB and failed on the clone).
   Under ~4 GB free, run the regression specs with `--workers=1`: two
   workers next to two stacks hung the Docker daemon and took the shared
   stack down (#4715, 2026-10-13; recovery in memory
@@ -549,6 +554,10 @@ Run these before reading logic:
   of re-running failed jobs (#4412, 2026-10-15).
 - Attribute every failure: introduced by the PR, pre-existing on the base
   (prove with a base-branch run or blob comparison), or environmental.
+  Before calling a red E2E spec a race, find the same spec in another PR's
+  run against the same base (`workflow_run` runs all show `develop`; the log's
+  `pr_number` names the PR): on #4824 it passed on #4721, so "<40.00" was the
+  PR's regression (2026-10-26).
   CI E2E logs print failing specs only, so a spec missing from a green log
   proves nothing. A PR that adds or removes a spec reshuffles the shards: for
   a red spec outside the diff, diff `playwright test --list --shard=k/4`

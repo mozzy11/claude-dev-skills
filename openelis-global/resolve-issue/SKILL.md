@@ -302,7 +302,10 @@ question.
     walk created on the shared DB (orders, patients, providers, sites, NCEs)
     goes at cleanup through `claude-work/bin/purge-rows.sql` (backup, dry
     run, commit), without asking (2026-10-23: user repeated the request after
-    the cleanup asked about the orders).
+    the cleanup asked about the orders). Configuration a walk created
+    (calculations, reflex rules, seeded ranges) is removed or deactivated in
+    the same cleanup: an "OGC1544 calc walk" calculation left active on the
+    shared DB blanked Creatinine on every later Serum order (2026-10-26).
 
 ## 3b. Live-test gate (mandatory, before any push, in every pipeline)
 
