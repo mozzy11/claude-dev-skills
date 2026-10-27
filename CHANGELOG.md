@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-27 queue check (session dcbd9657)
+- Queue line 71ffb6d0 dropped (retro already in its session). Permission log empty.
+
 ## 2026-10-27 retro of 71ffb6d0 (review-pr #4833, self-review, Request changes)
 - review-pr §3 API/UI probes: type one character past each text column into the form, and double-click Save on a create form keyed by a unique value, then count rows. Evidence: both probes found the two Required items (31-character login gave "Oops, Server error"; a double-click made two rows with one login that could not sign in or be opened); every happy path passed.
 - Memory project_light_isolated_stack: the cloned DB keeps the shared DB's French default locale, so API-fetched role names come back French and admin-user-lab-unit-roles fails on the dialog text; judge it by CI.
