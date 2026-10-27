@@ -606,6 +606,10 @@ for comparison) and put one gateway nginx in front per documented style: Host
 kept, Host rewritten with X-Forwarded-Host (Apache's default), `Forwarded`,
 and TLS ended at the gateway with plain HTTP upstream. Compare each redirect's
 Location (2026-10-27, #62: only the Apache style failed, the Required item).
+The same applies to an OpenELIS-Global-2 PR that changes forwarded headers
+or makes ports configurable. Also curl the proxy's HTTP port: a
+`return 301 https://$host...` drops a non-default HTTPS port (2026-10-27,
+#4841: the redirect still went to 443, the Required item; #62 had templated it).
 
 ### Docs and IG pull requests
 
