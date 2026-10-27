@@ -600,6 +600,12 @@ folders on Linux). Run a release workflow's steps against the inputs it
 meets after merge (an existing tag checks out that tag's old files and
 scripts), not only the PR head (2026-10-26, #61: pin-versions.sh stops on the
 3.3.0 tag, which has no Bridge service, so the rerun the PR asks for fails).
+For a proxy or forwarded-header change, test the conf in small containers on
+the dev-stack network (the proxy image with the PR conf, plus the 3.3.0 conf
+for comparison) and put one gateway nginx in front per documented style: Host
+kept, Host rewritten with X-Forwarded-Host (Apache's default), `Forwarded`,
+and TLS ended at the gateway with plain HTTP upstream. Compare each redirect's
+Location (2026-10-27, #62: only the Apache style failed, the Required item).
 
 ### Docs and IG pull requests
 

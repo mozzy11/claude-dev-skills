@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-27 retro of 6d036bc8 (review-pr openelis-docker #62, self-review, Request changes)
+- review-pr openelis-docker: for proxy/forwarded-header changes, a gateway nginx per documented style in front of the PR conf in small containers. Evidence: the Apache-style gateway (Host rewritten, X-Forwarded-Host) redirected to the upstream name, the Required item; the other three styles passed.
+- Memory project_openelis_docker_review_recipe: proxy-only container recipe on the dev-stack network, zsh `$t:path` and `set --` traps hit this session.
+
 ## 2026-10-27 queue check (session 6d036bc8)
 - Queue line dcbd9657 dropped (retro already in its session). Permission log: one approved compound scratchpad command (session cc50c492, extracting update_nginx_conf from upgrade.sh into a scratch test); a one-off script with no reusable prefix, no rule needed.
 
