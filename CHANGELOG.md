@@ -423,3 +423,6 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - resolve-issue: spec waits registered before the triggering action, role-based locators. Evidence: the OGC-431 tile test passed locally and failed in CI (strict-mode match on a column header, listener after navigation).
 - Kept: the independent review found a real bug on both PRs (duplicate revive on Modify Order; provider search truncating at 21 rows), both fixed in the PR.
 - Memory: zsh-no-word-split-reset-trap, watch-merge-ci-fix-in-current-pr, testing-deploy-analyzer-smoke-red, provider search marked fixed, CI triage memory extended (Microsoft apt 403, Cypress service-worker crash). Queue: dropped 5e073d11 (headless #4771 review, already retro'd in 8dc9495).
+
+## 2026-10-27 (cc50c492)
+- resolve-issue: ensureSystemRole for every role a test grants, including saveUserLabUnitRoles/getRoleByName grants; write it in up front when the local full suite is skipped for disk. Evidence: #4844 CI red on role_fk (role -1) for an unguarded Results grant after the targeted run was green.

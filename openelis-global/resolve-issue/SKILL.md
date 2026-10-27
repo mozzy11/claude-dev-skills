@@ -244,7 +244,12 @@ question.
     the test catalogue, the delivery channels): make the test create its own
     rows with an `ensure*` helper and reset shared state in its cleanup
     (2026-10-16: three suite-only failures on #4755, memory
-    `project-test-fixtures-replace-system-role`). Launch the suite with the
+    `project-test-fixtures-replace-system-role`). Every role a test grants by
+    name gets `ensureSystemRole(...)` first, including grants made through
+    `saveUserLabUnitRoles` or `roleService.getRoleByName` (a missing role
+    becomes id -1 and a `role_fk` error); when the local full suite is skipped
+    for disk, write this in before the first push (2026-10-27: #4844 went red
+    in CI on an unguarded Results grant). Launch the suite with the
     Bash tool's `run_in_background` (its exit wakes the session) and go on
     with the next step; never grep its log by hand (2026-10-16: 211 grep
     polls of suite logs in one session while every suite already ran in the
