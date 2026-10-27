@@ -263,7 +263,11 @@ Run these before reading logic:
 - **A green CI job counts only for the steps it ran.** Path filters skip
   jobs: read the run's job list before citing it as evidence (#4773: "03 -
   E2E" ran Detect Changes and Shared Build only, and the draft had claimed
-  its seed step).
+  its seed step). The shards run in a later `workflow_run` "E2E / Tests"
+  run whose headSha is develop's: find it with
+  `gh run list --event workflow_run`, then confirm it is yours with
+  `gh run view <id> --log | grep -c <03-E2E run id>` before citing core 4/4
+  (#4842, 2026-10-27: the "03 Checkpoint - E2E" row showed 0 s).
 - **Any change YOU author is live-tested end to end before you push it
   (user instruction, 2026-09-23 — the rule broken most often, and the one
   the user has had to repeat).** Reviewing someone else's code and pushing

@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-27 retro of d620dac4 (review-pr #4842, self-review, Approve)
+- review-pr §3 CI evidence: how to find and attribute the workflow_run "E2E / Tests" run behind a 0 s "03 Checkpoint - E2E" row. Evidence: the PR's 03 - E2E run held only Detect Changes and Shared Build; the shards were in run 40489084756 (headSha develop, log names run 40487747116 and pr_number 4842).
+- Memory project_translation_nce_walk_recipe: /rest/localizations is plural (the singular is a 404), #locale-select, #nce-category/#nce-type, Reset's inline confirm, restoring by deleting the created fr row, picking an English-only row (type 9 carried a fr row left by an earlier walk). Each one cost a retry this session.
+- Kept: inverting the fallback in the isolated copy (4 PR assertions failed) and restoring the shared DB row by row (2294 rows before and after). Queue and permission log empty.
+
 ## 2026-10-27 queue check (review of #4842)
 - Queue line 6ee5a318 dropped (retro already in its session). Permission log empty.
 
