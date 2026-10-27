@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-27 queue check (session 6d036bc8)
+- Queue line dcbd9657 dropped (retro already in its session). Permission log: one approved compound scratchpad command (session cc50c492, extracting update_nginx_conf from upgrade.sh into a scratch test); a one-off script with no reusable prefix, no rule needed.
+
 ## 2026-10-27 retro of dcbd9657 (review-pr #4836, self-review, Request changes)
 - review-pr §3 changed strings: the playwright grep now covers raw keys/codes a PR shows under a name, and runs at read time. Evidence: two specs keyed on `pathology.stage.*.enabled` cells failed E2E shards 3 and 4; found from CI after the walk and teardown.
 - Memory project_carbon_admin_table_walk_gotchas: config list vs edit-form description sources, MCP ref picked the neighbouring table row, SampleEntryConfigurationMenu route.
