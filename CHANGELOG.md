@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-27 queue check (review of #4842)
+- Queue line 6ee5a318 dropped (retro already in its session). Permission log empty.
+
 ## 2026-10-27 retro of 6ee5a318 (review-pr #4841, self-review, Request changes)
 - review-pr: the gateway-per-style rule now covers OE2 forwarded-header PRs, and adds a curl of the proxy's HTTP port. Evidence: `http://localhost:55019/some/page` went to `https://localhost/some/page`; with OE_HTTPS_PORT=8443 that is refused, the Required item.
 - Memory project_openelis_docker_review_recipe: three-style gateway recipe for OE2, single-file bind mount + `sed -i` gave nginx a cut file, Vite 403 on a rewritten Host, zsh `path` loop variable wiped PATH. All hit this session.
