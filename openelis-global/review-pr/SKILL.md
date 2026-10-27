@@ -484,10 +484,13 @@ Run these before reading logic:
     Use the full basename and check `--list` first: a bare `ogc-1507` also
     matched a `manual-only` seeding spec, which wrote an NCE to the shared DB
     (#4800, 2026-10-21).
-    For every user-visible string the PR changes (toast, label, error text),
-    grep the old text in `frontend/playwright` (helpers and demo specs too)
-    and run each hit: #4731 changed a save toast that a vector seed helper
-    and two CI demo specs still waited for.
+    For every user-visible string the PR changes (toast, label, error text,
+    or a raw key/code it now shows under a name), grep the old text in
+    `frontend/playwright` (helpers and demo specs too) at read time, before
+    the walk, and run each hit: #4731 changed a save toast that a vector seed
+    helper and two CI demo specs still waited for; #4836 (2026-10-27) renamed
+    the `pathology.stage.*.enabled` cells and two specs looking them up went
+    red in CI, found only after the walk.
   - **Typed numbers round-trip to the row.** After saving a number typed
     into a Carbon `NumberInput`, read the stored value: a handler that
     clamps state leaves the input showing the typed value (#4757,
