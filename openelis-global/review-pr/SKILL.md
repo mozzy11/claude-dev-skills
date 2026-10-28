@@ -626,6 +626,17 @@ or makes ports configurable. Also curl the proxy's HTTP port: a
 `return 301 https://$host...` drops a non-default HTTPS port (2026-10-27,
 #4841: the redirect still went to 443, the Required item; #62 had templated it).
 
+### Design-document pull requests
+
+A design doc skips the live walk but not verification. Fan one reader out on
+its `[confirmed]` citations (counts, paths, lines, PR history), then probe
+live each premise a phase depends on: on #4865 (2026-10-28) the dev stack's
+JSESSIONID (no SameSite) proved the WAR's `META-INF/context.xml` unread, so
+the planned `PostResources` mount had the wrong file, and
+`PERMISSION_MODULE_PREFIXES` showed module permission keys never reach
+`/session`. Re-count any number a reader gives before citing it (its
+"200 properties" was 153).
+
 ### Docs and IG pull requests
 
 For the FHIR IG repo, a green build job is not enough: read the IG Publisher

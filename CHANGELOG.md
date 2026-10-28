@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-28 retro of 4193a377 (review-pr #4865, self-review, Comment)
+- review-pr: new "Design-document pull requests" rule: a citation reader plus a live probe of each premise a phase depends on. Evidence: the SameSite-less JSESSIONID showed META-INF/context.xml is unread (the Phase 2 mount target), and PERMISSION_MODULE_PREFIXES showed module keys never reach /session; both were inline findings. The reader's "200 properties" re-counted as 153 and was dropped.
+- Memory: zsh `echo =====` fails (`=` expansion), added to the zsh trap memory. Permission log empty.
+
 ## 2026-10-28 retro of dc87450d tail (after its in-session retro)
 - resolve-by-criteria §3f and resolve-issue §8: the merge-sha CI watch is bounded. Once one E2E run on the merge sha passed, a later red is reported in one line, never rerun, and a red in another live session's area is left to it. Evidence: after two green E2E runs on 5f2808b02d, the session reran a pathology layout red (run 40721066296) while session 0c93cc54 reviewed pathology PR #4859; user: "no no another seeion is reviewing a PR", then "your work is done and actually stop".
 - Memory feedback_watch_merge_ci_fix_in_current_pr updated with the bound. Permission log empty.
