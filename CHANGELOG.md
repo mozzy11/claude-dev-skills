@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-28 retro of dc87450d tail (after its in-session retro)
+- resolve-by-criteria §3f and resolve-issue §8: the merge-sha CI watch is bounded. Once one E2E run on the merge sha passed, a later red is reported in one line, never rerun, and a red in another live session's area is left to it. Evidence: after two green E2E runs on 5f2808b02d, the session reran a pathology layout red (run 40721066296) while session 0c93cc54 reviewed pathology PR #4859; user: "no no another seeion is reviewing a PR", then "your work is done and actually stop".
+- Memory feedback_watch_merge_ci_fix_in_current_pr updated with the bound. Permission log empty.
+
 ## 2026-10-28 retro of dc87450d (resolve-issue OGC-427, PR #4858)
 - resolve-issue §3: a spec retires its own records by id, never through clear-all/archive-all. Evidence: the OGC-427 spec's archive-all archived the walk's batches mid-walk.
 - resolve-issue §3b: a status read from another module uses that module's own finder and the walk drives every state its screens set. Evidence: the independent review found ACKNOWLEDGED violations held batches forever (Request changes on #4858).

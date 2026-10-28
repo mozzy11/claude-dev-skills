@@ -732,6 +732,10 @@ nohup "${CLAUDE_BIN:-/opt/homebrew/bin/claude}" -p "Use your review-pr skill: re
 > changed. A merge is not finished until step 2 is done. Acceptance comes
 > later, only once the change is on testing.
 >
+> The merge-sha CI watch then follows resolve-by-criteria §3f: once one E2E
+> run on the merge sha passed, a later red (or one in another live session's
+> area) is reported in one line, never rerun (2026-10-28, OGC-427).
+>
 > **When Jira cannot be reached** (MCP disconnected or timing out), the first
 > line of your very next message says which ticket step was skipped and asks
 > for `/mcp`; repeat it at the top of every later message until done, and do

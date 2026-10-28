@@ -480,6 +480,14 @@ gh pr merge <n> --repo DIGI-UW/OpenELIS-Global-2 --squash \
   CI fixes found while a PR is in flight go into that PR (user, same day:
   "push the fix as part of the current PR"). Runs whose head is the merge
   sha but whose event is `pull_request` are the next PR's, not the merge's.
+  The watch is bounded: once one E2E / Tests run on the merge sha passed,
+  a later red E2E run on the same sha is reported in one line, never rerun
+  or chased, and a red in a feature area another live session works on (a
+  transcript modified in the last hour, a `pr<N>-*` container, an open PR
+  touching that spec) is left to that session (2026-10-28: after two green
+  E2E runs on OGC-427's merge, a pathology layout red was rerun while
+  another session reviewed pathology PR #4859; user: "no no another session
+  is reviewing a PR", "your work is done and actually stop").
 - Clean up live-test data (probe orders, patients, results) so the next
   issue's reproduction starts from a known state. Log `merged` with the PR
   link and the merge sha.
