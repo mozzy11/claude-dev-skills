@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-28 retro of dc87450d (resolve-issue OGC-427, PR #4858)
+- resolve-issue §3: a spec retires its own records by id, never through clear-all/archive-all. Evidence: the OGC-427 spec's archive-all archived the walk's batches mid-walk.
+- resolve-issue §3b: a status read from another module uses that module's own finder and the walk drives every state its screens set. Evidence: the independent review found ACKNOWLEDGED violations held batches forever (Request changes on #4858).
+- Kept: the independent review found a real defect; the integration test caught a MAX(timestamp) TypedQuery failure before any live walk.
+- Memory: MCP confirm-dialog hang variant (30 min on Clear all), method @PreAuthorize not widening a class guard, dev-stack playwright DB_CONTAINER + analyzer-types 500. Queue: dropped 890a8da5 (headless reviewer, retro done in 3a84fe2). Permission log empty. Note: resolve-issue SKILL.md is 841 lines, over the ~700 target; compress in a later retro.
+
 ## 2026-10-28 retro of 890a8da5 (review-pr #4858, self-review, Request changes)
 - review-pr §3 discriminating checks: for a status derived from another module's records, drive every state that module's screens can set and grep which states any UI writes. Evidence: Acknowledge (the only QC dashboard action) left batch 11 at VIOLATION; only the API-only resolve cleared it, the review's Required item.
 - review-pr §3 UI walk: scoped snapshot after each navigation, click by refs. Evidence: four Batches-tab misses right after browser_navigate; a full 93-row table snapshot per step.

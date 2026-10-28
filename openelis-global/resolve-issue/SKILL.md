@@ -213,7 +213,10 @@ question.
   `Co-Authored-By` lines).
 - **A new Playwright spec seeds every precondition through the app's API**
   (checklist items, enrollments, cycles, reference data) and removes or
-  retires what it created; data that only the dev DB has is not a
+  retires what it created, by id, never through a "clear all" or "archive
+  all" endpoint that also takes the signed-in user's other records
+  (2026-10-28: the OGC-427 spec's archive-all archived the walk's own
+  batches mid-walk); data that only the dev DB has is not a
   precondition (2026-10-14: ogc-1488 passed locally and failed in CI, which
   has no acceptance checklist, #4731). **When the change alters user-visible
   text** (a toast, label or message), grep `frontend/playwright` and
@@ -366,6 +369,12 @@ each of which has bitten:
 - **A changed shared component is submitted from every host that renders
   it** (grep its imports). (2026-10-21: InlineNceForm answered 400 from five
   order steps; only the Report NCE page had been walked.)
+- **A status read from another module uses that module's own definition**
+  (the finder its screens use, e.g. `findUnresolved` = `UNRESOLVED`), and the
+  walk drives every state that module's screens can set (acknowledge,
+  resolve, retire) and re-reads the new status. (2026-10-28, #4858: the batch
+  QC check counted ACKNOWLEDGED violations as open; the dashboard only
+  offers Acknowledge, so a recovered lot stayed held. Found by the reviewer.)
 
 0. **Order save path changes need a re-save walk.** When the diff touches
    order save validation or a save side effect (notes, EQA rows, overrides),
