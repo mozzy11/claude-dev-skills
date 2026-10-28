@@ -311,6 +311,12 @@ Run these before reading logic:
     value (#4800, 2026-10-21: round one checked Reset on a label Transifex
     translates; round two found Reset wrote English as the shipped French
     on every untranslated row).
+    For a status the PR derives from another module's records (a QC
+    violation, an NCE, a hold), drive every state that module's own screens
+    can set (acknowledge, resolve, close) and re-read the derived status
+    after each, and grep which of those states any UI writes: on #4858
+    (2026-10-28) Acknowledge was the only QC dashboard action, the workplan
+    counted only RESOLVED as cleared, and the tile stayed red for good.
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
@@ -418,7 +424,11 @@ Run these before reading logic:
     with the expected result), never chaining actions and checking only the
     end state. Never put two browser calls in one tool block: they run back
     to back without waiting, and on #4799 (2026-10-21) a Print click raced
-    the page load and an Edit/fill/Save trio all missed. Seed setup data
+    the page load and an Edit/fill/Save trio all missed; on #4858 a Batches
+    tab click right after `browser_navigate` missed four times, so take a
+    snapshot scoped with `target` (a tab panel, a `data-testid` tile) after
+    each navigation and click by its refs: a full-page snapshot of a
+    93-row table cost thousands of tokens per step. Seed setup data
     (orders, results) with a scratch spec instead: a config in the
     scratchpad with `testDir` there, `node_modules` symlinked from
     `frontend/`, the helpers imported by absolute path and an explicit login
@@ -508,8 +518,9 @@ Run these before reading logic:
     lives server-side, including the edge inputs the PR claims to handle
     and the invalid input each validation must reject. Assert the status,
     the body and the persisted row (a GET or `psql` in the database
-    container, one statement per `psql -tAc`: with several it prints only
-    the last result, which once read as "no row"). A 200 is not proof; the row is. Snapshot the rows first
+    container through `claude-work/bin/oe-sql.sh "<sql>"`, one statement per
+    call: with several it prints only the last result, which once read as
+    "no row"; a `P="docker exec ... psql"; $P` string fails in zsh, #4858). A 200 is not proof; the row is. Snapshot the rows first
     and compare after each probe, and give every probe that might succeed
     a payload that is harmless if it does (each test's own data): on #4694
     an "omitted field" probe returned 200 and wiped two tests' ranges, and

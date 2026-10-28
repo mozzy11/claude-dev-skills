@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-28 retro of 890a8da5 (review-pr #4858, self-review, Request changes)
+- review-pr §3 discriminating checks: for a status derived from another module's records, drive every state that module's screens can set and grep which states any UI writes. Evidence: Acknowledge (the only QC dashboard action) left batch 11 at VIOLATION; only the API-only resolve cleared it, the review's Required item.
+- review-pr §3 UI walk: scoped snapshot after each navigation, click by refs. Evidence: four Batches-tab misses right after browser_navigate; a full 93-row table snapshot per step.
+- review-pr §3 API: claude-work/bin/oe-sql.sh for one-statement psql. Evidence: `P="docker exec ... psql"; $P` failed with exit 127 in zsh.
+- Memory project_qc_violation_resolution_states. Kept: both reader subagents' leads checked live (the priority-sort lead was wrong, STAT sorts first descending). Queue and permission log empty.
+
 ## 2026-10-28 queue check (before OGC-427)
 - Dropped d620dac4 (retro in session) and cc50c492 (retro in session at 21:31; the tail after it was the merge report, "thanks" and container removal, no friction). Dropped 1033a43b (independent reviewer run for #4844, not corrected later). Permission log empty.
 
