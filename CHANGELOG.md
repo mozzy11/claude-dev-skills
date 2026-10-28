@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-28 queue check (before OGC-427)
+- Dropped d620dac4 (retro in session) and cc50c492 (retro in session at 21:31; the tail after it was the merge report, "thanks" and container removal, no friction). Dropped 1033a43b (independent reviewer run for #4844, not corrected later). Permission log empty.
+
 ## 2026-10-27 retro of d620dac4 (review-pr #4842, self-review, Approve)
 - review-pr §3 CI evidence: how to find and attribute the workflow_run "E2E / Tests" run behind a 0 s "03 Checkpoint - E2E" row. Evidence: the PR's 03 - E2E run held only Detect Changes and Shared Build; the shards were in run 40489084756 (headSha develop, log names run 40487747116 and pr_number 4842).
 - Memory project_translation_nce_walk_recipe: /rest/localizations is plural (the singular is a 404), #locale-select, #nce-category/#nce-type, Reset's inline confirm, restoring by deleting the created fr row, picking an English-only row (type 9 carried a fr row left by an earlier walk). Each one cost a retry this session.
