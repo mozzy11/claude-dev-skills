@@ -455,3 +455,8 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - review-pr: relaying an author's comment starts with what they said and what the reply says. Evidence: user asked "can you explain what his concern was and what your reply is about" after a terse relay on #4859.
 - Kept: the review found and fixed a real gap on #4859 (decalcification flag cleared on move-out); the author thanked it.
 - settings: allow mcp__claude_ai_Claude_Docs__* (three Docs read permission requests from session 99cea15a). Queue: dropped 4193a377 (retro done in-session). Permission log cleared.
+
+## 2026-10-29 retro of 6e728500 (review-pr #4880, self-review, Request changes)
+- review-pr §3: config variants run through claude-work/bin/dev-stack-webapp-override.py. Evidence: the no-store walk needed the webapp recreated with an empty ORG_OPENELISGLOBAL_FHIRSTORE_URI; plain docker compose on the harness files failed on LETSENCRYPT_DOMAIN, the shim reused dev-stack's environment.
+- Kept: reading every caller of the changed return value found the Required item (EQA Distribute scores now reports success with no store), and re-reading headRefOid before posting caught a docs commit pushed mid-review.
+- Memory project_dev_stack_webapp_config_variant. Queue and permission log empty.

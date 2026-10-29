@@ -574,6 +574,10 @@ Run these before reading logic:
   - Frontend unit tests: `npm --prefix frontend run test -- --run <file>`;
     `npm --prefix frontend exec vitest` runs from the caller's directory,
     misses the vitest config and fails every file (2026-10-12).
+  - For a config variant (an empty property, an env override), recreate only
+    the webapp with `claude-work/bin/dev-stack-webapp-override.py <repo>
+    <override.yml>` (#4880, 2026-10-29: plain compose on the harness files
+    stops on LETSENCRYPT_DOMAIN) and walk both settings.
   - For a new config property, assert the key the server publishes on
     `/rest/configuration-properties`; for a Liquibase changeset, assert the
     `databasechangelog` row and the object it creates. Use a throwaway DB
