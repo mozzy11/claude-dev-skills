@@ -2,6 +2,15 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-10-29 retro of df629033 (OGC-1546: installer, light stack, 3.3.0 package)
+- resolve-issue §3b: an installer, compose or install-script change is accepted on both paths of the published artifact, fresh install and upgrade of an older site with UI-entered data. Evidence: `upgrade.sh` changed in #67, #69 and #70 while only the fresh install was tested; the ticket's note asked for "fresh-install plus existing-site upgrade acceptance"; the upgrade run came last and passed.
+- resolve-issue §3b: a deployment stays lean, no helper container for a one-off chore. Evidence: "we cant run two containers just because of a directory", "this is a deployment setup, we dont need unnecessary stuff" (the `analyzer-imports-owner` service from #61, removed by #67).
+- resolve-issue §3b: operator instructions are one shipped switch plus the usual command. Evidence: "instead of telling the implementer to run many commands ... it should be there already commented" (the commented COMPOSE_FILE line, #69).
+- resolve-issue final summary: every documentation change is reported with its page and heading, and a new section goes near the top of its page. Evidence: "did you update all the other docs", "where exactly was it??" (the light-install section sat fifth in a checklist on the Configure page).
+- resolve-issue teardown: `docker compose --project-directory <dir> down -v` and absolute paths; the one permission prompt of the session was a `cd <dir> && docker compose down ... ; rm -rf` chain. Permission log cleared.
+- Memory: feedback_deployment_lean_no_helper_containers, feedback_operator_docs_one_switch_and_named_locations, project_playwright_mcp_tool_facts (the `target` parameter, `browser_find`, snapshot files, Carbon label clicks, routes), zsh memory (`pipestatus`, empty globs, psql per statement), package facts and light-stack memories updated with the upgrade recipe and the 3.3.0 light behaviour.
+- Queue: 6e728500 dropped without re-reading (already heads a CHANGELOG entry).
+
 ## 2026-10-28 retro of 4193a377 (review-pr #4865, self-review, Comment)
 - review-pr: new "Design-document pull requests" rule: a citation reader plus a live probe of each premise a phase depends on. Evidence: the SameSite-less JSESSIONID showed META-INF/context.xml is unread (the Phase 2 mount target), and PERMISSION_MODULE_PREFIXES showed module keys never reach /session; both were inline findings. The reader's "200 properties" re-counted as 153 and was dropped.
 - Memory: zsh `echo =====` fails (`=` expansion), added to the zsh trap memory. Permission log empty.

@@ -375,6 +375,27 @@ each of which has bitten:
   resolve, retire) and re-reads the new status. (2026-10-28, #4858: the batch
   QC check counted ACKNOWLEDGED violations as open; the dashboard only
   offers Acknowledge, so a recovered lot stayed held. Found by the reviewer.)
+- **An installer, compose or install-script change is accepted on both
+  paths of the published artifact**: a fresh install, and an upgrade of a
+  site on the previous release that already holds data entered through its
+  UI (a patient, an order), after which that data is used on the new version
+  (result, validation, report, the integration pages) and any mode switch is
+  driven both ways. (2026-10-29, OGC-1546: `upgrade.sh` changed in three PRs
+  while only the fresh install was tested, and the ticket's reconciliation
+  note had asked for "fresh-install plus existing-site upgrade acceptance";
+  the upgrade run came last, from an old site built with
+  `git archive <old tag> docker-compose.yml .env configs`.)
+- **A deployment stays lean**: never an extra container or service for a
+  one-off chore (folder ownership, a copy, a chmod); the install scripts do
+  it, or the README gives the one command. (2026-10-29: "we cant run two
+  containers just because of a directory", "this is a deployment setup, we
+  dont need unnecessary stuff".)
+- **Operator instructions are one switch plus the usual command**: ship the
+  switch itself (a commented line in `.env`) in the repository and the
+  package, so the implementer edits one line and runs `docker compose up
+  -d`; never a multi-flag command or a list of steps. (2026-10-29: "instead
+  of telling the implementer to run many commands ... it should be there
+  already commented".)
 
 0. **Order save path changes need a re-save walk.** When the diff touches
    order save validation or a save side effect (notes, EQA rows, overrides),
@@ -806,6 +827,10 @@ session started is removed once the work is done (user instruction, 2026-10-12):
   for every isolated stack, `dev-stack` copy or `-p` project you brought up.
   It removes containers, volumes, the project's built images and analyzer
   mock networks, prunes dangling images, and deletes the claude-work copy.
+- A package or compose test site comes down with
+  `docker compose --project-directory <dir> down -v --remove-orphans` and
+  absolute paths for the `rm -rf`; a `cd <dir> && ...` chain prompts for
+  permission (2026-10-29, the only prompt of the OGC-1546 session).
 - Never tear down the shared `openelisglobal-*` stack or another session's
   project; restart any shared container you stopped for memory.
 - Report the teardown in the final summary (projects removed, containers
@@ -822,6 +847,11 @@ session started is removed once the work is done (user instruction, 2026-10-12):
 - Independent review: its verdict, what it flagged, what you changed in
   response — the pipeline cannot be reported complete without this line
 - Jira status/comment update
+- Documentation changes: each one with the page or file **and the heading
+  it sits under**, so the reader opens it in one click; a new section goes
+  near the top of its page, where someone choosing between options looks,
+  not as the fifth item of a checklist (2026-10-29: "where exactly was
+  it??" after the light-install section sat low on the Configure page)
 - Stack: torn down (pipeline merged), or the URL + login of the stack left
   running for the user's manual validation, torn down after they merge
 - Blockers, unverified items, follow-ups
