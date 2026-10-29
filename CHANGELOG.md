@@ -449,3 +449,9 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 
 ## 2026-10-27 (cc50c492)
 - resolve-issue: ensureSystemRole for every role a test grants, including saveUserLabUnitRoles/getRoleByName grants; write it in up front when the local full suite is skipped for disk. Evidence: #4844 CI red on role_fk (role -1) for an unguarded Results grant after the targeted run was green.
+
+## 2026-10-29 retro of 0c93cc54 (review-pr #4859 + #4864, fixes pushed, both merged)
+- review-pr §3: iso-suite `<repo>` is the main checkout with the PR fetched as a ref, never the fork clone used for pushing. Evidence: #4864's full suite showed 1 failure + 150 errors in 12 analyzer/harness classes from empty submodules; the same classes were 162/162 green from the main checkout (memory written in-session).
+- review-pr: relaying an author's comment starts with what they said and what the reply says. Evidence: user asked "can you explain what his concern was and what your reply is about" after a terse relay on #4859.
+- Kept: the review found and fixed a real gap on #4859 (decalcification flag cleared on move-out); the author thanked it.
+- settings: allow mcp__claude_ai_Claude_Docs__* (three Docs read permission requests from session 99cea15a). Queue: dropped 4193a377 (retro done in-session). Permission log cleared.

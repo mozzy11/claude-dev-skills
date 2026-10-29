@@ -120,6 +120,9 @@ them explicitly, so there is nothing to ask about here either.
   check whether the nits in a standing CHANGES_REQUESTED were already fixed in
   the head tree — they usually have been, and saying so helps the author get
   it cleared.
+- **Relaying an author's comment**: tell the user first, in plain words,
+  what the author said and what your reply says, then act (2026-10-28, #4859:
+  "can you explain what his concern was and what your reply is about").
 - **Do not repeat feedback** that is already addressed, already explained, or
   already tracked in a linked ticket. If your point is the same concern
   another reviewer already raised, say so in one line and add only your new
@@ -229,7 +232,11 @@ Run these before reading logic:
 - Build the merged/head tree; run the full backend suite in an **isolated
   copy** via `claude-work/bin/iso-suite.sh <repo> <sha> <copy> <log>` (never
   in-repo: IDE rebuilds corrupt `target/`; never a `cd <copy> && mvn` chain),
-  and the frontend suite with `npm --prefix frontend run test`.
+  and the frontend suite with `npm --prefix frontend run test`. `<repo>` is
+  always the main checkout with the PR fetched as a ref
+  (`git fetch upstream pull/N/head:pr-N`), never a fork clone made for
+  pushing: its submodules are empty (2026-10-28, #4864: 1 failure + 150
+  errors in 12 analyzer/harness classes, 162/162 green from the main checkout).
   Start it with Bash `run_in_background` right after the read and let its
   completion notice end the wait; a Monitor caps at 10 minutes, and on #4771
   (2026-10-20) four re-armed Monitors covered one 50-minute suite.
