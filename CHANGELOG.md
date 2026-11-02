@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-02 retro of 99cea15a (OGC-1577 module system design, #4865/#4867/#4876/#4878)
+- resolve-issue §5: a docs-only PR merges without waiting for CI. Evidence: "please be srious , you cant wait for ci for a doc pr please" (#4867).
+- resolve-issue §8: URLs in Jira are link marks, long designs live in a repo Markdown file linked from Jira. Evidence: "make the link clicakbe ... shoulb be clickable from the jira", "put the detailed acture in some md file ... and just regerece it in the issue".
+- Memory already written in-session (no OpenMRS references, docs PRs merge immediately, openelis-docker deployment target, module system design). Queue: df629033 tail (3 lines after its 2026-10-29 retro) dropped. Permission log empty.
+
 ## 2026-10-29 retro of df629033 (OGC-1546: installer, light stack, 3.3.0 package)
 - resolve-issue §3b: an installer, compose or install-script change is accepted on both paths of the published artifact, fresh install and upgrade of an older site with UI-entered data. Evidence: `upgrade.sh` changed in #67, #69 and #70 while only the fresh install was tested; the ticket's note asked for "fresh-install plus existing-site upgrade acceptance"; the upgrade run came last and passed.
 - resolve-issue §3b: a deployment stays lean, no helper container for a one-off chore. Evidence: "we cant run two containers just because of a directory", "this is a deployment setup, we dont need unnecessary stuff" (the `analyzer-imports-owner` service from #61, removed by #67).

@@ -630,6 +630,9 @@ mock agreed with you. Fix the code, then fix the test.
 
 ## 5. Monitor CI to green
 
+- A docs-only PR (Markdown, specs, plans; no app code) does not wait for
+  CI: mark it ready and squash-merge with `--admin` in the same step
+  (2026-10-28, #4867: "please be serious, you cant wait for ci for a doc pr").
 - Poll `gh pr checks <n>` (or `claude-work/ci-watch.py`) with the Bash tool's
   `run_in_background`, or arm a Monitor on its log, so that completion wakes
   the session; never detach it with `&` or `( ... &)`, which never notifies.
@@ -772,6 +775,10 @@ nohup "${CLAUDE_BIN:-/opt/homebrew/bin/claude}" -p "Use your review-pr skill: re
   (user terms), the PR link, one line on how it was verified, and any heads-up
   for QA (e.g. an error contract change their specs assert on). No logs, no
   test-count tables, no AI attribution (§0 Authorship).
+- Every URL in a Jira description or comment (PR, design doc, reference
+  document) is a real link mark in the ADF, never bare text; read it back
+  (2026-10-28, OGC-1577: "should be clickable from the jira"). Long
+  designs live in a Markdown file in the repo and Jira links to it.
 - Credit correct leads in the ticket; correct wrong ones with evidence,
   respectfully.
 
