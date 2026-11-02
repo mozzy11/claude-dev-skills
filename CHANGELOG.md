@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of d7267e1b and fc1fda0b (review-pr #4908, #4909)
+- Both sessions were headless PR reviews with no user corrections. Errors (Playwright MCP selector misses, file size limits, jar command missing) were handled during execution. No skill changes needed. Queue cleared, permission log empty.
+
 ## 2026-11-02 retro of 99cea15a (OGC-1577 module system design, #4865/#4867/#4876/#4878)
 - resolve-issue §5: a docs-only PR merges without waiting for CI. Evidence: "please be srious , you cant wait for ci for a doc pr please" (#4867).
 - resolve-issue §8: URLs in Jira are link marks, long designs live in a repo Markdown file linked from Jira. Evidence: "make the link clicakbe ... shoulb be clickable from the jira", "put the detailed acture in some md file ... and just regerece it in the issue".
