@@ -365,7 +365,11 @@ Run these before reading logic:
   starts the webapp and writes the Vite config (#4713); tear it down with
   `claude-work/bin/teardown-light-stack.sh <N>`. The helper copies the shared
   webapp's env, mounts and networks (2026-10-26, #4824: a hand-written env
-  failed on the keystore password and the installation encryption key). Specs
+  failed on the keystore password and the installation encryption key).
+  Mounts the shared webapp lacks (a module JAR directory and its cache) go in
+  `EXTRA_MOUNTS="-v ..."`. Wait for a `docker restart` by counting
+  "Server startup in" lines, not `docker logs --since`: that matched the
+  previous boot and the probes hit a dead webapp (2026-11-03, #4924). Specs
   that seed through `docker exec psql` (`helpers/db-container.ts`) write to
   `clinlims`, not the clone: judge those by CI (critical-callback seeded the
   shared DB and failed on the clone).

@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of 686878ee (review-pr #4924 self-review, Decision: Request changes)
+- review-pr §3 light stack: `light-stack-up.sh` takes `EXTRA_MOUNTS` (module JAR dir and cache); evidence: the walk needed a sed copy of the helper to mount `volume/modules`.
+- review-pr §3 light stack: wait for a `docker restart` by counting "Server startup in" lines; evidence: `docker logs --since 1m` matched the previous boot and the disabled-marker probes all hit a dead webapp (connection 000, JSON decode errors).
+- memory war-deployed-twice: the dev-stack image now runs one context (autoDeploy off, only /api/OpenELIS-Global); the old two-context claim misled the module review.
+- Good outcome kept: driving the shipped admin editor over a new in-memory contribution (Global Menu Management toggle, then restart) found the Required item; the PR's tests never touched it.
+- Queue: c6bdd491 dropped at session start (already had its entry). Permission log empty.
+
 ## 2026-11-03 retro of c6bdd491 (review-pr #4921 self-review, Approve)
 - No user correction. memory zsh trap: a word starting with `=` is a command lookup (`echo ======` -> "not found"), and `G="git -C ..."; $G` fails; use a shell function. No skill change.
 - Good outcome kept: the ArchUnit inversion (one injected controller->DAO dependency failed both frozen rules) and range probes found the `x.x.x` lower-bound gap that the PR's tests missed.
