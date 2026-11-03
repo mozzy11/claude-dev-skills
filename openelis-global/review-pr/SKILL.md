@@ -85,6 +85,10 @@ them explicitly, so there is nothing to ask about here either.
   post a correction rather than let a wrong finding stand.
 - **Newest information wins.** A later comment that withdraws an earlier
   claim (yours or anyone's) supersedes it.
+- **Never a foreground `sleep`, anywhere in the pipeline.** The harness blocks
+  it and the whole chained command is lost (2026-11-03, #4917: `sleep 30;
+  docker logs ...` waiting for a redeploy's Liquibase run). Wait with Monitor
+  or a bounded `until` loop, then run the check as its own command.
 - **A person wrote this code, and you are reviewing it, not grading it**
   (user instruction, 2026-09-21). The author is a colleague who has already
   thought about most of what you are about to notice — often a community
@@ -506,7 +510,7 @@ Run these before reading logic:
       `$COMPOSE_PROJECT_NAME-db.openelis.org-1` (from `scripts/dev-stack env`),
       or every spec is skipped behind a failed setup (#4769, 2026-10-20).
 
-    Wait with Monitor, never a foreground `sleep` (the harness blocks it). Pass
+    Wait with Monitor (ground rule: no foreground `sleep`). Pass
     spec basenames as filters (`ogc-1483 ogc-1488`), not absolute paths: run
     from another cwd, absolute paths matched nothing ("No tests found", #4731).
     Use the full basename and check `--list` first: a bare `ogc-1507` also

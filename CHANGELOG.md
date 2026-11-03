@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of a94fa4e7, 7d59dfcf (review-pr #4915 re-review, #4917 self-review)
+- review-pr §0: "never a foreground `sleep`" promoted from the Playwright step to a ground rule. Evidence: 7d59dfcf line 225, `sleep 30; docker logs ... psql ...` blocked while waiting for the #4917 Liquibase backfill, although §3 already said it for Playwright waits.
+- Permission log: one entry (a94fa4e7, bypassPermissions, a `docker cp`/`unzip` chain in the scratchpad) was auto-approved by the hook; no allow rule can match a chain that starts with a variable assignment, so nothing to add. Log cleared.
+- Queue: 8bb23efe dropped (already had its entry); both remaining sessions were headless reviewer runs, neither review was corrected (#4915 merged, #4917 approved and still open).
+
 ## 2026-11-03 retro of 8bb23efe (review-pr #4915, self-review, Request changes)
 - review-pr §3: the CI waiter is a retrying poll loop that exits only on `completed`. Evidence: `gh pr checks --watch` exited 0 on "read tcp ...: connection reset by peer" with Build + Test pending; a `gh run view` loop re-armed it.
 - Good outcome kept: comparing the no-Bridge panel with develop's behaviour (`getFromOpenElisServer` drops a 502 body) correctly framed the finding as a false all-clear rather than a lost message.
