@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of 146460df, 89bd0b78, 2238e9ef (review-pr #4912 twice, #4913)
+- review-pr §3 API: oe-sql.sh is run, not sourced. Evidence: `source oe-sql.sh && oe_sql ...` failed twice with "oe-sql.sh:7: 1: sql" (89bd0b78).
+- memory playwright-mcp-tool-facts: `target` takes a bare ref or a selector, never a snapshot string. Evidence: `textbox "Username"`, `button "Login" [ref=f1e87]`, `ref=f2e585` failed 7 of 7 times across 2238e9ef and 89bd0b78.
+- No user corrections in any of the three headless reviews. Queue cleared, permission log empty.
+
 ## 2026-11-03 retro of d7267e1b and fc1fda0b (review-pr #4908, #4909)
 - Both sessions were headless PR reviews with no user corrections. Errors (Playwright MCP selector misses, file size limits, jar command missing) were handled during execution. No skill changes needed. Queue cleared, permission log empty.
 

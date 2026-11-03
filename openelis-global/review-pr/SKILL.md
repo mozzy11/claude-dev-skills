@@ -527,7 +527,7 @@ Run these before reading logic:
     the body and the persisted row (a GET or `psql` in the database
     container through `claude-work/bin/oe-sql.sh "<sql>"`, one statement per
     call: with several it prints only the last result, which once read as
-    "no row"; a `P="docker exec ... psql"; $P` string fails in zsh, #4858). A 200 is not proof; the row is. Snapshot the rows first
+    "no row"; a `P="docker exec ... psql"; $P` string fails in zsh, #4858; run it, never `source` it: sourced, `${1:?sql}` aborts with "oe-sql.sh:7: 1: sql", 2026-11-03 #4912). A 200 is not proof; the row is. Snapshot the rows first
     and compare after each probe, and give every probe that might succeed
     a payload that is harmless if it does (each test's own data): on #4694
     an "omitted field" probe returned 200 and wiped two tests' ranges, and
