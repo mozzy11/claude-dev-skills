@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of c6bdd491 (review-pr #4921 self-review, Approve)
+- No user correction. memory zsh trap: a word starting with `=` is a command lookup (`echo ======` -> "not found"), and `G="git -C ..."; $G` fails; use a shell function. No skill change.
+- Good outcome kept: the ArchUnit inversion (one injected controller->DAO dependency failed both frozen rules) and range probes found the `x.x.x` lower-bound gap that the PR's tests missed.
+
 ## 2026-11-03 retro of d302004f (review-pr #4922, self-review, Request changes)
 - Headless reviewer run, no user correction; its errors (strict-mode locator misses, a zsh `--include=*.jsx` glob, waitForResponse timeouts) are already covered by memory. No skill change.
 - Permission log: e523f672 wrote a Vite config into the main checkout and appended it to `.git/info/exclude` (protected path). Memory project-light-isolated-stack now says the config lives in the copy or scratchpad, passed with `--config`. Log cleared.
