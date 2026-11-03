@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of 96e0c6ed (review-pr #4913 delta, self-review, Approve)
+- review-pr §3: CI waiters get the 2 h background timeout. Evidence: the 70-minute `gh pr checks --watch` was killed with Build + Test at minute 80; recent green runs took 80 to 85 minutes.
+- Good outcome kept: a window-level toast recorder (polling `.cds--toast-notification` every 50 ms, logging text, page, start, end) measured transient toasts across `history.push`; no change needed.
+
 ## 2026-11-03 retro of 146460df, 89bd0b78, 2238e9ef (review-pr #4912 twice, #4913)
 - review-pr §3 API: oe-sql.sh is run, not sourced. Evidence: `source oe-sql.sh && oe_sql ...` failed twice with "oe-sql.sh:7: 1: sql" (89bd0b78).
 - memory playwright-mcp-tool-facts: `target` takes a bare ref or a selector, never a snapshot string. Evidence: `textbox "Username"`, `button "Login" [ref=f1e87]`, `ref=f2e585` failed 7 of 7 times across 2238e9ef and 89bd0b78.

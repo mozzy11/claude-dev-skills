@@ -240,6 +240,10 @@ Run these before reading logic:
   Start it with Bash `run_in_background` right after the read and let its
   completion notice end the wait; a Monitor caps at 10 minutes, and on #4771
   (2026-10-20) four re-armed Monitors covered one 50-minute suite.
+  The same goes for waiting on the PR's CI before posting: CI's Build + Test
+  takes 80 to 90 minutes, so give the background `gh run view` / `gh pr checks
+  --watch` waiter `timeout: 7200000` (2026-11-03, #4913: a 70-minute waiter was
+  killed with Build + Test still running and had to be restarted).
 - A test that fails after you did inversion-style experiments may be running
   **stale bytecode** — rerun in a clean copy before believing it.
 - **Live test: mandatory when the PR is cross-stack, behavior-facing, or
