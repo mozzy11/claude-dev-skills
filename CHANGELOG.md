@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of d302004f (review-pr #4922, self-review, Request changes)
+- Headless reviewer run, no user correction; its errors (strict-mode locator misses, a zsh `--include=*.jsx` glob, waitForResponse timeouts) are already covered by memory. No skill change.
+- Permission log: e523f672 wrote a Vite config into the main checkout and appended it to `.git/info/exclude` (protected path). Memory project-light-isolated-stack now says the config lives in the copy or scratchpad, passed with `--config`. Log cleared.
+
 ## 2026-11-03 retro of a94fa4e7, 7d59dfcf (review-pr #4915 re-review, #4917 self-review)
 - review-pr §0: "never a foreground `sleep`" promoted from the Playwright step to a ground rule. Evidence: 7d59dfcf line 225, `sleep 30; docker logs ... psql ...` blocked while waiting for the #4917 Liquibase backfill, although §3 already said it for Playwright waits.
 - Permission log: one entry (a94fa4e7, bypassPermissions, a `docker cp`/`unzip` chain in the scratchpad) was auto-approved by the hook; no allow rule can match a chain that starts with a variable assignment, so nothing to add. Log cleared.
