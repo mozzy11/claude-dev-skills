@@ -243,7 +243,10 @@ Run these before reading logic:
   The same goes for waiting on the PR's CI before posting: CI's Build + Test
   takes 80 to 90 minutes, so give the background `gh run view` / `gh pr checks
   --watch` waiter `timeout: 7200000` (2026-11-03, #4913: a 70-minute waiter was
-  killed with Build + Test still running and had to be restarted).
+  killed with Build + Test still running and had to be restarted). Make it a
+  poll loop that retries a failed `gh` call and exits only on `completed`,
+  never a bare `gh pr checks --watch`: on #4915 that exited 0 on "connection
+  reset by peer" with Build + Test pending, and its exit read as "settled".
 - A test that fails after you did inversion-style experiments may be running
   **stale bytecode** — rerun in a clean copy before believing it.
 - **Live test: mandatory when the PR is cross-stack, behavior-facing, or

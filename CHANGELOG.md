@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-03 retro of 8bb23efe (review-pr #4915, self-review, Request changes)
+- review-pr §3: the CI waiter is a retrying poll loop that exits only on `completed`. Evidence: `gh pr checks --watch` exited 0 on "read tcp ...: connection reset by peer" with Build + Test pending; a `gh run view` loop re-armed it.
+- Good outcome kept: comparing the no-Bridge panel with develop's behaviour (`getFromOpenElisServer` drops a 502 body) correctly framed the finding as a false all-clear rather than a lost message.
+- Queue: 96e0c6ed dropped (already had its entry). Permission log empty.
+
 ## 2026-11-03 retro of 96e0c6ed (review-pr #4913 delta, self-review, Approve)
 - review-pr §3: CI waiters get the 2 h background timeout. Evidence: the 70-minute `gh pr checks --watch` was killed with Build + Test at minute 80; recent green runs took 80 to 85 minutes.
 - Good outcome kept: a window-level toast recorder (polling `.cds--toast-notification` every 50 ms, logging text, page, start, end) measured transient toasts across `history.push`; no change needed.
