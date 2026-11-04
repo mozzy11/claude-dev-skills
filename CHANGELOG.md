@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-04 retro of dcdd0799 (headless review-pr #4929 self-review)
+- Skipped per §1: headless reviewer run with no later correction; its walk errors (Lab Unit combobox, header Search strict mode, report PDF error page) are covered by existing walk-gotcha memories. No changes.
+
 ## 2026-11-04 retro of e523f672 (resolve-issue OGC-1577 module system, Phases 0 to 4, #4919 #4921 #4924 #4926 #4927 #4928 #4930, openelis-docker #72)
 - resolve-issue §5: a green verdict needs the whole check set (count of the last green PR or every required check by name); evidence: a watcher said ALL_GREEN on #4927 before Build + Test and E2E registered.
 - resolve-issue §5: watch runs with `gh run list --workflow <file>`, never a name filter under a small `--limit`; evidence: the `:modula` publish watch expired with no events while both runs had completed (a push starts a dozen runs).
