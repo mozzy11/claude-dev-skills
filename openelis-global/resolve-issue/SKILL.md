@@ -115,7 +115,11 @@ question.
   existing enums/constants from their single source file (never duplicate
   literal lists), find the established pattern for the entity you are touching
   (e.g. codes attached to the right entity type), and read neighboring code
-  before writing new code.
+  before writing new code. New namespaces (Java packages, Maven groupIds,
+  repository and image names) are the project's, never the user's handle or
+  a personal domain (2026-11-03, OGC-1577: "why did you make a class
+  structure as io.github.mozzy11.openelis...? you dont have to do anything
+  personalized to mozzy11"; the standard became `org.openelisglobal.module.<name>`).
 - **Fix every bug you find in the components the ticket touches (user
   instruction 2026-09-24, scoped the same day).** A defect, regression,
   false-success message, 500, stale data or wrong label you discover in the
@@ -173,6 +177,20 @@ question.
 - **Delegate read-heavy discovery to subagents** (Explore) when the answer
   needs sweeping many files: have them report file:line conclusions only,
   keeping grep output out of the main context.
+- **Release every tool the moment it is idle** (user instruction 2026-11-04,
+  after Chrome refused to start on the 16 GB Mac: "whenever you no longer use
+  a tool ie playwright, clear the memory unless using it"). Close the MCP
+  browser after each walk, stop Vite, isolated containers and JVMs between
+  uses, and stop an isolated stack's webapp and frontend before a
+  spotless-docker run (the Docker VM is 7.6 GB); reopen when the next step
+  needs them.
+- **Status updates in plain words.** At every phase end and whenever the user
+  asks, give a short status block that names the next pipeline step
+  explicitly (for example "the independent review runs next") and spells
+  housekeeping out in one plain clause each; never internal shorthand
+  (2026-11-04: "thats great, are also going to run a reviewer ??" and "i dnt
+  understand when you mentioned note the Phase 5 and 6 scope ... teardown of
+  the cloned database, and the session retro").
 
 ## 1. Read the ticket — all of it
 
@@ -600,6 +618,11 @@ mock agreed with you. Fix the code, then fix the test.
 - Push `develop` to the fork; open a **draft** PR targeting upstream
   `develop`.
 - Title: conventional-commit style with the Jira key.
+- **One PR per child item.** When the ticket or brief lists child issues, each
+  PR maps to exactly one of them and carries that child's key; a PR that maps
+  to no listed child is not opened (or merged) without naming why in the
+  status update (2026-11-03, OGC-1577: "please make sure you work on a single
+  PR per child issue" and "was the pr you merged part of the child items ??").
 - Description: **short and readable by the actual user in under a minute** —
   aim for 10–15 lines, four small sections, plain sentences, no tables of
   test counts, no pasted logs, no scratch details or transient ids:
@@ -640,6 +663,17 @@ mock agreed with you. Fix the code, then fix the test.
   Report a red check or a posted review the moment it lands, before the user
   sees it (2026-10-14/15: the user reported "also fix e2e failure" and "the
   PR ci failed and the reviewer posted" before the session did).
+- **A green verdict needs the whole check set.** Checks register over several
+  minutes after a push, so "nothing pending" at the first reading only means
+  the early checks are in. The watcher reports green only when the count
+  matches the last green PR on that branch (or every required check by name)
+  and none is pending (2026-11-04, #4927: a watcher said ALL_GREEN before
+  Build + Test and E2E had registered).
+- **Watch a workflow run by `--workflow <file>`, not by name inside
+  `gh run list --limit N`.** One push to a branch starts a dozen runs, so a
+  small limit drops the one you filter for and the watch expires silently
+  (2026-11-04: the `:modula` image publish completed while its watcher saw
+  nothing for 30 min).
 - On failure, read the failing job's log (`gh run view --log-failed`) before
   changing anything. Known recurring causes in this repo:
   - Spotless cold-run skew (fix: cold spotless locally, commit).

@@ -2,6 +2,17 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-04 retro of e523f672 (resolve-issue OGC-1577 module system, Phases 0 to 4, #4919 #4921 #4924 #4926 #4927 #4928 #4930, openelis-docker #72)
+- resolve-issue §5: a green verdict needs the whole check set (count of the last green PR or every required check by name); evidence: a watcher said ALL_GREEN on #4927 before Build + Test and E2E registered.
+- resolve-issue §5: watch runs with `gh run list --workflow <file>`, never a name filter under a small `--limit`; evidence: the `:modula` publish watch expired with no events while both runs had completed (a push starts a dozen runs).
+- resolve-issue §0: release every tool the moment it is idle (MCP browser, Vite, isolated containers, JVMs; stop an isolated stack before spotless-docker); evidence: "my chrome has refused to start", "whenever you no longer use a tool ie playwright, clear the memory unless using it".
+- resolve-issue §0: status updates in plain words, naming the next pipeline step; evidence: "are also going to run a reviewer ??", "i dnt understand when you mentioned note the Phase 5 and 6 scope ...".
+- resolve-issue §3: new namespaces are the project's, never the user's handle; evidence: "why did you make a class structure as io.github.mozzy11... you dont have to do anything personalized to mozzy11".
+- resolve-issue §4: one PR per child item, a PR maps to a listed child; evidence: "please make sure you work on a single PR per child issue", "was the pr you merged part of the child items ??".
+- memory: dev-image-in-openelis-docker (dev image shipped the stock server.xml, #4930; Vite websocket upgrade at nginx server level; light-stack recipe), playwright-mcp-tool-facts (`nav` strict mode, Vite cold-page waits), local-tooling-gaps (compose lacks `--no-env-resolution`), proactive-status-updates (plain words), module-system-design (implementation status).
+- Good outcomes kept: the review of #4921 requested real changes (default-role grants never happened); the #4927 review caught gitignored kit fixtures; a derived image (`FROM <published> + one COPY`) proved the Dockerfile fix live in minutes instead of a full image build.
+- Needs the user: the headless reviewer prints "Ignoring 39 permissions.allow entries ... workspace has not been trusted" for the main checkout; it runs with bypassPermissions so nothing fails, but accepting the trust dialog once in that directory would silence it.
+
 ## 2026-11-04 retro of fd213867 (review-pr #4930 self-review, Decision: Approve)
 - memory project_light_isolated_stack: booting a PR-built image like openelis-docker needs `oe.ssl.keystorepath` and writable copies of `/etc/openelis-global` and `configuration`; evidence: the first run with read-only mounts exited 1 on the entrypoint's chgrp/chown. No skill change.
 - Good outcome kept: a control run of today's published image (no `/api/OpenELIS-Global` context) made the fix's live check discriminating.
