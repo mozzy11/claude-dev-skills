@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-04 retro of 39731bc1 (review-pr #4933 self-review, Decision: Request changes)
+- review-pr §3 frontend unit tests: run them in a git-archive copy of the PR head (modula PRs need develop's vite.config.ts), never in the main checkout; evidence: GlobalMenuManagement.test.jsx passed 5/5 on the main checkout (develop's en.json) and failed 1/6 on the PR head, and a stray `git checkout pr-4933 --` in the shared checkout was a near miss (refused, tree unchanged).
+- Good outcome kept: a stale assertion on a reworded en.json key found by grepping the old text in frontend/src as well as frontend/playwright; an offline Liquibase parse proved changeset identity unchanged across the layout move without a stack.
+
 ## 2026-11-04 retro of dcdd0799 (headless review-pr #4929 self-review)
 - Skipped per §1: headless reviewer run with no later correction; its walk errors (Lab Unit combobox, header Search strict mode, report PDF error page) are covered by existing walk-gotcha memories. No changes.
 
