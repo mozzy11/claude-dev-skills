@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-04 retro of fd213867 (review-pr #4930 self-review, Decision: Approve)
+- memory project_light_isolated_stack: booting a PR-built image like openelis-docker needs `oe.ssl.keystorepath` and writable copies of `/etc/openelis-global` and `configuration`; evidence: the first run with read-only mounts exited 1 on the entrypoint's chgrp/chown. No skill change.
+- Good outcome kept: a control run of today's published image (no `/api/OpenELIS-Global` context) made the fix's live check discriminating.
+
 ## 2026-11-04 retro of fc5a0e0f, 2271dab1, f417851a (review-pr #4925 self-review, #4926, #4927)
 - review-pr §3 Playwright: never await a save's response inside `browser_run_code_unsafe`; click Save with `browser_click` and read the row by SQL/GET. Evidence: fc5a0e0f lines 339-343, the Dictionary Add `waitForResponse` call hung the MCP twice for 1800 s although memory already held the trap.
 - review-pr §3 Playwright: a `browser_run_code_unsafe` `filename` must live under `<repo>/.playwright-mcp`; delete it afterwards (may hold credentials). Evidence: 2271dab1 line 253, "File access denied ... outside allowed roots" for a scratchpad login.js.
