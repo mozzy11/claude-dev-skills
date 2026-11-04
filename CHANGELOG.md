@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-04 retro of fc5a0e0f, 2271dab1, f417851a (review-pr #4925 self-review, #4926, #4927)
+- review-pr §3 Playwright: never await a save's response inside `browser_run_code_unsafe`; click Save with `browser_click` and read the row by SQL/GET. Evidence: fc5a0e0f lines 339-343, the Dictionary Add `waitForResponse` call hung the MCP twice for 1800 s although memory already held the trap.
+- review-pr §3 Playwright: a `browser_run_code_unsafe` `filename` must live under `<repo>/.playwright-mcp`; delete it afterwards (may hold credentials). Evidence: 2271dab1 line 253, "File access denied ... outside allowed roots" for a scratchpad login.js.
+- memory playwright-mcp-tool-facts: the same allowed-root fact.
+- f417851a: short headless run, no correction. 686878ee dropped (already had its entry). Permission log empty.
+
 ## 2026-11-03 retro of 686878ee (review-pr #4924 self-review, Decision: Request changes)
 - review-pr §3 light stack: `light-stack-up.sh` takes `EXTRA_MOUNTS` (module JAR dir and cache); evidence: the walk needed a sed copy of the helper to mount `volume/modules`.
 - review-pr §3 light stack: wait for a `docker restart` by counting "Server startup in" lines; evidence: `docker logs --since 1m` matched the previous boot and the disabled-marker probes all hit a dead webapp (connection 000, JSON decode errors).

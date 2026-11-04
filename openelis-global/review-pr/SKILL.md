@@ -578,6 +578,15 @@ Run these before reading logic:
     driven with a held `page.route` is held, checked and released in one
     call, ending with `unrouteAll`; a hold left open hangs that request for
     good (#4822, 2026-10-26: `__release is not a function`).
+    **Never await a save's response inside `browser_run_code_unsafe`**
+    (`waitForResponse` on a POST/PUT, then `click`): the MCP goes silent
+    and the call dies after 30 minutes. Click Save with `browser_click`,
+    then read the stored row with SQL or a GET (2026-11-03, #4925: the same
+    Dictionary Add call hung twice and cost an hour although memory
+    `project_playwright_second_context_hang` already said so). A
+    `browser_run_code_unsafe` `filename` must sit under
+    `<repo>/.playwright-mcp` (a scratchpad path is refused, #4926); delete
+    it with the other session files, it may hold the test credentials.
   - **Printed reports:** click Generate in the MCP, take the `ReportPrint?...`
     URL from the popup, fetch it with `curl -k -b JSESSIONID=<from
     context.cookies()>` and read it with `claude-work/bin/pdftext.sh` (page
