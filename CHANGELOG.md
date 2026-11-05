@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-05 retro of ff68fb5a (resolve-issue: backend CI shards, PR #4960 merged)
+- resolve-issue §3: the PR delivers the outcome the user named; a staged/shadow rollout is not the default (evidence: "i clrealy told you we want to cut down time, and now youre runing both").
+- resolve-issue §3: replacing a job inventories every output first, and a push-only CI path is proven locally with the job's exact commands (evidence: "so you hand considered a coverage report ??"; the local proof caught `dependency:copy` failing on the pom placeholder).
+- resolve-issue §0 status: four plain lines when the user is confused (evidence: "youre really talking too much and i dint read all").
+- memory: project-backend-ci-shards (new), feedback-deliver-stated-goal (new), feedback-be-direct (repeat evidence).
+- Good outcomes kept: the strict completeness report caught two classes skipped on a case-insensitive checkout before the push; the independent review approved and its three suggestions were applied. Permission log empty.
+
 ## 2026-11-05 retro of a176082a (headless review-pr #4960)
 - Skipped per §1: headless reviewer run with no later correction; its background-task retries were output polling, not a failure. No changes.
 

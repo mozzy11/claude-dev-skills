@@ -190,7 +190,11 @@ question.
   housekeeping out in one plain clause each; never internal shorthand
   (2026-11-04: "thats great, are also going to run a reviewer ??" and "i dnt
   understand when you mentioned note the Phase 5 and 6 scope ... teardown of
-  the cloned database, and the session retro").
+  the cloned database, and the session retro"). When the user is confused or
+  frustrated, answer in at most four plain lines: the direct answer, then the
+  action you are taking; no option menus, no phase vocabulary (2026-11-05,
+  CI shards: "youre really talking too much and i dint read all", "please i
+  dont get i think youre confusing").
 
 ## 1. Read the ticket — all of it
 
@@ -221,6 +225,22 @@ question.
 
 ## 3. Implement
 
+- **The PR delivers the outcome the user named.** When the request states a
+  goal (cut CI time, make a screen faster), the merged PR must achieve it; a
+  staged rollout (shadow mode, a flag left off, a validation phase) that
+  leaves the goal undelivered is not the default. Ship the goal with safety
+  nets around it and name the staged alternative under Notes (2026-11-05:
+  #4960 first shipped shards in shadow mode beside the one-hour run; the user:
+  "i clrealy told you we want to cut down time, and now youre runing both").
+- **Replacing a job, pipeline or component: inventory every output of the old
+  one first** (artifacts, badges, Pages deploys, required check names,
+  downstream triggers, notifications) and keep each one or say plainly before
+  pushing that it is dropped (2026-11-05: moving develop to shards dropped the
+  per-push coverage badge to nightly; the user: "so you hand considered a
+  coverage report ??"). A CI path that only runs on push or schedule is proven
+  locally with the job's exact commands before the push; the PR's own CI
+  never exercises it (that local run caught `dependency:copy` failing on the
+  pom's placeholder `artifactItems`).
 - Root cause before code: reproduce the bug locally (live stack if needed) and
   capture the real error/stack trace. Fix causes, not symptoms.
 - Minimal, focused diff. No drive-by refactors. No inline explanatory comments
