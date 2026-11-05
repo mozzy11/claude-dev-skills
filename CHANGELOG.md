@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-05 retro of a176082a (headless review-pr #4960)
+- Skipped per §1: headless reviewer run with no later correction; its background-task retries were output polling, not a failure. No changes.
+
 ## 2026-11-05 retro of 1bf4dac8, 29a3efa5, e7a96ded, 4ec6e357, de9b501d, 14548132
 - resolve-by-criteria §0 scope guard: a user override that includes epics or linked items drops the standing exclusions for what was named, and every open child of an included epic (Feature Doc children too) becomes its own run-log row; evidence: 1bf4dac8 "did you also work on the child item OGC-1414 ... nothing is commented on it yet its part of the epic ??".
 - review-pr §3 archive copy: run Python tests with `python3 -m unittest discover -s <copy>/scripts/tests -p <file>`, no `cd` chain; evidence: permission log entry from de9b501d (#4940).
