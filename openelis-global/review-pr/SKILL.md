@@ -251,6 +251,13 @@ Run these before reading logic:
   poll loop that retries a failed `gh` call and exits only on `completed`,
   never a bare `gh pr checks --watch`: on #4915 that exited 0 on "connection
   reset by peer" with Build + Test pending, and its exit read as "settled".
+  Retry only on empty output, never on a non-zero exit: `gh pr checks` exits
+  1 when any check failed and 8 while any is pending, so `|| continue` loops
+  on a red check until the 2-hour kill. Also stop the loop when the PR leaves
+  OPEN (`gh pr view --json state`): an E2E executor started after the merge
+  dies in checkout with git exit 128 on the gone `refs/pull/N/merge`, which
+  is not the change; judge it by a later develop E2E run that contains the
+  merge commit (2026-11-05, #4962: merged mid-review, the waiter ran 2 h).
 - A test that fails after you did inversion-style experiments may be running
   **stale bytecode** — rerun in a clean copy before believing it.
 - **Live test: mandatory when the PR is cross-stack, behavior-facing, or

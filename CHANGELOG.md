@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-05 retro of ad6e07f0 (review-pr #4962 self-review, Decision: Approve)
+- review-pr §3 CI waiter: retry only on empty `gh pr checks` output (it exits 1 on a failed check, 8 on pending) and stop when the PR leaves OPEN; a post-merge E2E dies in checkout on the gone merge ref, judge by a later develop run; evidence: the waiter looped on `|| continue` until its 2 h kill after the PR was merged at 16:48 and E2E failed with git exit 128.
+- Good outcome kept: a control image (same conf minus the two proxy directives) behind the same HTTP/1.0 and Via gateways made the proxy check discriminating; a derived image (published runtime + one COPY) tested a config-only change in minutes.
+
 ## 2026-11-05 retro of ff68fb5a (resolve-issue: backend CI shards, PR #4960 merged)
 - resolve-issue §3: the PR delivers the outcome the user named; a staged/shadow rollout is not the default (evidence: "i clrealy told you we want to cut down time, and now youre runing both").
 - resolve-issue §3: replacing a job inventories every output first, and a push-only CI path is proven locally with the job's exact commands (evidence: "so you hand considered a coverage report ??"; the local proof caught `dependency:copy` failing on the pom placeholder).
