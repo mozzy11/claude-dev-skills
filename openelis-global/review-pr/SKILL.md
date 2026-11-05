@@ -604,7 +604,11 @@ Run these before reading logic:
     `frontend/node_modules` from the main checkout, and for a `modula`-based
     PR copy develop's `vite.config.ts` over the copy's (it imports
     `@module-federation/vite`, which develop's node_modules lacks). Never
-    `git checkout` anything in the shared checkout to do it.
+    `git checkout` anything in the shared checkout to do it. Python tests in
+    the copy run without a `cd` chain:
+    `python3 -m unittest discover -s <copy>/scripts/tests -p 'test_x.py'`
+    (no `-t`: scripts/tests is not a package) (2026-11-04, #4940: `cd $S && python3 -m unittest` raised
+    a permission request).
   - For a config variant (an empty property, an env override), recreate only
     the webapp with `claude-work/bin/dev-stack-webapp-override.py <repo>
     <override.yml>` (#4880, 2026-10-29: plain compose on the harness files

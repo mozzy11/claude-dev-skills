@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-05 retro of 1bf4dac8, 29a3efa5, e7a96ded, 4ec6e357, de9b501d, 14548132
+- resolve-by-criteria §0 scope guard: a user override that includes epics or linked items drops the standing exclusions for what was named, and every open child of an included epic (Feature Doc children too) becomes its own run-log row; evidence: 1bf4dac8 "did you also work on the child item OGC-1414 ... nothing is commented on it yet its part of the epic ??".
+- review-pr §3 archive copy: run Python tests with `python3 -m unittest discover -s <copy>/scripts/tests -p <file>`, no `cd` chain; evidence: permission log entry from de9b501d (#4940).
+- memory child-items-user-specifies: same override rule.
+- 29a3efa5, e7a96ded, 4ec6e357, de9b501d, 14548132: headless reviewer runs with no later correction, skipped per §1. 39731bc1 and e523f672 dropped (already had entries). Permission log cleared.
+
 ## 2026-11-04 retro of 39731bc1 (review-pr #4933 self-review, Decision: Request changes)
 - review-pr §3 frontend unit tests: run them in a git-archive copy of the PR head (modula PRs need develop's vite.config.ts), never in the main checkout; evidence: GlobalMenuManagement.test.jsx passed 5/5 on the main checkout (develop's en.json) and failed 1/6 on the PR head, and a stray `git checkout pr-4933 --` in the shared checkout was a near miss (refused, tree unchanged).
 - Good outcome kept: a stale assertion on a reworded en.json key found by grepping the old text in frontend/src as well as frontend/playwright; an offline Liquibase parse proved changeset identity unchanged across the layout move without a stack.

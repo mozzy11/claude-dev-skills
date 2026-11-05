@@ -92,7 +92,14 @@ here in full. This file only adds what is specific to batch mode.
   issue that has child items, or an issue that is itself a child of a bigger
   parent or epic. Those are worked only through an explicit
   `resolve issue <key>` from the user. See §1 and §2 for the mechanical
-  and the judgment-based filters.
+  and the judgment-based filters. **A user override wins:** when the request
+  itself includes epics or linked items ("even those with linked work
+  items", "work on those epics too, only exclude X"), drop the standing
+  exclusions for what was named, and list every open child of each included
+  epic (`parent = <KEY>`, any type, Feature Doc children too) in the run
+  log as its own worklist row, so none is silently skipped (2026-11-04:
+  the user asked "did you also work on the child item OGC-1414 ... nothing
+  is commented on it yet", the Feature Doc child of an included epic).
 - **Merging is authorized here, and only here.** `resolve-issue` on its own
   merges only when the user says so. Inside this pipeline, once a PR has
   passed the §3e merge gate, merge it without asking. The gate is the
