@@ -2,6 +2,14 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-06 retro of e523f672 (after its 11-04 retro: OGC-1577 #4933 to #4954, dev-stack, #4962), 943ec2e3 (openelis-docker #74), ff68fb5a, ad6e07f0, 1bf4dac8
+- resolve-issue §4: a new CI-enforced rule (architecture test, lint, required check) is named in the PR Notes and the status before merge; evidence: #4954 carried an ArchUnit baseline into develop, "but do we need tat feature ??", "sorry where was it in the plan ??".
+- resolve-issue teardown: after every merge done from a side copy or branch, fast-forward the user's checkout of the target branch and name it; evidence: "my modula branch on local isnt updatet", "am currently on my local branch modula but am seeing an old read me".
+- memory no-ai-attribution-concise-prs: Slack posts are about five short items with titled links, never bare URLs; evidence: "wrap the link in a title . this looks bogus on slack".
+- memory light-stack-no-fhir-no-bridge: replicas: 0 services are still pulled, pull_policy: never (#74); check with `--dry-run pull`, since `--dry-run up -d` hangs on healthchecks (943ec2e3).
+- ad6e07f0 and 1bf4dac8 had their retro in-session, dropped; ff68fb5a had only resume stubs after its retro. Repeat evidence for existing memories (merge means now, be direct, dev-stack automates everything); no new rule. Permission log empty.
+- Good outcomes kept: the frontend compression fix was measured on testing before merge (25.4 MB to 6.4 MB layout chunk); a tagged module release was proven end to end and then deleted.
+
 ## 2026-11-05 retro of ad6e07f0 (review-pr #4962 self-review, Decision: Approve)
 - review-pr §3 CI waiter: retry only on empty `gh pr checks` output (it exits 1 on a failed check, 8 on pending) and stop when the PR leaves OPEN; a post-merge E2E dies in checkout on the gone merge ref, judge by a later develop run; evidence: the waiter looped on `|| continue` until its 2 h kill after the PR was merged at 16:48 and E2E failed with git exit 128.
 - Good outcome kept: a control image (same conf minus the two proxy directives) behind the same HTTP/1.0 and Via gateways made the proxy check discriminating; a derived image (published runtime + one COPY) tested a config-only change in minutes.

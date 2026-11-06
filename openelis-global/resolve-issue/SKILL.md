@@ -667,6 +667,12 @@ mock agreed with you. Fix the code, then fix the test.
     anything not verified and why. Omit the section when there is nothing.
   ```
 
+- **A new rule that CI enforces on everyone** (an architecture test, a lint
+  rule, a required check) is named in Notes and in the status message before
+  the merge, with what it will fail and whether the user asked for it
+  (2026-11-05, #4954: an ArchUnit baseline reached develop unnoticed; "but do
+  we need tat feature ??", "sorry where was it in the plan ??").
+
 - No footer, no signature, no "Generated with …" line (§0 Authorship).
 - Squash-merge commit body (when merging is instructed): the same four
   sections compressed to 3–6 sentences, again without trailers.
@@ -896,6 +902,12 @@ session started is removed once the work is done (user instruction, 2026-10-12):
   project; restart any shared container you stopped for memory.
 - Report the teardown in the final summary (projects removed, containers
   left = 0, free disk).
+- **After every merge, bring the user's own checkout along**: when the work
+  was done in a side copy or side branch, fast-forward the user's checkout of
+  the target branch (`git -C <their checkout> pull --ff-only`, only on a clean
+  tree, never a reset over their changes) and name the folder and branch that
+  now has it (2026-11-05, modula: "my modula branch on local isnt updatet",
+  "am currently on my local branch modula but am seeing an old read me").
 
 ## Final summary (always emit)
 
