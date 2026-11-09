@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-09 retro of 735f4b71, ff68fb5a, e523f672, 1bf4dac8
+- 735f4b71 was the 11-06 retro session itself; the user asked "sync local repo" twice and again mid-turn while the retro ran. One instance, no rule change; noted so a repeat makes the retro defer to a quick user request.
+- ff68fb5a, e523f672 and 1bf4dac8 had no user messages after the 11-06 retro (SessionEnd stubs only), dropped. Permission log empty.
+
 ## 2026-11-06 retro of e523f672 (after its 11-04 retro: OGC-1577 #4933 to #4954, dev-stack, #4962), 943ec2e3 (openelis-docker #74), ff68fb5a, ad6e07f0, 1bf4dac8
 - resolve-issue §4: a new CI-enforced rule (architecture test, lint, required check) is named in the PR Notes and the status before merge; evidence: #4954 carried an ArchUnit baseline into develop, "but do we need tat feature ??", "sorry where was it in the plan ??".
 - resolve-issue teardown: after every merge done from a side copy or branch, fast-forward the user's checkout of the target branch and name it; evidence: "my modula branch on local isnt updatet", "am currently on my local branch modula but am seeing an old read me".
