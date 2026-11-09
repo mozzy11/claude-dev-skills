@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-09 retro of 04fd3047 (resolve-by-criteria, OGC-1608 merged as #5001)
+- resolve-issue §3b: never await a save's response inside browser_run_code_unsafe on the main page either; changed text goes under a new en.json key. Evidence: a Site Information save awaited in one script hung the MCP 30 min; the reworded Validation toast showed old text under en-US.
+- memory: patient reports are versioned (reprint returns the stored PDF, walk report fixes on a fresh order); proxy TLS reset after Docker start (restart the proxy); second-context hang memory extended to the main page.
+- Good outcomes kept: the walk found two real defects (Release all clear reported a held test as released; stale toast text) and the reviewer found a third (copy left a blank required primary); all fixed in the PR with failing-first tests.
+
 ## 2026-11-09 retro of 735f4b71, ff68fb5a, e523f672, 1bf4dac8
 - 735f4b71 was the 11-06 retro session itself; the user asked "sync local repo" twice and again mid-turn while the retro ran. One instance, no rule change; noted so a repeat makes the retro defer to a quick user request.
 - ff68fb5a, e523f672 and 1bf4dac8 had no user messages after the 11-06 retro (SessionEnd stubs only), dropped. Permission log empty.

@@ -513,6 +513,16 @@ each of which has bitten:
    takes as long as it takes; this pipeline is allowed to be slow and not
    allowed to be sloppy.
 
+   **Never await a save's response, or read its body, inside
+   `browser_run_code_unsafe` on the main page either**: click Save with
+   `browser_click`, read the toast through a recorder armed before the click
+   and the stored row in the next call (2026-11-09: a Site Information save
+   awaited in one script hung the MCP for the full 30 minutes; memory
+   `project_playwright_second_context_hang`). **Changed text goes under a new
+   en.json key**: the regional bundles (`en_US`, `en_GB`) overlay changed keys
+   until Transifex syncs, so the walk shows the old text (same day, the
+   Validation part-validated toast; memory `project_i18n_regional_override`).
+
    **Each row is clicked by hand through the Playwright MCP; a spec run
    never replaces one** (user instruction, 2026-10-15, after a review left
    five rows to the feature's own CLI specs). Playwright specs, including
