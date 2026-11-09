@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-09 retro of 705542ee (review-pr #5001 self-review, Decision: Request changes)
+- No user corrections; the review found a real defect (Copy from test left a blank required primary), fixed before #5001 merged. Retries were walk probe iterations and one guessed column name, no pattern. No skill changes. Permission log empty.
+
 ## 2026-11-09 retro of 04fd3047 (resolve-by-criteria, OGC-1608 merged as #5001)
 - resolve-issue §3b: never await a save's response inside browser_run_code_unsafe on the main page either; changed text goes under a new en.json key. Evidence: a Site Information save awaited in one script hung the MCP 30 min; the reworded Validation toast showed old text under en-US.
 - memory: patient reports are versioned (reprint returns the stored PDF, walk report fixes on a fresh order); proxy TLS reset after Docker start (restart the proxy); second-context hang memory extended to the main page.
