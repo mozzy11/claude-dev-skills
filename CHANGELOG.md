@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of be06e9ec (review-pr #5006 self-review, Decision: Approve)
+- No user corrections. The non-admin probe found a real R-34 gap (a Reception user could cancel a resulted test); the author's session fixed it mid-review (e713d98), and the existing "read headRefOid before posting" rule caught both head moves. A CI failure on e713d98 was the PR's own spec waiting for Keep's old text; the existing "grep the old text in playwright" rule applies to the author, no change. No skill changes.
+- memory zsh trap: unquoted `--include=*.ts` aborts grep with "no matches found" (hit twice). Permission log empty.
+
 ## 2026-11-10 retro of 78acb370 (review-pr #5003 self-review, Decision: Approve)
 - review-pr §5: review drafts go to claude-work/pr<N>/review.md, and a GitHub-only outage ends in a reported draft instead of a 2 h waiter; evidence: api.github.com timed out for over two hours while Google and npm answered, the draft sat in the scratchpad, the review was posted later from another session.
 - settings: allow mcp__claude_ai_Github_Cowork__* (12 pull_request_read prompts from b1a70944 in default mode). Permission log cleared.
