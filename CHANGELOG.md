@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-11 retro of a3c32f42 (review-pr #5016 self-review, Decision: Request changes)
+- review-pr §3: pick this session's `.playwright-mcp` files by time, never by a name glob; evidence: an `LH-*.pdf` move swept up three of the author's certificates (put back).
+- Good outcome kept: the in-between-state probe (a released result sent back for correction) found the Required item: an unvalidated 5.3 went onto a reissued certificate, and the dashboard counted cancelled tests.
+- memory: compliance walk recipe (new); e-signature step added to the result-correction recipe. Queue empty, permission log empty, no user corrections.
+
 ## 2026-11-10 retro of 5fb33802 (review-pr #5013 self-review, Decision: Request changes)
 - No user corrections. The same-page state probe found the Required item (Validation policy summary stale after a blockSelfValidation change). No skill changes.
 - memory delivery-outbox-test-flake: DeliveryOutboxServiceTest retry test failed the full suite with "attempt 1 is due", passed alone; second sighting (also 8a67dc7d).

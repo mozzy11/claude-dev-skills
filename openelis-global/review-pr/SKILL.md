@@ -502,7 +502,10 @@ Run these before reading logic:
     cwd, so from the product checkout the PNG and the page/console files
     land in the repo root and its `.playwright-mcp` (#4831, 2026-10-26);
     move them to `claude-work` and delete this session's files before the
-    review is posted. Never pass `filename` to `browser_snapshot` (#4769).
+    review is posted, selected by time (`find -newermt <session start>`),
+    never by a name glob: other sessions leave files there too (#5016,
+    2026-11-11: `LH-*.pdf` swept up three of the author's certificates).
+    Never pass `filename` to `browser_snapshot` (#4769).
   - **Regression matrix, on every live-tested PR** (user instruction,
     2026-09-26: as much live UI testing through the Playwright MCP as
     possible, every case scenario related to the changed files, so the PR
