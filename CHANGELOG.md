@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of 78acb370 (review-pr #5003 self-review, Decision: Approve)
+- review-pr §5: review drafts go to claude-work/pr<N>/review.md, and a GitHub-only outage ends in a reported draft instead of a 2 h waiter; evidence: api.github.com timed out for over two hours while Google and npm answered, the draft sat in the scratchpad, the review was posted later from another session.
+- settings: allow mcp__claude_ai_Github_Cowork__* (12 pull_request_read prompts from b1a70944 in default mode). Permission log cleared.
+- Good outcome kept: the walk proved the banner save fix in both locales and that the origin flags are read-only over the API.
+
 ## 2026-11-09 retro of 705542ee (review-pr #5001 self-review, Decision: Request changes)
 - No user corrections; the review found a real defect (Copy from test left a blank required primary), fixed before #5001 merged. Retries were walk probe iterations and one guessed column name, no pattern. No skill changes. Permission log empty.
 
