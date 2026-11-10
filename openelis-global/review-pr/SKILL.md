@@ -342,6 +342,15 @@ Run these before reading logic:
     after each, and grep which of those states any UI writes: on #4858
     (2026-10-28) Acknowledge was the only QC dashboard action, the workplan
     counted only RESOLVED as cleared, and the tile stayed red for good.
+    For a client-side cache the PR adds (a module-level Map, a hook that
+    loads once), drive two cases: the data changes elsewhere in the same tab
+    (`history.pushState` + `dispatchEvent(new PopStateEvent('popstate'))`
+    to the editor and back, with a `window.__marker` proving no full
+    reload), and the load fails once (patch `window.fetch` in
+    `browser_evaluate` to answer 503 for that URL, then restore it and
+    re-open). On #5007 (2026-11-10) both found the Required items: an
+    unlink stayed invisible until reload, and one failure cached an empty
+    Method list.
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
@@ -452,7 +461,9 @@ Run these before reading logic:
     walk every row, one action at a time (snapshot, act, snapshot, compare
     with the expected result), never chaining actions and checking only the
     end state. Never put two browser calls in one tool block: they run back
-    to back without waiting, and on #4799 (2026-10-21) a Print click raced
+    to back without waiting, and one that fails does not stop the next (on
+    #5007, 2026-11-10, Save ran after a failed type and stored a half-filled
+    row); on #4799 (2026-10-21) a Print click raced
     the page load and an Edit/fill/Save trio all missed; on #4858 a Batches
     tab click right after `browser_navigate` missed four times, so take a
     snapshot scoped with `target` (a tab panel, a `data-testid` tile) after

@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of 1321871b (review-pr #5007 self-review, Decision: Request changes)
+- review-pr §3: a client-side cache the PR adds gets two probes, a same-tab change through pushState/popstate with a window marker and a one-off fetch failure; evidence: both produced #5007's Required items (stale Method list after unlink, empty list cached after a 503).
+- review-pr §3: the one-call-per-block rule now says a failed call does not stop the next; evidence: Save ran after a failed type on #5007 (repeat of #4799/#4858).
+- memory playwright-mcp-tool-facts: snapshots can be empty for a whole session; drive by selector and read with browser_evaluate; Results has duplicate result-input ids.
+- Queue: be06e9ec dropped (retro already in-session). Permission log empty.
+
 ## 2026-11-10 retro of be06e9ec (review-pr #5006 self-review, Decision: Approve)
 - No user corrections. The non-admin probe found a real R-34 gap (a Reception user could cancel a resulted test); the author's session fixed it mid-review (e713d98), and the existing "read headRefOid before posting" rule caught both head moves. A CI failure on e713d98 was the PR's own spec waiting for Keep's old text; the existing "grep the old text in playwright" rule applies to the author, no change. No skill changes.
 - memory zsh trap: unquoted `--include=*.ts` aborts grep with "no matches found" (hit twice). Permission log empty.
