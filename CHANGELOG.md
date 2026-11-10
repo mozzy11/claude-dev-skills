@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of 3e38732d (ad hoc: summarize last week's work)
+- memory be-direct: a summary for updates is exactly the points asked, each at most two short lines; evidence: user asked again for "a max of two lines" per point. No skill changes (no skill ran).
+- Queue: 80dfb049 dropped (retro already in-session). Permission log empty.
+
 ## 2026-11-10 retro of 80dfb049 (review-pr #5008 self-review, Decision: Request changes)
 - review-pr §3: the fetch-failure probe covers every request a new UI reads (the JSON POST helper calls back with `{ error, status }`), plus an all-in-filter selection probe and a specimen-scoped range probe for server-side flags; evidence: these three produced #5008's Required items (route error page on a 503, dropped row click, a critical value under Normal).
 - review-pr §5: the draft goes to claude-work/reviews/pr<N>-review.md; evidence: claude-work/pr5008 was the light-stack copy that teardown deletes.
