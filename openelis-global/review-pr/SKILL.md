@@ -212,6 +212,10 @@ Run these before reading logic:
   pair in `BEGIN; ... ROLLBACK;` and run its SQL (#4722, 2026-10-14: 138
   checked against stored trimmed codes only, so `' X'` + `'X '` stopped the
   upgrade).
+  A data changeset that reads rows a configuration loader creates
+  (dictionary, sample type, test CSVs) runs before that loader: Hibernate
+  depends on Liquibase. It finds nothing on a fresh install and never sees
+  later loads (#5010, 2026-11-10: the environmental container import).
 - **Workflow files** (`.github/`): for each change, answer "what runs
   differently on the default branch after merge?" — especially anything
   touching image publish names/tags. Prove default-branch equivalence by
@@ -375,7 +379,10 @@ Run these before reading logic:
   that no later commit or working-tree change touches the PR's files or
   methods, walk the shared stack: confirm both contexts carry a PR-only
   symbol (`grep -c <newMethod>` on the class in `OpenELIS-Global` and
-  `api#OpenELIS-Global`). This avoids a second stack while another session
+  `api#OpenELIS-Global`), or simply GET a new endpoint: a 404 settles it.
+  Changeset rows in `databasechangelog` do not prove the served WAR (#5010,
+  2026-11-10: rows from an earlier deploy, a WAR another session rebuilt
+  without the PR). This avoids a second stack while another session
   runs testcontainers on 5 GB of free disk (#4694, 2026-10-12). Use
   `git show "<ref>:<path>"` quoted: in zsh `$P:path` is a modifier.
   When the WAR predates the head's commit time, `cmp` every changed class

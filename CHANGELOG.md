@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of 25ab7cd9 (review-pr #5010 self-review, Decision: Request changes)
+- review-pr §2: a data changeset reading rows that a configuration loader creates runs before the loader (Hibernate depends on Liquibase); evidence: #5010's environmental container import created 0 rows, a Required item.
+- review-pr §3: on the shared-stack check, a GET of a new endpoint settles it, and databasechangelog rows do not prove the served WAR; evidence: OGC-1611 rows existed while the mounted WAR (rebuilt by another session) answered 404.
+- Good outcome kept: the overlong-field and fetch-failure probes produced the other two Required items. Permission log empty, no user corrections.
+
 ## 2026-11-10 retro of 3e38732d (ad hoc: summarize last week's work)
 - memory be-direct: a summary for updates is exactly the points asked, each at most two short lines; evidence: user asked again for "a max of two lines" per point. No skill changes (no skill ran).
 - Queue: 80dfb049 dropped (retro already in-session). Permission log empty.
