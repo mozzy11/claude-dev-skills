@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of 80dfb049 (review-pr #5008 self-review, Decision: Request changes)
+- review-pr §3: the fetch-failure probe covers every request a new UI reads (the JSON POST helper calls back with `{ error, status }`), plus an all-in-filter selection probe and a specimen-scoped range probe for server-side flags; evidence: these three produced #5008's Required items (route error page on a 503, dropped row click, a critical value under Normal).
+- review-pr §5: the draft goes to claude-work/reviews/pr<N>-review.md; evidence: claude-work/pr5008 was the light-stack copy that teardown deletes.
+- light-stack-up.sh: note that Vite falls to the next free port when 15173 is held by another session (#5008 ran on 15174).
+- Queue: 1321871b dropped (retro already in-session). Permission log empty. No user corrections.
+
 ## 2026-11-10 retro of 1321871b (review-pr #5007 self-review, Decision: Request changes)
 - review-pr §3: a client-side cache the PR adds gets two probes, a same-tab change through pushState/popstate with a window marker and a one-off fetch failure; evidence: both produced #5007's Required items (stale Method list after unlink, empty list cached after a 503).
 - review-pr §3: the one-call-per-block rule now says a failed call does not stop the next; evidence: Save ran after a failed type on #5007 (repeat of #4799/#4858).
