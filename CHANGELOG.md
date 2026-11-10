@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-10 retro of 5fb33802 (review-pr #5013 self-review, Decision: Request changes)
+- No user corrections. The same-page state probe found the Required item (Validation policy summary stale after a blockSelfValidation change). No skill changes.
+- memory delivery-outbox-test-flake: DeliveryOutboxServiceTest retry test failed the full suite with "attempt 1 is due", passed alone; second sighting (also 8a67dc7d).
+- Queue: 25ab7cd9 dropped (retro already in-session). Permission log empty.
+
 ## 2026-11-10 retro of 25ab7cd9 (review-pr #5010 self-review, Decision: Request changes)
 - review-pr §2: a data changeset reading rows that a configuration loader creates runs before the loader (Hibernate depends on Liquibase); evidence: #5010's environmental container import created 0 rows, a Required item.
 - review-pr §3: on the shared-stack check, a GET of a new endpoint settles it, and databasechangelog rows do not prove the served WAR; evidence: OGC-1611 rows existed while the mounted WAR (rebuilt by another session) answered 404.
