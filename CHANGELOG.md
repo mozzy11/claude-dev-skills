@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-11 retro of 793a23c0 (review-pr #5024 self-review, Decision: Request changes)
+- review-pr §3: a new search's not-found message is probed with an existing record hidden by each other filter; evidence: the Compliant filter on an Ineligible order showed "No environmental order with lab number ...", and a filtered-out eligible order answered the same bytes as a clinical number, the Required item.
+- Stack check worked as written: the served WAR held the cherry-pick from before the "crowd fix" amend (old DAO method name), found by class size/grep and redeployed before the walk. No rule change.
+- memory compliance-walk-recipe: lab number field id and the flatpickr Date To fill quirk. Queue: 73735d4b dropped (retro already in-session). Permission log empty, no user corrections.
+
 ## 2026-11-11 retro of 73735d4b (review-pr #5021 self-review, Decision: Request changes)
 - review-pr §3: for a gate or count over an order's tests, remove a resulted test and tick it again; evidence: the re-added test (revision 0 under a cancelled revision 1) was hidden by getMaxRevisionAnalysesBySample and the certificate was issued with it empty, the Required item.
 - Repeat: two blocks with several browser calls (the existing one-call-per-block rule); the Search click ran before the page rendered. No rule change.

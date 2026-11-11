@@ -369,6 +369,11 @@ Run these before reading logic:
     the order editor and tick it again: the new analysis sits at revision 0
     under the cancelled revision 1, and `getMaxRevisionAnalysesBySample`
     hides it (#5021, 2026-11-11: a certificate issued with that test empty).
+    For a new search with its own "not found" message, find a record that
+    exists and then set each other filter that can hide it: if the response
+    equals the one for a missing record, the message lies (#5024,
+    2026-11-11: an Ineligible order under a Compliant filter read "No
+    environmental order with lab number ...").
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
