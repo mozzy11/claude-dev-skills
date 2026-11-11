@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-11 retro of b1a70944 (review-pr #4969, #4992, #5004 for WodPachua, approved and merged)
+- review-pr §3: CI waits use claude-work/bin/wait-runs.py (logs each poll, exits on completed and not action_required); evidence: two inline zsh case-loop waiters never exited on green runs and #4992 sat green from 13:52 to the next morning.
+- review-pr §5: plain-stack merge recipe without force push (commit-tree X with the lower PR's final head, merge-tree, line-set comparison, merge commit); both stack merges clean. Companion deployment PRs merge after the product PR; evidence: user said "as soon as the main PR is merged" after openelis-docker#76 went in first (then "its fine").
+- memory zsh trap: `$VAR:x` history modifiers broke `git show $T:path` and a `$M:refs/...` refspec; brace them.
+- Good outcome kept: the live walk found the post-move unlock race (fixed in 948761b with two red-first tests). Queue: 793a23c0 dropped (retro already in-session). Permission log empty.
+
 ## 2026-11-11 retro of 793a23c0 (review-pr #5024 self-review, Decision: Request changes)
 - review-pr §3: a new search's not-found message is probed with an existing record hidden by each other filter; evidence: the Compliant filter on an Ineligible order showed "No environmental order with lab number ...", and a filtered-out eligible order answered the same bytes as a clinical number, the Required item.
 - Stack check worked as written: the served WAR held the cherry-pick from before the "crowd fix" amend (old DAO method name), found by class size/grep and redeployed before the walk. No rule change.
