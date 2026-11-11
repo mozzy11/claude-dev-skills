@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-11 retro of 73735d4b (review-pr #5021 self-review, Decision: Request changes)
+- review-pr §3: for a gate or count over an order's tests, remove a resulted test and tick it again; evidence: the re-added test (revision 0 under a cancelled revision 1) was hidden by getMaxRevisionAnalysesBySample and the certificate was issued with it empty, the Required item.
+- Repeat: two blocks with several browser calls (the existing one-call-per-block rule); the Search click ran before the page rendered. No rule change.
+- memory compliance-walk-recipe: remove/re-add selectors and the cancel-reason dialog. Queue: a3c32f42 dropped (retro already in-session). Permission log empty, no user corrections.
+
 ## 2026-11-11 retro of a3c32f42 (review-pr #5016 self-review, Decision: Request changes)
 - review-pr §3: pick this session's `.playwright-mcp` files by time, never by a name glob; evidence: an `LH-*.pdf` move swept up three of the author's certificates (put back).
 - Good outcome kept: the in-between-state probe (a released result sent back for correction) found the Required item: an unvalidated 5.3 went onto a reissued certificate, and the dashboard counted cancelled tests.

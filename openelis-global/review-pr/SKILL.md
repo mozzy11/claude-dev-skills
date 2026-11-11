@@ -365,6 +365,10 @@ Run these before reading logic:
     For a server-side flag or range judgement, add a specimen-scoped range
     in the catalog and compare with the worklist's `normalRange` on
     `/rest/LogbookResults` (#5008: the run ignored the Plasma range).
+    For a gate or count over an order's tests, remove a resulted test in
+    the order editor and tick it again: the new analysis sits at revision 0
+    under the cancelled revision 1, and `getMaxRevisionAnalysesBySample`
+    hides it (#5021, 2026-11-11: a certificate issued with that test empty).
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
