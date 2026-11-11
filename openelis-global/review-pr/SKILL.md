@@ -379,6 +379,12 @@ Run these before reading logic:
     equals the one for a missing record, the message lies (#5024,
     2026-11-11: an Ineligible order under a Compliant filter read "No
     environmental order with lab number ...").
+    Never judge a flow on the author's fixtures alone: create one record
+    through the screens a user uses (order entry, results, the Validation
+    screen's "Validate & release") and drive it to the PR's screen. On
+    #5025 (2026-11-11) the author's 096 had no release signature and showed
+    Generate PDF; every normally validated order showed only "Reissue with
+    Amendment" and printed `Am.1` for a report never issued.
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
@@ -499,7 +505,11 @@ Run these before reading logic:
     tab click right after `browser_navigate` missed four times, so take a
     snapshot scoped with `target` (a tab panel, a `data-testid` tile) after
     each navigation and click by its refs: a full-page snapshot of a
-    93-row table cost thousands of tokens per step. Seed setup data
+    93-row table cost thousands of tokens per step. Leaving a form with
+    unsaved edits (the environmental order editor) raises `beforeunload`
+    and `browser_navigate` hangs 60 s: call `browser_handle_dialog` (#5025).
+    Results entry saves one row per Save button, each with its own
+    e-signature; a row left unsaved is not a dropped save. Seed setup data
     (orders, results) with a scratch spec instead: a config in the
     scratchpad with `testDir` there, `node_modules` symlinked from
     `frontend/`, the helpers imported by absolute path and an explicit login

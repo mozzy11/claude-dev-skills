@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-11 retro of d2819aa6 (review-pr #5025, self-review, Request changes)
+- review-pr §3: drive at least one record through the normal screens (order entry, results, Validate & release) to the PR's screen, never only the author's fixtures. Evidence: author's 096 had no release signature and offered Generate PDF; fresh orders 103 and 105 offered only "Reissue with Amendment" and printed Am.1 for a never-issued report (the Required item).
+- review-pr §3 MCP: `beforeunload` on the env order editor hangs browser_navigate 60 s, use browser_handle_dialog; results entry saves per row with its own e-signature (first misread as a dropped save).
+- Kept: three browser calls were sent in one block once; the existing rule already covers it.
+- Memory project_compliance_report_release_gate. Queue empty; permission log entries belong to session 7a0ff29f, left for its retro.
+
 ## 2026-11-11 retro of b1a70944 (review-pr #4969, #4992, #5004 for WodPachua, approved and merged)
 - review-pr §3: CI waits use claude-work/bin/wait-runs.py (logs each poll, exits on completed and not action_required); evidence: two inline zsh case-loop waiters never exited on green runs and #4992 sat green from 13:52 to the next morning.
 - review-pr §5: plain-stack merge recipe without force push (commit-tree X with the lower PR's final head, merge-tree, line-set comparison, merge commit); both stack merges clean. Companion deployment PRs merge after the product PR; evidence: user said "as soon as the main PR is merged" after openelis-docker#76 went in first (then "its fine").
