@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of d96e9bb9 (review-pr #5062 self-review, Decision: Approve)
+- review-pr §5: comment bodies go in a quoted heredoc or a file, and the posted comments are read back. Evidence: an unquoted heredoc blanked every backticked identifier in both inline comments; they were repaired with PATCH.
+- No user corrections; permission log empty. The walk found two Optional items (an eager FHIR edge after `@Lazy` moved, and a 500 on an unknown test id) and one question.
+
 ## 2026-11-12 retro at the start of the #5062 review session
 - Queue: 420efa62 dropped (retro already in-session).
 - 3aafdd23 (review-pr #5061 re-review, Decision: Approve): review-pr §3 matches an in-progress workflow_run E2E run to its PR through the E2E Context job log ("PR #<n>: E2E required"). Evidence: `gh run view --log` returned nothing on the running run, four tries to find the PR. No user corrections; permission log empty.
