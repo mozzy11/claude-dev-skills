@@ -410,6 +410,10 @@ Run these before reading logic:
     the harness projects. If `dev-stack up` stops at the login wait, restart
     the proxy and rerun `dev-stack up --skip-build`: the GeneXpert mock is
     provisioned only after that wait.
+    For incoming-order (electronic order, referral prefill) PRs, stage a
+    real import from a remote FHIR server on the light stack: recipe in
+    memory `incoming-order-walk-recipe` (UUID ids, owner fixed at boot,
+    HAPI memory, letters-only names; #5042 lost four reboots to these).
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
@@ -565,7 +569,12 @@ Run these before reading logic:
     scenarios (happy, negative, lanes and variants, empty / existing /
     legacy data, roles and config gates on and off). Where the expected
     outcome is not obvious, drive the scenario on `upstream/develop` first
-    so a change in behavior is attributable. Walk every cell in the
+    so a change in behavior is attributable. For a frontend file, copy
+    develop's version into the PR copy (Vite reloads it), walk a fresh
+    record of the same kind, then restore it: on #5042 (2026-11-12) this
+    showed a timing fix had exposed a stale-closure write elsewhere (the
+    incoming order's requester survived on develop, lost on the PR, the
+    Required item). Walk every cell in the
     browser, run the existing Playwright specs for those screens against
     the stack (rerun a failure alone with `--workers=1` before calling it:
     specs that flip site config clash when run in parallel, 2026-10-13

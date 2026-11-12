@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of 2c6b2766 (review-pr #5042 self-review, Decision: Request changes)
+- review-pr §3 regression matrix: for a frontend file, swap develop's version into the PR copy and walk a fresh record of the same kind. Evidence: develop's Index.jsx stored the incoming order's requester (DEV...116, provider 81), the PR head did not (DEV...114), the Required item.
+- review-pr §3 fixtures: incoming-order PRs stage a real import from a remote HAPI; memory incoming-order-walk-recipe. Evidence: HAPI OOM at 700m, non-UUID owner and ids, a digit in a family name and XML without Accept cost four re-seeds and one webapp reboot.
+- No user corrections. One block held two hovers (existing one-call rule; harmless). Live stack waited ~30 min on Docker memory held by other sessions; recipe in the memory.
+
 ## 2026-11-12 retro at the start of the #5042 review session
 - Queue: c689c1ef dropped (retro already in-session). No skill changes.
 - Permission log: one request from 7a0ff29f (`rm -rf <claude-work dir>; gh pr view ...` in default mode); added allow rules `Bash(gh pr view *)` and `Bash(rm -rf <claude-work>/*)` to ~/.claude/settings.json, log cleared.
