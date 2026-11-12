@@ -4,7 +4,8 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 
 ## 2026-11-12 retro of d96e9bb9 (review-pr #5062 self-review, Decision: Approve)
 - review-pr §5: comment bodies go in a quoted heredoc or a file, and the posted comments are read back. Evidence: an unquoted heredoc blanked every backticked identifier in both inline comments; they were repaired with PATCH.
-- No user corrections; permission log empty. The walk found two Optional items (an eager FHIR edge after `@Lazy` moved, and a 500 on an unknown test id) and one question.
+- Permission log: the same unquoted-heredoc post raised a request (command substitutions inside it); the quoted-heredoc rule removes it. Log cleared.
+- No user corrections. The walk found two Optional items (an eager FHIR edge after `@Lazy` moved, and a 500 on an unknown test id) and one question.
 
 ## 2026-11-12 retro at the start of the #5062 review session
 - Queue: 420efa62 dropped (retro already in-session).
