@@ -28,7 +28,10 @@ an improvement makes the work better or faster, never sloppier.
   repository (OpenELIS-Global-2, openelis-docker): the user corrected this on
   2026-10-19.
 - Every skill change is committed and pushed to `mozzy11/claude-dev-skills`
-  right away (`git -C <skills repo> add -A && git commit && git push`),
+  right away (`git -C <skills repo> add -A && git commit`, then `git -C /Users/mosesmutesasira/Desktop/DEV/Projects/claude-dev-skills push`
+  alone in its own Bash call with that literal path: the pre-push gate
+  reads it from the command, and a variable, a `cd` chain or the words in
+  a heredoc fell back to the product checkout's gate, 2026-11-12),
   author mozzy11, no AI attribution, one commit per retro or per skill
   update with a short message naming the skills and the why.
 - Retro queue: `/Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/claude-work/retro-queue.jsonl`,

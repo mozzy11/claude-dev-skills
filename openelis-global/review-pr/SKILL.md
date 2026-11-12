@@ -394,7 +394,10 @@ Run these before reading logic:
     taken id, a bad UUID) through a CSV row, preview then apply: a row that
     previews as New and applies as "rejected" with a generic reason is a
     finding (#5053, 2026-11-12: round one saw "The record was not saved" for a
-    duplicate fhirId and left it out; round two reported it).
+    duplicate fhirId and left it out; round two reported it). Also put two
+    new rows sharing one fresh unique value in the same file: a check that
+    reads only the database previews both as New (#5059, 2026-11-12, the
+    Required item).
     For a new search with its own "not found" message, find a record that
     exists and then set each other filter that can hide it: if the response
     equals the one for a missing record, the message lies (#5024,

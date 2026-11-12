@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of 1ea5b41d (review-pr #5059 self-review, Decision: Request changes)
+- review-pr §3 import probes: add two new rows sharing one fresh unique value in one file. Evidence: the in-file duplicate fhirId previewed New twice and Apply refused the second, the Required item.
+- session-retro §0: the skills push runs alone with a literal path. Evidence: three pushes from the product checkout's session were blocked by the pre-push gate on another session's unformatted Java.
+- No user corrections; permission log empty.
+
 ## 2026-11-12 retro at the start of the #5059 review session
 - Queue: 9b24e01f dropped (retro already in-session). No skill changes. Permission log empty.
 
