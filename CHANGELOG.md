@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the #5059 review session
+- Queue: 9b24e01f dropped (retro already in-session). No skill changes. Permission log empty.
+
 ## 2026-11-12 retro of 9b24e01f (review-pr #5053 re-review, Decision: Approve)
 - review-pr §3 import probes: run the form's validations through a CSV row, preview then apply. Evidence: round one saw a duplicate-fhirId row rejected as "The record was not saved" and left it out; round two reported it.
 - review-pr §3: `browser_file_upload` only reads files under the product checkout (scratchpad path refused); copy to `.playwright-mcp`, delete after.
