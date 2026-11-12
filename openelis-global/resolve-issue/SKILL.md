@@ -767,7 +767,11 @@ nohup "${CLAUDE_BIN:-/opt/homebrew/bin/claude}" -p "Use your review-pr skill: re
   call (`run_in_background`) from the session's repo-root cwd; never chain it
   with a `cd` elsewhere, `sed -i` or a commit. (2026-11-12: 7a0ff29f chained
   the #5053 launch with a README edit and commit in claude-work and raised a
-  permission prompt.)
+  permission prompt.) The same holds for any claude-work edit (reference
+  setups, READMEs): the Edit tool on the absolute path, then `git -C
+  <claude-work path> commit`, and the push alone in its own call; never `cd
+  <dir>; python3 - <<EOF ...; git commit; git push` (2026-11-12: 7a0ff29f
+  prompted a second time that way on the referral README).
 - **Identity.** The reviewer notices on its own that the PR author is the
   same GitHub account and posts the review from mozzy11 with the `Generated
   by Claude Reviewer` footer as its only attribution (review-pr §0), logging

@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the #5061 review session
+- Queue: ca041ce5 dropped (retro already in-session). No user corrections to process.
+- Permission log: 7a0ff29f prompted on `cd claude-work/reference-setups/...; python3 heredoc; git commit; git push` for the referral README. resolve-issue now extends its "nothing chained" rule to every claude-work edit (Edit tool, `git -C`, push alone). Log cleared.
+
 ## 2026-11-12 retro of ca041ce5 (review-pr #5059 re-review, Decision: Approve)
 - review-pr §3 import probes: a this-laboratory row needs the org typed as the CSV type. Evidence: the own-id probe previewed as New until Test LIMS got referralLab in the clone.
 - Queue: 1ea5b41d dropped (retro already in-session). Permission log empty. No user corrections.
