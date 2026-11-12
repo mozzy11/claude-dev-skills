@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of de782ed6 (review-pr #5053, Decision: Request changes)
+- No user corrections, no permission prompts. Two-lab referral stack and shared-stack pause/restore went cleanly; the 25 tool errors were MCP selector misses retried in place. No skill change.
+- The author pushed four commits after the review; the next session re-reviews them.
+
 ## 2026-11-12 retro at the start of the #5053 review session
 - Queue: 16bad9fb and 45590b30 dropped (retros already in-session).
 - Permission log: 7a0ff29f launched the headless #5053 reviewer chained with `cd` into claude-work, `sed -i` and a commit; resolve-issue now says the launch is its own Bash call with nothing chained. Log cleared.
