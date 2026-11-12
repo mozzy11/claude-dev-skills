@@ -398,6 +398,18 @@ Run these before reading logic:
     #5025 (2026-11-11) the author's 096 had no release signature and showed
     Generate PDF; every normally validated order showed only "Reissue with
     Amendment" and printed `Am.1` for a report never issued.
+    For analyzer, staging or run PRs, stage values from the shipped
+    GeneXpert fixtures through the real Bridge (`activateShippedGeneXpert`
+    + `sendGeneXpertFixture`, `cov-plus/positive` and `hivvl/quantified`):
+    they carry dictionary calls (`result` = dictionary id, raw text
+    beside it) and component-less main values. On #5038 (2026-11-12) the
+    author's spec used single-component numeric tests; these two fixtures
+    found both Required items ("POS" stored on a type D result; the viral
+    load number never accepted). Scratch spec config: `locale: "en"` (the
+    browser default renders "Analysers"), `expect: { timeout: 0 }` like
+    the harness projects. If `dev-stack up` stops at the login wait, restart
+    the proxy and rerun `dev-stack up --skip-build`: the GeneXpert mock is
+    provisioned only after that wait.
 - **The served WAR must match the head.** Compare the WAR's time with the
   head's last amend (`git reflog`); if older, redeploy per memory
   `project-dev-stack-redeploy-without-mkcert` (`mvn clean` breaks the
