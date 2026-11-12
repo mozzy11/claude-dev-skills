@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of 4378288e, 8499bcdc, a3e7b84e, 865d4dd6, 082f8b82, ee36c6a7 (bulk external-PR sweep; reviews of #5027, #5033, #5037, #5039, #5040)
+- review-pr §0: a batch sweep shortens the text, never the verification: app-code approvals need the live walk (one shared isolated stack), approved fork PRs get update-branch plus fork-run approval in the same pass, approval counts come from GitHub. Evidence: 4378288e approved app code from code and CI only; user asked "did you rebase all of them" and "deeply test those with app code change"; 17 approvals reported, 15 real.
+- memory zsh trap: `while read sha path` emptied PATH (zsh ties `path` to `$PATH`), so the #5027 submodule copy failed with "command not found: mkdir".
+- The five single-PR reviews had no user corrections; MCP selector misses were one-offs. b1a70944 dropped (retro already in-session). Permission log empty.
+
 ## 2026-11-11 retro of d2819aa6 (review-pr #5025, self-review, Request changes)
 - review-pr §3: drive at least one record through the normal screens (order entry, results, Validate & release) to the PR's screen, never only the author's fixtures. Evidence: author's 096 had no release signature and offered Generate PDF; fresh orders 103 and 105 offered only "Reissue with Amendment" and printed Am.1 for a never-issued report (the Required item).
 - review-pr §3 MCP: `beforeunload` on the env order editor hangs browser_navigate 60 s, use browser_handle_dialog; results entry saves per row with its own e-signature (first misread as a dropped save).

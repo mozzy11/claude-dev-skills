@@ -176,6 +176,19 @@ them explicitly, so there is nothing to ask about here either.
   lines. Evidence is a link or a one-line "ran X → Y", never a
   pasted log.
 
+- **A batch sweep shortens the text, never the verification** (2026-11-11,
+  4378288e: 118 reviews posted on "simplified review" from code and CI only;
+  the user then asked "did you rebase all of them to ensure ci is running
+  fine??" and "deeply test those with app code change ie deploy them
+  locally"). When the user asks for many PRs at once: close the stale ones
+  with a reason; an Approve on app code still needs the live walk, so deploy
+  the candidates together on one isolated stack and walk each change before
+  approving; test-only and dependency PRs may approve on green CI. Every
+  approved fork PR gets `gh pr update-branch <n>` and its waiting fork runs
+  approved in the same pass, so its CI actually runs. Count approvals from
+  GitHub (`gh search prs --reviewed-by @me ...`), never from memory (17 was
+  reported, 15 was right).
+
 ## 1. Read the full context
 
 - PR description, every commit, every changed file, all existing comments and
