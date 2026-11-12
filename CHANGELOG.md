@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of ca041ce5 (review-pr #5059 re-review, Decision: Approve)
+- review-pr §3 import probes: a this-laboratory row needs the org typed as the CSV type. Evidence: the own-id probe previewed as New until Test LIMS got referralLab in the clone.
+- Queue: 1ea5b41d dropped (retro already in-session). Permission log empty. No user corrections.
+- Noted, no change: E2E core 2/4 failed once on ogc-1442-server-unreachable (Try now detached) and passed on a failed-jobs rerun.
+
 ## 2026-11-12 retro of 1ea5b41d (review-pr #5059 self-review, Decision: Request changes)
 - review-pr §3 import probes: add two new rows sharing one fresh unique value in one file. Evidence: the in-file duplicate fhirId previewed New twice and Apply refused the second, the Required item.
 - session-retro §0: the skills push runs alone with a literal path. Evidence: three pushes from the product checkout's session were blocked by the pre-push gate on another session's unformatted Java.

@@ -398,6 +398,9 @@ Run these before reading logic:
     new rows sharing one fresh unique value in the same file: a check that
     reads only the database previews both as New (#5059, 2026-11-12, the
     Required item).
+    A row aimed at this laboratory (FHIR id rules) matches it only when the
+    CSV type is one of its types; the dev DB's Test LIMS has none, so give it
+    referralLab in the cloned DB first, or the row previews as New (#5059 r2).
     For a new search with its own "not found" message, find a record that
     exists and then set each other filter that can hide it: if the response
     equals the one for a missing record, the message lies (#5024,
