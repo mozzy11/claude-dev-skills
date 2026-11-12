@@ -279,7 +279,10 @@ Run these before reading logic:
   logs every poll and exits on all `completed` (not `action_required`):
   two inline zsh `case` loops never exited on green runs, and #4992 sat
   green overnight (2026-11-10). On any "status" ask, query the runs
-  directly rather than trusting a silent waiter.
+  directly rather than trusting a silent waiter. `<ghapi>` is an executable
+  called as `<ghapi> GET <path>`: a two-line scratchpad script running
+  `exec gh api -X "$1" "$2"`. Run one waiter only; a second foreground wait
+  on the same runs just times out (2026-11-12, #5053).
 - A test that fails after you did inversion-style experiments may be running
   **stale bytecode** — rerun in a clean copy before believing it.
 - **Live test: mandatory when the PR is cross-stack, behavior-facing, or
@@ -387,6 +390,11 @@ Run these before reading logic:
     the order editor and tick it again: the new analysis sits at revision 0
     under the cancelled revision 1, and `getMaxRevisionAnalysesBySample`
     hides it (#5021, 2026-11-11: a certificate issued with that test empty).
+    For an import, run every validation the form enforces (a duplicate or
+    taken id, a bad UUID) through a CSV row, preview then apply: a row that
+    previews as New and applies as "rejected" with a generic reason is a
+    finding (#5053, 2026-11-12: round one saw "The record was not saved" for a
+    duplicate fhirId and left it out; round two reported it).
     For a new search with its own "not found" message, find a record that
     exists and then set each other filter that can hide it: if the response
     equals the one for a missing record, the message lies (#5024,
@@ -549,7 +557,9 @@ Run these before reading logic:
     conditional branch forced to render, both sides of any role or config
     gate, empty states, and the flows adjacent to the change. Read the
     console and network panes after each step; a 4xx/5xx or a React error
-    is a finding even when the screen looks right. Give
+    is a finding even when the screen looks right. `browser_file_upload`
+    accepts only files under the product checkout: copy the CSV into its
+    `.playwright-mcp` and delete it after (2026-11-12, #5053). Give
     `browser_take_screenshot` a bare filename (a scratchpad path is refused,
     #4728) and check where it landed: the MCP's root follows the session's
     cwd, so from the product checkout the PNG and the page/console files

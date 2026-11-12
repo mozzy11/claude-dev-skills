@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of 9b24e01f (review-pr #5053 re-review, Decision: Approve)
+- review-pr §3 import probes: run the form's validations through a CSV row, preview then apply. Evidence: round one saw a duplicate-fhirId row rejected as "The record was not saved" and left it out; round two reported it.
+- review-pr §3: `browser_file_upload` only reads files under the product checkout (scratchpad path refused); copy to `.playwright-mcp`, delete after.
+- review-pr §3 CI wait: says what `<ghapi>` is (gh api wrapper) and to run one waiter; a second foreground wait timed out.
+- No user corrections; permission log empty.
+
 ## 2026-11-12 retro of de782ed6 (review-pr #5053, Decision: Request changes)
 - No user corrections, no permission prompts. Two-lab referral stack and shared-stack pause/restore went cleanly; the 25 tool errors were MCP selector misses retried in place. No skill change.
 - The author pushed four commits after the review; the next session re-reviews them.
