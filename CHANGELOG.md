@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of 16bad9fb (review-pr #5048 self-review, Decision: Comment)
+- No user corrections. Formatting (Spotless prose wrap on docs/dev_setup.md) was the only red check; review-pr already reads the CI job log, no change.
+- One slip: a partial `git archive pr-N scripts` copy gave 9 false errors; the existing full-tree archive rule covers it.
+- memory agent-bash-own-session: every Bash call is its own session, so #5048 pull-once-per-terminal never applies to agents.
+
 ## 2026-11-12 retro at the start of the second #5048 review session
 - Queue: f1bac4a7 dropped (its retro is the entry below; the session ended right after it, before the review started). No skill changes. Permission log empty.
 
