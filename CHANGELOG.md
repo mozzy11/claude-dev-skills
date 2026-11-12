@@ -2,6 +2,9 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the second #5048 review session
+- Queue: f1bac4a7 dropped (its retro is the entry below; the session ended right after it, before the review started). No skill changes. Permission log empty.
+
 ## 2026-11-12 retro at the start of the #5048 review session
 - Queue: 2c6b2766 dropped (retro already in-session).
 - Permission log: 7a0ff29f called AskUserQuestion (Docker memory for a two-lab referral test) despite the never-ask memory; added `AskUserQuestion` to permissions.deny in ~/.claude/settings.json and recorded the safe default in memory feedback-never-block-on-questions. Log cleared.
