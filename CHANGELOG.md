@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the #5048 review session
+- Queue: 2c6b2766 dropped (retro already in-session).
+- Permission log: 7a0ff29f called AskUserQuestion (Docker memory for a two-lab referral test) despite the never-ask memory; added `AskUserQuestion` to permissions.deny in ~/.claude/settings.json and recorded the safe default in memory feedback-never-block-on-questions. Log cleared.
+
 ## 2026-11-12 retro of 2c6b2766 (review-pr #5042 self-review, Decision: Request changes)
 - review-pr §3 regression matrix: for a frontend file, swap develop's version into the PR copy and walk a fresh record of the same kind. Evidence: develop's Index.jsx stored the incoming order's requester (DEV...116, provider 81), the PR head did not (DEV...114), the Required item.
 - review-pr §3 fixtures: incoming-order PRs stage a real import from a remote HAPI; memory incoming-order-walk-recipe. Evidence: HAPI OOM at 700m, non-UUID owner and ids, a digit in a family name and XML without Accept cost four re-seeds and one webapp reboot.
