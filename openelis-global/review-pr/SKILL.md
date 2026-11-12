@@ -317,9 +317,12 @@ Run these before reading logic:
   E2E" ran Detect Changes and Shared Build only, and the draft had claimed
   its seed step). The shards run in a later `workflow_run` "E2E / Tests"
   run whose headSha is develop's: find it with
-  `gh run list --event workflow_run`, then confirm it is yours with
-  `gh run view <id> --log | grep -c <03-E2E run id>` before citing core 4/4
-  (#4842, 2026-10-27: the "03 Checkpoint - E2E" row showed 0 s).
+  `gh run list --event workflow_run`, then confirm it is yours from its
+  "E2E Context" job log, which exists while the run is still going:
+  `<ghapi> repos/<repo>/actions/jobs/<E2E Context job id>/logs | grep "PR #<n>: E2E required"`
+  (`gh run view --log` prints nothing until the whole run ends) before
+  citing core 4/4 (#4842, 2026-10-27: the "03 Checkpoint - E2E" row showed
+  0 s; 2026-11-12: four tries to match an in-progress run to #5061).
 - **Any change YOU author is live-tested end to end before you push it
   (user instruction, 2026-09-23 — the rule broken most often, and the one
   the user has had to repeat).** Reviewing someone else's code and pushing

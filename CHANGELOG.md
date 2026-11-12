@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the #5062 review session
+- Queue: 420efa62 dropped (retro already in-session).
+- 3aafdd23 (review-pr #5061 re-review, Decision: Approve): review-pr §3 matches an in-progress workflow_run E2E run to its PR through the E2E Context job log ("PR #<n>: E2E required"). Evidence: `gh run view --log` returned nothing on the running run, four tries to find the PR. No user corrections; permission log empty.
+
 ## 2026-11-12 retro of 420efa62 (review-pr #5061 self-review, Decision: Comment)
 - review-pr §1: fetch `upstream develop` before the effective diff. Evidence: the stale ref showed #5059's backend files in a one-file PR.
 - review-pr §3: layout fixes are measured at the reported width, the lg lower edge and with the longest select option. Evidence: the PR fixed the date overlap but clipped Days outstanding to "Stu..." (1280) and "A" (1056), the review's main point.
