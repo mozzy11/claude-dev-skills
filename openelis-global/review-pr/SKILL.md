@@ -195,7 +195,9 @@ them explicitly, so there is nothing to ask about here either.
   reviews (yours from earlier sessions included), linked Jira/FRS, CI status.
 - **Effective diff, not raw diff**: for branches carrying merge commits,
   review `git diff <base>...<head>` — GitHub's Files-changed view equals this;
-  the commit list does not.
+  the commit list does not. `git fetch upstream develop` first: a stale
+  `upstream/develop` put #5059's files into #5061's one-file diff
+  (2026-11-12); compare `--stat` with the PR's `changedFiles`.
 - Fetch the branch locally into a **worktree** for anything beyond trivial
   reading; never review a large PR purely from the web diff. For a PR with
   many changed lines, or any UI change, the worktree is also what you build,
@@ -401,6 +403,12 @@ Run these before reading logic:
     A row aimed at this laboratory (FHIR id rules) matches it only when the
     CSV type is one of its types; the dev DB's Test LIMS has none, so give it
     referralLab in the cloned DB first, or the row previews as New (#5059 r2).
+    For a layout fix (grid spans, widths), measure every control's box with
+    `browser_evaluate` on develop and the head at the reported width, at the
+    breakpoint's lower edge (lg = 1056) and with the longest option selected
+    in each select: on #5061 (2026-11-12) the date overlap was fixed but Days
+    outstanding shrank to "Stu..." at 1280 and "A" at 1056. Try the
+    alternative split in the scratch copy before suggesting it.
     For a new search with its own "not found" message, find a record that
     exists and then set each other filter that can hide it: if the response
     equals the one for a missing record, the message lies (#5024,
@@ -437,6 +445,12 @@ Run these before reading logic:
   the amend time, so the times prove nothing: unzip the PR's classes and
   `grep -rla <new method or message key>` them (#4771, 2026-10-20: a 09:18
   WAR held all of an 11:12 head's code).
+- **Frontend-only PR: no stack of its own.** `git archive pr-N frontend`
+  into `claude-work/prN`, symlink `node_modules`, write the light-stack Vite
+  config with the proxy target set to the shared webapp's published 8443
+  port (`docker ps`), and start Vite in the background; walk develop on
+  `https://localhost` for the before (#5061, 2026-11-12: no container
+  touched, the shared checkout left alone).
 - **Shared stack already serving the PR (check first).** When the PR head
   is already on local develop and deployed, and `git diff <head> HEAD` shows
   that no later commit or working-tree change touches the PR's files or
