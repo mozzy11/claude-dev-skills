@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the #5042 review session
+- Queue: c689c1ef dropped (retro already in-session). No skill changes.
+- Permission log: one request from 7a0ff29f (`rm -rf <claude-work dir>; gh pr view ...` in default mode); added allow rules `Bash(gh pr view *)` and `Bash(rm -rf <claude-work>/*)` to ~/.claude/settings.json, log cleared.
+
 ## 2026-11-12 retro of c689c1ef (review-pr #5038 self-review, Decision: Request changes)
 - review-pr §3 fixtures: analyzer/run PRs are staged from the shipped GeneXpert fixtures (dictionary calls, component-less main values) through the real Bridge, plus the scratch-spec locale/timeout settings and the `dev-stack up --skip-build` rerun after a login-wait stop. Evidence: the author's single-component numeric spec passed in CI while cov-plus/hivvl fixtures showed "POS" stored on a type D result and the viral load number unacceptable; the scratch spec failed twice on "Analysers" and once on the unprovisioned GeneXpert mock.
 - memory proxy-after-docker-start: the login-wait timeout of `dev-stack up` was this proxy reset, and the rerun provisions the harness scenarios.
