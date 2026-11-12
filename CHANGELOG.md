@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro at the start of the #5053 review session
+- Queue: 16bad9fb and 45590b30 dropped (retros already in-session).
+- Permission log: 7a0ff29f launched the headless #5053 reviewer chained with `cd` into claude-work, `sed -i` and a commit; resolve-issue now says the launch is its own Bash call with nothing chained. Log cleared.
+
 ## 2026-11-12 retro of 45590b30 (review-pr #5047 self-review, Decision: Request changes)
 - review-pr §3 typed numbers: type `1,5` and `abc` into decimal TextInputs and read the request body. Evidence: `Number("1,5")` became `minVolume: null` behind "saved", the only Required item.
 - review-pr §3: when unsaved state vanishes, check the Vite log for an `hmr update` first. Evidence: a spurious HMR of ContainersSection.jsx (mtime unchanged) wiped three unsaved rows at 07:19:24.
