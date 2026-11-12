@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of e17ae984 (review-pr #5041 self-review, Decision: Request changes)
+- No user corrections. The boot-failure probe (IP lookup down at start, then back up for two cycles) found the Required item: no retry, and the registry position was replaced by none. Kept as a good outcome of the existing in-between-state rule.
+- memory light-isolated-stack: property variants through a bind-mounted extra.properties rewritten in place plus `docker restart`, and a host stub for external services.
+
 ## 2026-11-12 retro of 4378288e, 8499bcdc, a3e7b84e, 865d4dd6, 082f8b82, ee36c6a7 (bulk external-PR sweep; reviews of #5027, #5033, #5037, #5039, #5040)
 - review-pr §0: a batch sweep shortens the text, never the verification: app-code approvals need the live walk (one shared isolated stack), approved fork PRs get update-branch plus fork-run approval in the same pass, approval counts come from GitHub. Evidence: 4378288e approved app code from code and CI only; user asked "did you rebase all of them" and "deeply test those with app code change"; 17 approvals reported, 15 real.
 - memory zsh trap: `while read sha path` emptied PATH (zsh ties `path` to `$PATH`), so the #5027 submodule copy failed with "command not found: mkdir".
