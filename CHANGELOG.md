@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-12 retro of 45590b30 (review-pr #5047 self-review, Decision: Request changes)
+- review-pr §3 typed numbers: type `1,5` and `abc` into decimal TextInputs and read the request body. Evidence: `Number("1,5")` became `minVolume: null` behind "saved", the only Required item.
+- review-pr §3: when unsaved state vanishes, check the Vite log for an `hmr update` first. Evidence: a spurious HMR of ContainersSection.jsx (mtime unchanged) wiped three unsaved rows at 07:19:24.
+- No user corrections; permission log empty.
+
 ## 2026-11-12 retro of 16bad9fb (review-pr #5048 self-review, Decision: Comment)
 - No user corrections. Formatting (Spotless prose wrap on docs/dev_setup.md) was the only red check; review-pr already reads the CI job log, no change.
 - One slip: a partial `git archive pr-N scripts` copy gave 9 false errors; the existing full-tree archive rule covers it.

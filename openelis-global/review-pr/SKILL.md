@@ -627,6 +627,14 @@ Run these before reading logic:
     into a Carbon `NumberInput`, read the stored value: a handler that
     clamps state leaves the input showing the typed value (#4757,
     2026-10-19: aliquot typed 2, stored 0, on a tube with no quantity).
+    For a decimal typed into a plain `TextInput`, also type `1,5` (French
+    decimal) and `abc` and read the request body: `Number()` gives `NaN`,
+    `JSON.stringify` sends `null`, and the value vanishes behind a success
+    toast (#5047, 2026-11-12, the Required item).
+  - **Unsaved state vanishing mid-walk:** check the Vite log for an `hmr
+    update` of the file under test before calling it a bug. Opening the file
+    elsewhere can fire one with no change, and it remounts the form (#5047:
+    file mtime unchanged; the rows were re-entered and the walk went on).
   - **API** with the session cookie + `X-CSRF-Token` (the `csrf` field of
     `GET /api/OpenELIS-Global/session`; `source claude-work/bin/oe-probe.sh`
     gives `login <user> <pass>` and `call <METHOD> <path> [json]`, pointed
