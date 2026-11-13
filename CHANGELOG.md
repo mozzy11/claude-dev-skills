@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-13 retro at the start of the #5069 review session
+- Queue: d96e9bb9 dropped (retro already in-session).
+- Permission log: 04fd3047 prompted on `cd <repo> && rm -rf <iso> && git fetch && rebase -i --autosquash && push --force-with-lease`. resolve-issue §7 now folds review fixes with `git -C`, cleanup in its own call and the push alone. Log cleared.
+
 ## 2026-11-12 retro of d96e9bb9 (review-pr #5062 self-review, Decision: Approve)
 - review-pr §5: comment bodies go in a quoted heredoc or a file, and the posted comments are read back. Evidence: an unquoted heredoc blanked every backticked identifier in both inline comments; they were repaired with PATCH.
 - Permission log: the same unquoted-heredoc post raised a request (command substitutions inside it); the quoted-heredoc rule removes it. Log cleared.

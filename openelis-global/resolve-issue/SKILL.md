@@ -812,6 +812,12 @@ nohup "${CLAUDE_BIN:-/opt/homebrew/bin/claude}" -p "Use your review-pr skill: re
 - Fix every blocking finding, or reply on its thread with the concrete reason
   it does not apply — no silent dismissals. Reply to each thread saying what
   you did, and resolve only the threads you actually acted on.
+- Fold the fix into the PR commit with `git -C <repo> commit --fixup` and
+  `GIT_SEQUENCE_EDITOR=true git -C <repo> rebase -i --autosquash
+  upstream/develop` in one call, scratch cleanup (`rm -rf <abs path>`) in
+  another, and `git -C <repo> push --force-with-lease origin develop` alone
+  in its own call; never one `cd <repo> && rm && fetch && rebase && push`
+  chain (2026-11-13: 04fd3047 prompted on exactly that chain).
 - Re-run the affected suites, push, and drive CI green again (§5). Update the
   PR description if the fixes changed what shipped (§4).
 - **One round is the requirement.** Order a second only when your own response
