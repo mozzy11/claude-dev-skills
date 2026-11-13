@@ -714,7 +714,10 @@ Run these before reading logic:
     Nothing survives between two calls (`globalThis` is fresh), so a race
     driven with a held `page.route` is held, checked and released in one
     call, ending with `unrouteAll`; a hold left open hangs that request for
-    good (#4822, 2026-10-26: `__release is not a function`).
+    good (#4822, 2026-10-26: `__release is not a function`). The route
+    itself does outlive the call: put `unrouteAll` in a `finally`, or a
+    failed check leaves every later load of that URL answering the fake
+    503 (#5069, 2026-11-13: a strict-mode locator error left the route on).
     **Never await a save's response inside `browser_run_code_unsafe`**
     (`waitForResponse` on a POST/PUT, then `click`): the MCP goes silent
     and the call dies after 30 minutes. Click Save with `browser_click`,

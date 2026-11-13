@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-13 retro of 343bba4f (review-pr #5069 self-review, Decision: Approve)
+- review-pr §3: a `page.route` outlives the `browser_run_code_unsafe` call; unroute in a `finally`. Evidence: a strict-mode locator error left the 503 route on until a second call removed it.
+- No user corrections; permission log empty. The walk found two Optional items (a 500 on concurrent duplicate adds, an unmarked required select).
+
 ## 2026-11-13 retro at the start of the #5069 review session
 - Queue: d96e9bb9 dropped (retro already in-session).
 - Permission log: 04fd3047 prompted on `cd <repo> && rm -rf <iso> && git fetch && rebase -i --autosquash && push --force-with-lease`. resolve-issue §7 now folds review fixes with `git -C`, cleanup in its own call and the push alone. Log cleared.
