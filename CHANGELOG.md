@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-13 retro of 197fbf4a (review-pr #5073 self-review, Decision: Request changes)
+
+- review-pr §3: for a state kept beside a record (sign-offs, approvals), change the record from every other writer (Results Edit pending and released, legacy form save) and retry the next step. Both Required items on #5073 came from this.
+- review-pr §3: `find src/main -newer <war>` as the first check that a shared WAR holds the head; the copied WAR fed the light stack with no rebuild.
+- review-pr §4: inline comments must sit inside a diff hunk (422 "Line could not be resolved" on the controller's unchanged line 381); anchor on the nearest changed line.
+- claude-work oe-sql.sh: `OE_DB_NAME` targets a light-stack clone (a scratch wrapper was needed). Memory project_light_isolated_stack: probe the webapp on 18443, not through Vite (SSL error); SQL flag flips need a config reload (one wasted probe).
+
 ## 2026-11-13 retro of 343bba4f (review-pr #5069 self-review, Decision: Approve)
 - review-pr §3: a `page.route` outlives the `browser_run_code_unsafe` call; unroute in a `finally`. Evidence: a strict-mode locator error left the 503 route on until a second call removed it.
 - No user corrections; permission log empty. The walk found two Optional items (a 500 on concurrent duplicate adds, an unmarked required select).

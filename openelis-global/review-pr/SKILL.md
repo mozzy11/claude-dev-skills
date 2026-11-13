@@ -372,6 +372,13 @@ Run these before reading logic:
     after each, and grep which of those states any UI writes: on #4858
     (2026-10-28) Acknowledge was the only QC dashboard action, the workplan
     counted only RESOLVED as cleared, and the tile stayed red for good.
+    For a state the PR keeps beside a record (sign-offs, approvals, a
+    review level), change the record from every other screen or endpoint
+    that writes it (Results page Edit on a pending and on a released
+    result, the legacy form save `POST /rest/AccessionValidation`), then
+    re-read the state and try the next step: on #5073 (2026-11-13) both
+    Required items came from this, a value edited after level 1 kept the
+    old signature, and the legacy save released at level 1 of 2.
     For a client-side cache the PR adds (a module-level Map, a hook that
     loads once), drive two cases: the data changes elsewhere in the same tab
     (`history.pushState` + `dispatchEvent(new PopStateEvent('popstate'))`
@@ -470,6 +477,9 @@ Run these before reading logic:
   isolated suite copy's `target/classes` against the unzipped WAR, plus the
   changed resources: 0 differences proves the stack serves the head (#4800,
   2026-10-21: 53 classes identical, no redeploy needed).
+  Quicker first test: `find src/main -newer target/OpenELIS-Global.war`
+  listing only test files means the WAR holds the head's code (#5073:
+  the copied WAR then fed `light-stack-up.sh` with no rebuild).
 - **Low disk, later commits on the PR's paths:** use memory
   `project_light_isolated_stack` (cloned DB in the shared Postgres, one extra
   webapp container, host Vite) instead of `dev-stack up`; it fit in 4 GB free
@@ -836,6 +846,9 @@ comment and every removed Known Issue against the code on develop
 
 - Only where actionable and anchored to a specific line: what's wrong, why it
   matters (failure scenario), and the expected shape of the fix when useful.
+  The line must sit inside a diff hunk (GitHub answers 422 "Line could not
+  be resolved" otherwise); for unchanged code, anchor on the nearest
+  changed line and name the other line in the text (#5073, 2026-11-13).
 - Short, direct, respectful — **at most three sentences per comment**, plain
   words, one code snippet only when it shows the fix. No style nits unless
   they materially affect correctness, readability, or consistency with the
