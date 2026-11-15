@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-15 retro of fe55c418 (review-pr #5093 self-review, Decision: Request changes)
+
+- review-pr §3: for a page with sections saved separately, leave one section edited and unsaved, save another, re-read the first; fail one request of a multi-request save and compare the toast with the rows. Evidence: both Required items on #5093 came from these two probes; the PR's 9 specs and 103 unit tests passed.
+- Develop's E2E core 1/4 failed the same 15 specs (navbar, analyzer list, barcode, microbiology) on #5092 and #5093: attributed to the base, not the PR.
+- No user corrections. Permission log empty.
+
 ## 2026-11-15 retro at the start of the #5093 review session
 
 - 00114636 dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 18:08. Permission log empty. No skill changes.

@@ -393,6 +393,12 @@ Run these before reading logic:
     back with `{ error, status }` on a non-2xx answer, so code reading a
     field of the expected body throws (#5008, 2026-11-10: a 503 on the
     selection summary replaced the run view with the route error page).
+    For a page with several sections saved separately (a Save per group or
+    tab), leave an edit unsaved in one section, save another, and re-read
+    the first; also fail one request of a multi-request save (patch
+    `window.fetch` for that URL) and compare the toast with the stored rows
+    (#5093, 2026-11-15: the reload wiped the other groups' edits, and a
+    half-stored group was reported as not saved; both Required).
     For a selection model with an "all in filter" mode, tick a row outside
     that filter after switching it (#5008: the click was dropped).
     For a server-side flag or range judgement, add a specimen-scoped range
