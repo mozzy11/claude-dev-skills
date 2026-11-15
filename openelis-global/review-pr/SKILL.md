@@ -583,7 +583,12 @@ Run these before reading logic:
     (orders, results) with a scratch spec instead: a config in the
     scratchpad with `testDir` there, `node_modules` symlinked from
     `frontend/`, the helpers imported by absolute path and an explicit login
-    step (the saved storageState answered HTML). Cover create *and* edit paths, every modal in both states
+    step (the saved storageState answered HTML). If `createSampleOrder`
+    still fails there (#5077, 2026-11-15: "non-JSON response (HTTP 200)"
+    after a manual login, four tries), run the PR's own spec in the
+    `core-app` project instead: it seeds through the repo's auth setup, and
+    its earlier tests leave records to probe (two clear level 1 rows there).
+    Cover create *and* edit paths, every modal in both states
     (fresh, and opened on an existing record), every field round-tripped
     through a save and a reload, happy path and negative paths (invalid
     input, empty required field, duplicate, cancel, boundary value), each

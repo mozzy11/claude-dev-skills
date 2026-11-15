@@ -11,6 +11,12 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - Memory: new feedback_floated_design_gets_options; recurrence notes in feedback_monitor_own_prs, feedback_be_direct, feedback_cleanup_test_images.
 - Queue: 7a0ff29f and 197fbf4a removed; 04fd3047 left (still running, does its own retro). Permission log empty.
 
+## 2026-11-15 retro of dbd51d6b (review-pr #5077 self-review, Decision: Comment)
+
+- review-pr §3: when a scratch spec cannot create orders, run the PR's own spec in the `core-app` project and probe the records it leaves. Evidence: `createSampleOrder` from the scratchpad failed four times (non-JSON 200, then HTML); the PR spec run passed 4/4 and left two clear level 1 rows.
+- Good outcome kept: the two-user concurrent probe (review-pr §3 `Promise.all` rule) found the only live failure, a 500 on `pk_analysis_review_plan`.
+- Docker was stopped at session start; `open -a Docker` plus a bounded `docker info` loop brought the shared stack back. Another session edited the shared checkout's frontend during the walk; none of it touched the PR's screens. Permission log empty.
+
 ## 2026-11-15 retro at the start of the #5077 review session (7a0ff29f, 04fd3047)
 
 - Queue: 197fbf4a dropped (retro already in-session).
