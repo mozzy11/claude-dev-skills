@@ -399,6 +399,15 @@ Run these before reading logic:
     `window.fetch` for that URL) and compare the toast with the stored rows
     (#5093, 2026-11-15: the reload wiped the other groups' edits, and a
     half-stored group was reported as not saved; both Required).
+    For a stale-save or concurrency guard, make the two tabs save
+    different values on a text field (a boolean toggle always lands on the
+    other tab's value, so it cannot show whether the page reloaded), read
+    the field after the refusal, then click Save once more and read the
+    row. Also grep every other client of the guarded endpoint: a field
+    the GET now returns may be posted back by a generic edit page that
+    has no handler for the new status (#5094, 2026-11-16: the second
+    click overwrote the other tab's text, and the Modify page of eight
+    menus showed "Server error"; both Required).
     For a selection model with an "all in filter" mode, tick a row outside
     that filter after switching it (#5008: the click was dropped).
     For a server-side flag or range judgement, add a specimen-scoped range

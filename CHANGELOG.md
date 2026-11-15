@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro of b7c8f22d (review-pr #5094 self-review, Decision: Request changes)
+
+- review-pr §3: for a stale-save guard, make two tabs save different text values, read the field after the refusal and click Save once more; grep every other client of the guarded endpoint. Evidence: the boolean two-tab probe could not tell whether the page reloaded; the text probe found the refused draft kept and overwritten on a second click, and the endpoint grep found GenericConfigEdit showing "Server error" on 409. Both Required.
+- No user corrections. Permission log empty. Two browser calls were sent in one block twice; both ran clean, and the rule already exists.
+
 ## 2026-11-15 retro at the start of the #5094 review session
 
 - fe55c418 dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 23:52. Permission log empty. No skill changes.
