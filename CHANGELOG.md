@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-15 retro at the start of the #5092 review session (168d0536, dbd51d6b, 04fd3047)
+
+- 168d0536 (review-pr #5088 self-review, Decision: Request changes): no user corrections. Walk friction (calendar overlay covering the "To" field, a heading locator hitting the idle-session modal) recorded in memory project_carbon_tag_toggle_walk_gotchas. Good outcome kept: the regression matrix found the required change in CustomDatePicker, outside the diff.
+- dbd51d6b dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 16:31.
+- Permission log empty.
+
 ## 2026-11-15 retro of 7a0ff29f (integration wiki, reference setups, #5037 #5041 #5042 #5048 #5053 #5059 #5061; 23819 lines)
 
 - resolve-issue §5: watch CI with `ci-watch.py <n> <repo> 60 --fail-fast` in run_in_background, never `gh pr checks --watch` (exits only after the slowest check). Evidence: #5053 Backend shard 2 failed while the `--watch` waited on E2E; the session had said "nothing has failed so far" and the user wrote "looks like becakend failed" first. Helper `claude-work/ci-watch.py` gained `--fail-fast` (exit 1 at the first FAIL).
