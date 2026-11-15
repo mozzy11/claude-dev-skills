@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-15 retro of 00114636 (review-pr #5092 self-review, Decision: Request changes)
+
+- review-pr §3 and resolve-issue §3b: when a change tightens a save gate, read every spec that saves on that form and check it meets the new requirement. Evidence: #5092's walk passed 9/9 and 4/4 and the PR spec passed, but `ogc-372-vector-add-order-density` saved a vector order without a test. Locally it stopped earlier on a missing Mosquito type; CI core 4/4 went red on the disabled Save.
+- No user corrections. Permission log empty.
+
 ## 2026-11-15 retro at the start of the #5092 review session (168d0536, dbd51d6b, 04fd3047)
 
 - 168d0536 (review-pr #5088 self-review, Decision: Request changes): no user corrections. Walk friction (calendar overlay covering the "To" field, a heading locator hitting the idle-session modal) recorded in memory project_carbon_tag_toggle_walk_gotchas. Good outcome kept: the regression matrix found the required change in CustomDatePicker, outside the diff.

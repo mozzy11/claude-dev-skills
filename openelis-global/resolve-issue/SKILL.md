@@ -604,6 +604,10 @@ each of which has bitten:
      (2026-10-14: OGC-1466 ran its own spec only; ogc-1194 on the same
      import screen failed in review because a preview stopped recording
      names).
+     A change that tightens a save gate also means reading each of those
+     specs' steps before Save: a spec that skips the new requirement fails
+     in CI even when the local DB cannot reach that Save (#5092, 2026-11-15:
+     ogc-372 saved a vector order without a test).
    For an access or scope change (lab units, roles, ownership), the matrix
    lists every endpoint that lists, counts, opens or writes the entity, found
    by an Explore sweep of the routes and controllers, not only the screens

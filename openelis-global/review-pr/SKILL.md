@@ -671,6 +671,12 @@ Run these before reading logic:
     helper and two CI demo specs still waited for; #4836 (2026-10-27) renamed
     the `pathology.stage.*.enabled` cells and two specs looking them up went
     red in CI, found only after the walk.
+    When the PR tightens a save gate (a newly required field or test), read
+    every spec that saves on that form (`grep -l "<route>"`, then the steps
+    before its Save) and check each one meets the new requirement: the dev
+    DB may never reach that Save (#5092, 2026-11-15: ogc-372 saved a vector
+    order without a test; locally it stopped earlier on a missing Mosquito
+    type, CI went red on the disabled Save).
   - **Typed numbers round-trip to the row.** After saving a number typed
     into a Carbon `NumberInput`, read the stored value: a handler that
     clamps state leaves the input showing the typed value (#4757,
