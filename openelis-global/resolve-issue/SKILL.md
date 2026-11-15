@@ -195,6 +195,20 @@ question.
   action you are taking; no option menus, no phase vocabulary (2026-11-05,
   CI shards: "youre really talking too much and i dint read all", "please i
   dont get i think youre confusing").
+- **"You told me X": search before answering.** Grep this session's
+  transcript and the mission notes for X before saying you never said it;
+  open with what you did say and what became of it (2026-11-11, 7a0ff29f:
+  "I made no SMTP/email change" to "you told me there was a SMTP/email bug",
+  then "You're right, I did, and it turned out to be wrong" one message later).
+- **A design the user floats mid-task gets options before code.** When the
+  user proposes or questions a data-model choice (a new column, flag, setting
+  or marker: "does that make sense ??", "look for a better approach"), the
+  next message gives two to four options, each with how it works and its
+  cost, plus your recommendation; keep other steps moving, and implement the
+  recommendation if no answer comes. Never answer with code already written
+  (2026-11-12, 7a0ff29f, #5053 this-laboratory marker: the session started
+  building a setting and the user had to say "tell me the options you have
+  before implementing").
 
 ## 1. Read the ticket — all of it
 
@@ -692,13 +706,17 @@ mock agreed with you. Fix the code, then fix the test.
 - A docs-only PR (Markdown, specs, plans; no app code) does not wait for
   CI: mark it ready and squash-merge with `--admin` in the same step
   (2026-10-28, #4867: "please be serious, you cant wait for ci for a doc pr").
-- Poll `gh pr checks <n>` (or `claude-work/ci-watch.py`) with the Bash tool's
-  `run_in_background`, or arm a Monitor on its log, so that completion wakes
-  the session; never detach it with `&` or `( ... &)`, which never notifies.
-  Do the same for the reviewer: a Monitor that waits for its process to exit.
-  Report a red check or a posted review the moment it lands, before the user
-  sees it (2026-10-14/15: the user reported "also fix e2e failure" and "the
-  PR ci failed and the reviewer posted" before the session did).
+- Watch with `claude-work/ci-watch.py <n> <repo> 60 --fail-fast` in the Bash
+  tool's `run_in_background` (it exits at the first failing check, so the
+  session wakes then), or a Monitor on its log; never `gh pr checks --watch`,
+  which exits only once the slowest check (E2E) settled, and never detach
+  with `&` or `( ... &)`, which never notifies. Do the same for the reviewer:
+  a Monitor that waits for its process to exit. Report a red check or a
+  posted review the moment it lands, before the user sees it (2026-10-14/15:
+  "also fix e2e failure" and "the PR ci failed and the reviewer posted";
+  2026-11-12, 7a0ff29f, #5053: Backend shard 2 failed while a `--watch` waited
+  on E2E, the session had just said "nothing has failed so far" and the
+  user wrote "looks like becakend failed" first).
 - **A green verdict needs the whole check set.** Checks register over several
   minutes after a push, so "nothing pending" at the first reading only means
   the early checks are in. The watcher reports green only when the count
@@ -916,7 +934,9 @@ session started is removed once the work is done (user instruction, 2026-10-12):
   (`stack <copy-dir|project>`), container, cloned database
   (`db <container>/<name>`), claude-work copy or scratch dir (`dir`), local
   branch (`branch`) and long-running process such as Vite
-  (`process <pkill pattern>`). `light-stack-up.sh` registers its own. Test
+  (`process <pkill pattern>`), and every image pulled for a test
+  (`image <repo:tag>`: third-party stacks such as GOFR, OpenCR, Odoo,
+  Keycloak, HAPI, and any OpenELIS release tag). `light-stack-up.sh` registers its own. Test
   data goes into a registered cloned database or an isolated stack, never
   the shared database.
 - **When the work is done, run `claude-work/bin/session-cleanup.sh`** (no
@@ -934,6 +954,14 @@ session started is removed once the work is done (user instruction, 2026-10-12):
   `docker compose --project-directory <dir> down -v --remove-orphans` and
   absolute paths for the `rm -rf`; a `cd <dir> && ...` chain prompts for
   permission (2026-10-29, the only prompt of the OGC-1546 session).
+- **A pulled test stack is cleaned the moment its test passes, not at the
+  end:** `docker compose -p <proj> down -v`, then `docker rmi` of the images
+  it pulled, then `docker image prune -f`. Of the OpenELIS images keep only
+  the `develop` tags (and the latest release tag only while a pending test
+  still needs it); report the freed space in the same status line
+  (2026-11-11/12, 7a0ff29f: the user asked eleven times, "when you pull new
+  images and done testing, clean them up not to eat our space", "please dont
+  forget to clear containers and images after testing the integrations").
 - Never tear down the shared `openelisglobal-*` stack or another session's
   project; restart any shared container you stopped for memory.
 - Report the teardown in the final summary (projects removed, containers

@@ -2,6 +2,15 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-15 retro of 7a0ff29f (integration wiki, reference setups, #5037 #5041 #5042 #5048 #5053 #5059 #5061; 23819 lines)
+
+- resolve-issue §5: watch CI with `ci-watch.py <n> <repo> 60 --fail-fast` in run_in_background, never `gh pr checks --watch` (exits only after the slowest check). Evidence: #5053 Backend shard 2 failed while the `--watch` waited on E2E; the session had said "nothing has failed so far" and the user wrote "looks like becakend failed" first. Helper `claude-work/ci-watch.py` gained `--fail-fast` (exit 1 at the first FAIL).
+- resolve-issue Docker teardown: a pulled test stack is cleaned (down -v, rmi of its images, image prune) the moment its test passes; pulled images are registered with the new `session-track.sh image <repo:tag>` kind, which `session-cleanup.sh` removes (keeps develop tags and images a container uses). Evidence: the user asked eleven times in this session despite memory feedback_cleanup_test_images ("when you pull new images and done testing, clean them up not to eat our space").
+- resolve-issue §0: "you told me X" is grepped in the transcript and mission notes before any denial. Evidence: "I made no SMTP/email change", then "You're right, I did, and it turned out to be wrong" one message later.
+- resolve-issue §0: a data-model design the user floats mid-task gets two to four options and a recommendation before code, implemented as recommended if no reply. Evidence: #5053 this-laboratory marker, "tell me the options you have before implementing" after the session had started building it.
+- Memory: new feedback_floated_design_gets_options; recurrence notes in feedback_monitor_own_prs, feedback_be_direct, feedback_cleanup_test_images.
+- Queue: 7a0ff29f and 197fbf4a removed; 04fd3047 left (still running, does its own retro). Permission log empty.
+
 ## 2026-11-15 retro at the start of the #5077 review session (7a0ff29f, 04fd3047)
 
 - Queue: 197fbf4a dropped (retro already in-session).
