@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-15 retro at the start of the #5077 review session (7a0ff29f, 04fd3047)
+
+- Queue: 197fbf4a dropped (retro already in-session).
+- 04fd3047 (resolve-by-criteria campaign, 11-09 to 11-14): resolve-issue §5 now keeps a second watch on the PR's `E2E / Tests` workflow_run, which `ci-watch.py` ALL_SETTLED does not cover, frees the 20-job cap by cancelling superseded develop runs after 15 queued minutes, and gives durations only from measured job times. Evidence: #5025 "24 checks passed" while E2E sat queued; user: "ci cant take over two hours"; the "1.5 to 2 hours per PR" estimate was wrong.
+- 7a0ff29f (integration wiki and reference setups): its corrections are already in memory (image cleanup, uncommented properties, this-laboratory marker, diagram style). Memory project_integration_wiki_section now records the user's question about the Mermaid source blocks under each diagram.
+- Permission log empty.
+
 ## 2026-11-13 retro of 197fbf4a (review-pr #5073 self-review, Decision: Request changes)
 
 - review-pr §3: for a state kept beside a record (sign-offs, approvals), change the record from every other writer (Results Edit pending and released, legacy form save) and retry the next step. Both Required items on #5073 came from this.

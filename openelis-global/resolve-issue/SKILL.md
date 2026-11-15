@@ -705,6 +705,17 @@ mock agreed with you. Fix the code, then fix the test.
   matches the last green PR on that branch (or every required check by name)
   and none is pending (2026-11-04, #4927: a watcher said ALL_GREEN before
   Build + Test and E2E had registered).
+- **`ci-watch.py` ALL_SETTLED does not cover E2E.** The PR's `E2E / Tests`
+  is a `workflow_run` that `gh pr checks` does not list; keep a second
+  watch on it (found as review-pr §3 describes) and never say "settled" or
+  "merging" before it passed. If it has no runner 15 minutes after the
+  shared build, check the repo's queued and running jobs (Free plan: 20 at
+  once) and cancel develop runs whose commit a newer develop push replaced,
+  then tell the user what was queued (2026-11-13, 04fd3047, #5025: the
+  watcher said 24 passed, E2E sat queued behind 16 merges' develop runs and
+  the user found it: "ci cant take over two hours"). Durations given to the
+  user come from the run's measured job times, never a guess (same session:
+  "CI takes about 1.5 to 2 hours" was wrong, the backend shards took 20 min).
 - **Watch a workflow run by `--workflow <file>`, not by name inside
   `gh run list --limit N`.** One push to a branch starts a dozen runs, so a
   small limit drops the one you filter for and the watch expires silently
