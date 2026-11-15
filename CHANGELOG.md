@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-15 retro at the start of the #5093 review session
+
+- 00114636 dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 18:08. Permission log empty. No skill changes.
+
 ## 2026-11-15 retro of 00114636 (review-pr #5092 self-review, Decision: Request changes)
 
 - review-pr §3 and resolve-issue §3b: when a change tightens a save gate, read every spec that saves on that form and check it meets the new requirement. Evidence: #5092's walk passed 9/9 and 4/4 and the PR spec passed, but `ogc-372-vector-add-order-density` saved a vector order without a test. Locally it stopped earlier on a missing Mosquito type; CI core 4/4 went red on the disabled Save.
