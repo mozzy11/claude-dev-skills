@@ -834,3 +834,6 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - review-pr §3: config variants run through claude-work/bin/dev-stack-webapp-override.py. Evidence: the no-store walk needed the webapp recreated with an empty ORG_OPENELISGLOBAL_FHIRSTORE_URI; plain docker compose on the harness files failed on LETSENCRYPT_DOMAIN, the shim reused dev-stack's environment.
 - Kept: reading every caller of the changed return value found the Required item (EQA Distribute scores now reports success with no store), and re-reading headRefOid before posting caught a docs commit pushed mid-review.
 - Memory project_dev_stack_webapp_config_variant. Queue and permission log empty.
+
+## 2026-11-16 (session 04fd3047)
+- resolve-issue §7 + resolve-by-criteria §3e: resolve every acted-on review thread before merging; `--admin` skips the conversation-resolution rule. Evidence: #5098 merged with three fixed threads open; user asked why the PR was "still unresolved".

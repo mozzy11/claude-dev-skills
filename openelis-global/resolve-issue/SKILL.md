@@ -855,7 +855,11 @@ nohup "${CLAUDE_BIN:-/opt/homebrew/bin/claude}" -p "Use your review-pr skill: re
   reviews,comments`, `gh api .../pulls/<n>/comments`).
 - Fix every blocking finding, or reply on its thread with the concrete reason
   it does not apply — no silent dismissals. Reply to each thread saying what
-  you did, and resolve only the threads you actually acted on.
+  you did, and resolve only the threads you actually acted on. Resolve them
+  (GraphQL `resolveReviewThread`) right after the reply, and before any merge
+  check that `reviewThreads` has no `isResolved:false` left (2026-11-16: #5098
+  merged with three fixed-and-replied threads open; the user asked why the PR
+  was "still unresolved").
 - Fold the fix into the PR commit with `git -C <repo> commit --fixup` and
   `GIT_SEQUENCE_EDITOR=true git -C <repo> rebase -i --autosquash
   upstream/develop` in one call, scratch cleanup (`rm -rf <abs path>`) in
