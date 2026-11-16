@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro at the start of the module follow-up session (ded7be76, review-pr #5098)
+
+- ded7be76 ended mid-review (the harness spec run exited 137 when the session was closed); no user corrections, no CI or review follow-ups to learn from. One environment trap kept as a project memory: four SQL probes failed on guessed column names of the run tables (`iscontrol`, `sampitem_id`, no `label` on `analyzer_run`, no `sys_user_id` on `result_run_test_disposition`), one query retried 14 times. Stale Playwright refs after each save: rule already exists.
+- 04fd3047 left in the queue again: its transcript was modified at 08:54, it is the session still working on #5098. Permission log empty. No skill changes.
+
 ## 2026-11-16 retro at the start of the #5098 review session
 
 - a4a42bae dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 08:36. Permission log empty. No skill changes.
