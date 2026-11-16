@@ -10,6 +10,7 @@ project they work on.
 | OpenELIS-Global-2 | [resolve-by-criteria](openelis-global/resolve-by-criteria/SKILL.md) | Batch Jira resolution from a filter, one issue at a time, merged after review | `resolve by criteria <criteria>` |
 | [openelis-docker](https://github.com/DIGI-UW/openelis-docker) | [prepare-for-next-release](openelis-docker/prepare-for-next-release/SKILL.md) | Release readiness: last release upgraded to develop on the same database, Liquibase and metadata migration evidence, Playwright MCP regression, fixes, detailed report | `prepare for next release` |
 | all | [session-retro](shared/session-retro/SKILL.md) | Audits finished sessions and improves the skills and memory | `retro` |
+| all | [dev-updates](shared/dev-updates/SKILL.md) | Last week's work from GitHub, Jira and Confluence as a short Slack update, links wrapped in text, ready to paste | `dev updates` |
 
 `CHANGELOG.md` records every change the retro or a skill update made.
 

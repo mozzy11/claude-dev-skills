@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 new skill dev-updates (shared)
+
+- Added `shared/dev-updates`: "dev updates" collects last week's merged, open and reviewed PRs across every repository (`gh search prs`), Jira issues and Confluence pages the user touched, plus pointers they give, and returns a three-to-five bullet Slack message. Evidence: the first hand-written weekly update drew four corrections in a row (every bug listed, PR by number, bare URLs, code fence); the user asked for it to be a skill they trigger with "dev updates". Rules encoded: bugs summarized by area, links wrapped in text, plain text that pastes into Slack, opening line only on request.
+
 ## 2026-11-16 retro of a44bcc59 (review-pr #5098 round 3, Decision: Approve)
 
 - review-pr §3: stage stored results for run PRs from the run view's expanded-row Accept, not the analyser import page. Evidence: accepting from the import page after an earlier Save held three rows as awaiting_placement (the note stayed on screen but left the request), costing a second seed run. The defect itself went into the review as an outside-the-PR finding.
