@@ -408,6 +408,15 @@ Run these before reading logic:
     has no handler for the new status (#5094, 2026-11-16: the second
     click overwrote the other tab's text, and the Modify page of eight
     menus showed "Server error"; both Required).
+    For a new refusal on an existing endpoint (a hold, a gate answering
+    409 or 403), trigger it from the screen, not only the API, and read
+    the message shown: the client already branches on that status (the
+    worklist reads any 409 without `waitingRun` as a stale edit). Then
+    take each exit the other screens offer (Send for retest, Reject,
+    Ignore) and check the record can move again (#5097, 2026-11-16: the
+    author's API probe saw the right 409 text, the worklist said "updated
+    by another user", and a retested held result could never be saved;
+    the Required item).
     For a selection model with an "all in filter" mode, tick a row outside
     that filter after switching it (#5008: the click was dropped).
     For a server-side flag or range judgement, add a specimen-scoped range

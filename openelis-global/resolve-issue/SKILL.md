@@ -409,6 +409,13 @@ each of which has bitten:
   Use fresh records on distinct parents when a table is keyed per patient or
   per order. When the live run contradicts an earlier claim of yours, the
   claim was wrong: correct it in the same thread.
+- **A new refusal is walked from the screen and through its exits.** For a
+  hold or gate that makes an existing endpoint answer 409 or 403, trigger it
+  from the UI and read the message shown, since the client already branches
+  on that status; then take each exit other screens offer (Send for retest,
+  Reject, Ignore) and save the record again (2026-11-16, #5097: the API probe
+  saw the right 409, the worklist showed "updated by another user", and a
+  retested held result could never be saved).
 - **A change to which stored value wins drives every writer and every
   reset.** When the diff changes precedence (an origin flag, a fallback
   chain, a cache), grep every writer of that storage and save through each
