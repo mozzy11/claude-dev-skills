@@ -87,9 +87,12 @@ separate list. Anything the window does not cover is left out.
   Slack with the link intact. Never a bare URL, never "#5041", never a repo slug.
 - Three to five bullets, each one sentence, about twenty words. "Very brief"
   means three.
-- The reply is: the line "Written for: the dev team Slack channel, as a short
-  update from you.", a blank line, the message, a blank line, the window line,
-  and one line naming any source that was unavailable. Nothing else.
+- The final reply is the message and nothing else: no "Written for" line, no
+  window line, no notes about sources or housekeeping, no closing sentence.
+  The user selects the whole reply and pastes it; any extra line lands in
+  Slack. If something must be said (a source needed authorization, the window
+  used), say it in a short text message before the last tool call, never in
+  the final reply.
 
 Example of the shape (links shortened here):
 
