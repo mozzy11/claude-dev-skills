@@ -146,7 +146,10 @@ question.
   request, and pick the control by role (`getByRole("combobox", { name })`,
   attribute checks) rather than `getByText` on a label that a table header
   can repeat once CI's database has rows (2026-10-20: the OGC-431 tile test
-  passed locally and failed in CI on both counts).
+  passed locally and failed in CI on both counts). Specs are ES modules:
+  `__dirname` is undefined; a path next to the spec is
+  `fileURLToPath(new URL("../x", import.meta.url))` (2026-11-16, #5101: the
+  first run of the locale spec died on `__dirname`).
 - **Live-test the whole affected workflow before every push: UI *and* API,
   every changed function, carefully** (user instruction, repeated 2026-09-18,
   2026-09-21 and 2026-09-26: the step most often skipped and the one that has
@@ -284,7 +287,16 @@ question.
   (`for f in a.java b.java`), since `$F` does not split (2026-10-21, twice).
   Run each new unit test class alone once (`-Dtest=<Class>`): a class that
   passes only after another test started Spring is order-dependent
-  (2026-10-21, ShippedLabelsTest).
+  (2026-10-21, ShippedLabelsTest). **Existing tests get the same inversion
+  when the change makes what they consumed lazy or asynchronous** (a message
+  bundle, a fetched list): plant wrong data in the fixture they read and
+  watch them fail; a suite that stays green with planted data has stopped
+  testing (2026-11-16, #5101: the regional-locale suites rendered plain
+  English once the bundles loaded on demand; the reviewer found it by
+  planting text). **An operation that becomes asynchronous gets an
+  overtaking test** (start A, then B; B must win, A applies nothing) and a
+  live walk with A's response held back through a `page.route` delay (same
+  PR: French picked, then English, before the French chunk landed).
 - Project specifics that recur (OpenELIS):
   - `frontend/src/languages/en.json`: edit **in place** (targeted
     replace/insert) — never re-serialize the whole file. New keys in en.json
@@ -320,7 +332,10 @@ question.
     #4748 failed CI on, 2026-10-15; `check <repo> all` for a full check); local
     warm caches hide violations CI will flag. Never hand-build the
     `docker run ... $(git diff ...)` one-liner: it prompted five times on
-    2026-10-13 (session ae493b76).
+    2026-10-13 (session ae493b76). For a diff whose only spotless-managed
+    file is Markdown, skip the container: it installs npm for Prettier and
+    sat 25 minutes with no output on 2026-11-16 (#5101); the commit hook
+    already runs Prettier on staged Markdown and the push gate checks cold.
     Spotless also formats XML test fixtures (`src/test/resources/testdata/*.xml`):
     include changed fixtures in the `-DspotlessFiles` regex, or the push hook
     blocks the push (2026-10-12). Prettier for frontend, and for any
@@ -943,6 +958,20 @@ done"):
   state` says MERGED. Free memory meanwhile by stopping what the manual
   test does not need (analyzer bridge, simulator), never by removing the
   stack. Ending the session still triggers the SessionEnd cleanup hook.
+- *The user says "pause"* (another session takes the machine first): bring
+  the containers down and keep everything the resume needs, the volumes,
+  the claude-work copy, branches, tags, the mission notes and the scratch
+  patches, and write a handoff note (what is merged, what is open, the
+  exact next step) into claude-work before stopping; never delete session
+  data on a pause (2026-11-16, 04fd3047: "ok dont delete all sesion data,
+  just put down containers kepp all session data that will be riquired to
+  resume this").
+- *Walk files leave the repo.* The MCP writes snapshots, screenshots and
+  CSVs under the checkout's git-ignored `.playwright-mcp/`; at every cleanup
+  (pause, teardown, session end) move them to the scratchpad or
+  `claude-work/<ticket>-mcp` so the user's tree shows no stray files
+  (2026-11-16, 04fd3047: "please also cleanup all those uncomited screen
+  shots and csv files").
 
 Docker here has 7.6 GB and is shared with other sessions, so every stack this
 session started is removed once the work is done (user instruction, 2026-10-12):

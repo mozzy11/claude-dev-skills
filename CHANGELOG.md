@@ -2,6 +2,16 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro after OGC-1636 (session 5e8586eb, PR #5101)
+
+- resolve-issue §3 tests: existing tests get the planted-data inversion when a change makes what they consumed lazy or asynchronous, and an operation that becomes asynchronous gets an overtaking test plus a route-delayed live walk (the #5101 review found both: regional-locale suites rendering plain English, and a French-then-English switch race).
+- resolve-issue §3 spec rules: specs are ES modules, no `__dirname` (the first run of ogc-1636-locale-bundles.spec.ts died on it).
+- resolve-issue §3 formatting: skip spotless-docker for a Markdown-only diff (its container sat 25 min with no output; the commit hook and the push gate cover Markdown).
+- resolve-issue teardown: "pause" means containers down, every session datum kept, a handoff note written; walk files under `.playwright-mcp/` leave the repo at cleanup (04fd3047: "ok dont delete all sesion data, just put down containers", "please also cleanup all those uncomited screen shots and csv files").
+- Memory: openelis-docker main private env contract and the local checkout being behind upstream; Playwright MCP facts (select_option `target`, no `setTimeout` in run_code, performance entries over `browser_network_requests`, fresh context for transfer sizes).
+- Queue: 49b88e52 dropped (headless #5101 reviewer, not corrected); 04fd3047 processed (its last write was two hours old and the user had paused it); its review-thread lesson was already in resolve-issue §7.
+- Permission log empty.
+
 ## 2026-11-16 retro at the start of the #5101 review session
 
 - a44bcc59 dropped (retro already in-session). 04fd3047 left in the queue: its process (resumed in VS Code) is still alive, transcript written at 21:15. Permission log empty. No skill changes.
