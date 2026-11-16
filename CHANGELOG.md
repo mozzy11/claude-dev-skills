@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro at the start of the #5101 review session
+
+- a44bcc59 dropped (retro already in-session). 04fd3047 left in the queue: its process (resumed in VS Code) is still alive, transcript written at 21:15. Permission log empty. No skill changes.
+
 ## 2026-11-16 new skill dev-updates (shared)
 
 - Added `shared/dev-updates`: "dev updates" collects last week's merged, open and reviewed PRs across every repository (`gh search prs`), Jira issues and Confluence pages the user touched, plus pointers they give, and returns a three-to-five bullet Slack message. Evidence: the first hand-written weekly update drew four corrections in a row (every bug listed, PR by number, bare URLs, code fence); the user asked for it to be a skill they trigger with "dev updates". Rules encoded: bugs summarized by area, links wrapped in text, plain text that pastes into Slack, opening line only on request.
