@@ -466,6 +466,11 @@ Run these before reading logic:
     the harness projects. If `dev-stack up` stops at the login wait, restart
     the proxy and rerun `dev-stack up --skip-build`: the GeneXpert mock is
     provisioned only after that wait.
+    To turn staged values into stored results, use the run view: expand the
+    row (`run-row-expand-<id>`) and click Accept in `panel-<analysisId>-primary`.
+    The analyser import page holds a patient-mismatch row as
+    `awaiting_placement` when its note was typed before an earlier Save on
+    the same page (#5098 r3, 2026-11-16: three rows stuck, a second seed run).
     For incoming-order (electronic order, referral prefill) PRs, stage a
     real import from a remote FHIR server on the light stack: recipe in
     memory `incoming-order-walk-recipe` (UUID ids, owner fixed at boot,
@@ -836,7 +841,10 @@ Run these before reading logic:
   find the spec it used to share a shard with (#4720, 2026-10-14: ogc-1423
   relied on ogc-1420 refreshing a cached list; memory
   `project_e2e_shard_order_dependency`). A failure that repeats on a rerun of
-  the failed jobs is not a flake.
+  the failed jobs is not a flake. Once a run is rerun, `runs/<id>/jobs` lists only the
+  latest attempt: read `runs/<id>/attempts/1/jobs`, and fetch each 15 MB job
+  log in its own `run_in_background` call (#5098 r3: a two-log loop hit the
+  10-minute limit).
 
 ### openelis-docker pull requests
 

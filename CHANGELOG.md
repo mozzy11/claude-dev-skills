@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro of a44bcc59 (review-pr #5098 round 3, Decision: Approve)
+
+- review-pr §3: stage stored results for run PRs from the run view's expanded-row Accept, not the analyser import page. Evidence: accepting from the import page after an earlier Save held three rows as awaiting_placement (the note stayed on screen but left the request), costing a second seed run. The defect itself went into the review as an outside-the-PR finding.
+- review-pr §3 CI attribution: after a rerun, read `attempts/1/jobs` (the plain jobs list showed attempt 2 only, three empty queries), and fetch each 15 MB job log in its own background call (a two-log loop was killed at 10 minutes).
+- No user corrections. Permission log empty.
+
 ## 2026-11-16 retro at the start of the #5098 round-3 review session (d60946cf, 33b9dddd)
 
 - d60946cf (review-pr #5098 round 1, Decision: Request changes) and 33b9dddd (round 2, Request changes): no user corrections, reviews posted and read back. Retried SQL probes on run tables already covered by the analyzer-run column memory; stale MCP refs ("does not match any elements") already covered. No skill changes.
