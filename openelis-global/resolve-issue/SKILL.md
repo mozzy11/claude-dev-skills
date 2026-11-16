@@ -608,6 +608,10 @@ each of which has bitten:
      specs' steps before Save: a spec that skips the new requirement fails
      in CI even when the local DB cannot reach that Save (#5092, 2026-11-15:
      ogc-372 saved a vector order without a test).
+     A shared component that changes behaviour on many screens (a wrapper
+     replacing a library component) also means grepping every moved screen's
+     specs for the old behaviour, such as `toHaveValue("")` after an invalid
+     fill (#5095, 2026-11-16: unified-results-filters-referral went red in CI).
    For an access or scope change (lab units, roles, ownership), the matrix
    lists every endpoint that lists, counts, opens or writes the entity, found
    by an Explore sweep of the routes and controllers, not only the screens

@@ -692,6 +692,13 @@ Run these before reading logic:
     DB may never reach that Save (#5092, 2026-11-15: ogc-372 saved a vector
     order without a test; locally it stopped earlier on a missing Mosquito
     type, CI went red on the disabled Save).
+    When the PR moves screens onto a shared component that changes
+    behaviour (a wrapper replacing a library component), list the specs of
+    every moved screen (`grep -l` each route) and grep them for the old
+    behaviour (`toHaveValue("")` after an invalid `fill`, a cleared field, an
+    old message) before the walk (#5095, 2026-11-16: 35 screens moved onto a
+    DatePicker wrapper that keeps refused text; unified-results-filters-referral
+    still expected it cleared and core 4/4 went red after an Approve draft).
   - **Typed numbers round-trip to the row.** After saving a number typed
     into a Carbon `NumberInput`, read the stored value: a handler that
     clamps state leaves the input showing the typed value (#4757,
