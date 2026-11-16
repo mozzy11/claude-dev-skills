@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro at the start of the #5097 review session
+
+- 10b99e63 dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 05:23. Permission log empty. No skill changes.
+
 ## 2026-11-16 retro of 10b99e63 (review-pr #5095 self-review, Decision: Request changes)
 
 - review-pr §3 and resolve-issue §3b: when a PR moves screens onto a shared component that changes behaviour, grep each moved screen's specs for the old behaviour before the walk. Evidence: the live walk passed 7/7 and an Approve draft was written; CI core 4/4 then failed unified-results-filters-referral:177, which still expected refused date text cleared.
