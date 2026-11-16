@@ -2,6 +2,10 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro at the start of the #5098 review session
+
+- a4a42bae dropped (retro already in-session). 04fd3047 left in the queue: its transcript was still being written at 08:36. Permission log empty. No skill changes.
+
 ## 2026-11-16 retro of a4a42bae (review-pr #5097 self-review, Decision: Request changes)
 
 - review-pr §3 and resolve-issue §3b: a new refusal on an existing endpoint is triggered from the screen (the client already branches on the status) and walked through every exit other screens offer. Evidence: the author's API probe saw the right 409 "A control for this test failed in RUN-12"; from the worklist the same 409 showed "updated by another user", and a held result sent for retest could never be saved. The Required item.
