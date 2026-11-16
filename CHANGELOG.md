@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-16 retro at the start of the #5098 round-3 review session (d60946cf, 33b9dddd)
+
+- d60946cf (review-pr #5098 round 1, Decision: Request changes) and 33b9dddd (round 2, Request changes): no user corrections, reviews posted and read back. Retried SQL probes on run tables already covered by the analyzer-run column memory; stale MCP refs ("does not match any elements") already covered. No skill changes.
+- 04fd3047 left in the queue: its transcript was still being written at 13:12. Permission log empty.
+
 ## 2026-11-16 retro at the start of the module follow-up session (ded7be76, review-pr #5098)
 
 - ded7be76 ended mid-review (the harness spec run exited 137 when the session was closed); no user corrections, no CI or review follow-ups to learn from. One environment trap kept as a project memory: four SQL probes failed on guessed column names of the run tables (`iscontrol`, `sampitem_id`, no `label` on `analyzer_run`, no `sys_user_id` on `result_run_test_disposition`), one query retried 14 times. Stale Playwright refs after each save: rule already exists.
