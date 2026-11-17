@@ -292,7 +292,12 @@ question.
   (`for f in a.java b.java`), since `$F` does not split (2026-10-21, twice).
   Run each new unit test class alone once (`-Dtest=<Class>`): a class that
   passes only after another test started Spring is order-dependent
-  (2026-10-21, ShippedLabelsTest). **Existing tests get the same inversion
+  (2026-10-21, ShippedLabelsTest). A check that reads a build artifact (a
+  bundle's entry file, a JAR listing, generated output) is inverted against
+  the real artifact, not only its fixture: remove from the real build the
+  thing it must catch and watch it fail (2026-11-17, #5110: the expose check
+  passed its fixture while a real entry's first import was a loader helper,
+  so a deleted page chunk went unnoticed until the review). **Existing tests get the same inversion
   when the change makes what they consumed lazy or asynchronous** (a message
   bundle, a fetched list): plant wrong data in the fixture they read and
   watch them fail; a suite that stays green with planted data has stopped

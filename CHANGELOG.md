@@ -914,3 +914,9 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 ## 2026-11-17 (session 74756190, review-pr #5110)
 - review-pr §3: run a parser of generated output against a real artifact with the target removed; the #5110 fixture shape hid that the contract check inspected a loadRemote helper instead of the page chunk (the review's only finding).
 - review-pr §0: key waiters on the process id, not a task output file; a waiter fired early on unrelated output during a long `dev-stack up` pull.
+
+## 2026-11-17 retro after OGC-1641 (#5110 + module PR #2), session 5e8586eb
+
+- resolve-issue §3 inversion: a check that reads a build artifact is inverted against the real artifact, not only its fixture (the expose check passed its fixture while a real entry's first import was a loader helper; the #5110 review caught a deleted page chunk going unnoticed).
+- Memory: a replaced module JAR needs a webapp restart (half-new serving otherwise); the module dev server needs `--force` after a config change; `kill $(lsof -ti:PORT)` with two pids needs xargs; the federation plugin registers nothing under Vitest; sharing `react/jsx-runtime` drops the module's JSX runtime chunk.
+- No user corrections in this run; permission log empty.
