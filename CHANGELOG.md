@@ -931,3 +931,8 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - resolve-issue §3 inversion: a check that reads a build artifact is inverted against the real artifact, not only its fixture (the expose check passed its fixture while a real entry's first import was a loader helper; the #5110 review caught a deleted page chunk going unnoticed).
 - Memory: a replaced module JAR needs a webapp restart (half-new serving otherwise); the module dev server needs `--force` after a config change; `kill $(lsof -ti:PORT)` with two pids needs xargs; the federation plugin registers nothing under Vitest; sharing `react/jsx-runtime` drops the module's JSX runtime chunk.
 - No user corrections in this run; permission log empty.
+
+## 2026-11-17 retro after OGC-1642 (#5114 + module PR #3), session 5e8586eb
+
+- Memory only this round: the dev frontend image bakes `module-federation.config.js` (`up --build` needed; `--build` and `--skip-build` exclude each other); `provideExternalRuntime` is a runtime plugin that applies in dev and build alike, so a missing `_FEDERATION_RUNTIME_CORE` means the config is not in the running shell; the oed proxy fails to bind 443 until the dev proxy has really released it; dev-stack spec runs and the resource-timing buffer are already in the skill. Evidence: one wasted walk and two stack restarts before `docker exec grep` showed the config was absent from the container.
+- No user corrections in this run; permission log empty.
