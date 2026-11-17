@@ -399,6 +399,16 @@ Run these before reading logic:
     marker packages: the head must return the markers and the base must
     not. Run the PR's new test against the base file too (#5112,
     2026-11-17: its only assertion passed on the pre-fix `build.js`).
+    For a frontend contract or federation-runtime change, walk every
+    shell/module pair the PR claims, old module on the new shell included:
+    `git archive` the example module at its pre-change commit into the
+    scratchpad, symlink its `core` to a `git archive upstream/develop
+    frontend/packages/module-sdk`, `mvn -f <copy>/pom.xml package` (its
+    `npm ci` links that SDK), back up `volume/modules/<id>.jar`, swap, restart
+    the webapp, walk card, list, detail and one write, then restore (#5114,
+    2026-11-17: "a 1.0 module keeps running" was claimed but never run; it
+    held). After `docker start` of a stopped stack, restart the proxy before
+    the first probe (memory `project_dev_stack_proxy_after_docker_start`).
     For a client-side cache the PR adds (a module-level Map, a hook that
     loads once), drive two cases: the data changes elsewhere in the same tab
     (`history.pushState` + `dispatchEvent(new PopStateEvent('popstate'))`

@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5114 self-review (session 0c6dc0b2)
+
+- Queue: 6e33f3c0 dropped (retro already in-session). Permission log empty. No user corrections.
+- review-pr: contract/runtime PRs walk every claimed shell/module pair, the old module on the new shell included (scratch build at the pre-change commit against develop's SDK, JAR swap, restore); #5114 claimed it without running it.
+- review-pr: after `docker start` of a stopped stack, restart the proxy first; memory already had this and three probes were lost before it was read.
+
 ## 2026-11-17 retro after the #5112 self-review (session 6e33f3c0)
 
 - Queue empty. Permission log empty. No user corrections, no failed steps.
