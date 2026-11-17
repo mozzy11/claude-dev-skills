@@ -904,3 +904,9 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - review-pr: `setTimeout` is undefined inside `browser_run_code_unsafe` too; delay routes with `page.waitForTimeout` (the handler threw and its route outlived the call).
 - review-pr: the ogc-1637 warm-reload spec reads 0 module entries on a Vite dev stack without `--module` (timing buffer); attribute by rerunning with develop's sources.
 - review-pr: quote grep `--include` globs (zsh "no matches found"; third session with this trap, already in memory).
+
+## 2026-11-17 retro after OGC-1639 (#5109), session 5e8586eb
+
+- resolve-issue §3b step 4: dev-stack spec runs go through `scripts/dev-stack playwright` with `DB_CONTAINER=<project>-db.openelis.org-1` (two runs failed in the participant setup before the override was found); a case that skips on the default stack is run once in the configuration where it runs before the push; resource-timing specs raise the 250-entry buffer first. Evidence: the review of #5109 found the 1637 warm-reload case failing on a Vite stack with the JAR serving the pages, which no run of mine had covered.
+- Memory: the timing-buffer fact in the Playwright facts; OGC-1639 progress in the follow-up tickets memory.
+- Queue: session 45c4131d (the #5109 reviewer) had its own entry; line dropped. Permission log empty. No user corrections in this run.

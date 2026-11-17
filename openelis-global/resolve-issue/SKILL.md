@@ -699,6 +699,20 @@ each of which has bitten:
    five locator retries on the ogc-439 spec). The spec is a
    regression guard for the next change; it does not replace the manual
    Playwright MCP walk above for this one.
+   On the dev stack, run specs through `scripts/dev-stack playwright
+   --project=<project> <specs> --reporter=line` with
+   `DB_CONTAINER=<compose project>-db.openelis.org-1` in the environment: the
+   participant setup seeds through `docker exec` on `openelisglobal-database`
+   and the whole project fails in setup otherwise (2026-11-17, #5109: two
+   runs lost before the override was found). A case that `test.skip`s on the
+   default stack (a JAR-served module page while `--module` serves it from
+   Vite, a feature flag off) is run once in the configuration where it does
+   run before the push (`up` without `--module` with the JAR in
+   `volume/modules`, the flag on); a spec that reads `performance` resource
+   timings raises the 250-entry buffer first with
+   `page.addInitScript(() => performance.setResourceTimingBufferSize(5000))`
+   (2026-11-17: the review found the 1637 warm-reload case had never run on
+   a Vite stack and failed there).
 5. **Record the evidence** in the mission notes: the two inventories and
    the regression matrix with expected vs observed per row and both tallies
    (functions inventoried / exercised / passed; regression scenarios
