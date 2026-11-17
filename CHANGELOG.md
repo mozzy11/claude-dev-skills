@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5105 self-review (session 75813b03)
+
+- Queue: 13456edb dropped (retro already in-session). Permission log empty.
+- #5105: one reader agent gave 8 leads, 5 confirmed by reading, 1 dropped (the d.ts mirrored the source's own `RequestPayload`); the existing "a subagent finding is a lead" rule did its job. No user corrections, no failed steps. No skill changes.
+
 ## 2026-11-17 retro after the #5104 self-review (session 13456edb)
 
 - review-pr: archive the whole PR tree for the frontend unit suite; a `pr-N frontend` archive gave 19 false failures in 5 files that read outside `frontend/`.
