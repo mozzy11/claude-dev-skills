@@ -245,6 +245,8 @@ Run these before reading logic:
 - **Spring wiring**: new service→service edges can close construction cycles
   that only detonate under a different bean-creation order (fix: `@Lazy` on
   the new edge, verified by the full suite, not a single test).
+- **Quote grep globs**: `--include='*.jsx'`; zsh aborts an unquoted one with
+  "no matches found" and the search never runs (#5006, #5109: three times).
 - **Removed symbols**: for every export, class or method the diff deletes,
   `grep -rn <name> frontend/src src` at the head and run each hit's tests
   (#4769, 2026-10-20: `OrderPossibleTestsHeaders` was still imported by
@@ -768,8 +770,10 @@ Run these before reading logic:
     #4755 (2026-10-16) a 120 s lease over a 20-row batch let both send
     the same message.
     Inside `browser_run_code_unsafe`, `page.request` needs absolute URLs, and
-    `require` and `URL` are undefined: a print clicked before such a line
-    still happened (#4771). Fetch PDFs with curl by version id instead.
+    `require`, `URL` and `setTimeout` are undefined: a print clicked before
+    such a line still happened (#4771); delay a route with
+    `await page.waitForTimeout(300)` (#5109, 2026-11-17: a `setTimeout` delay
+    threw in the handler and the route outlived the call). Fetch PDFs with curl by version id instead.
     Nothing survives between two calls (`globalThis` is fresh), so a race
     driven with a held `page.route` is held, checked and released in one
     call, ending with `unrouteAll`; a hold left open hangs that request for
@@ -833,6 +837,10 @@ Run these before reading logic:
     in `<checkout>/volume/modules` (read-only in the container, `docker cp`
     fails), then `docker restart` (2026-11-17, #5108: the routed warm load
     showed full transfers, a false negative).
+    `ogc-1637-module-assets` "warm reload ... no request" reads 0 module
+    entries on a dev stack without `--module` because it never enlarges that
+    buffer: a `length > 0` failure there is the buffer, not the cache; rerun
+    it with develop's sources to attribute it (#5109, 2026-11-17).
   - **Compression or caching PRs: check BREACH on every secret-bearing body.**
     Legacy JSP pages are still served and gzip-eligible as `text/html`;
     `ResultValidation`, `LogbookResults`, `ReportConfiguration`,

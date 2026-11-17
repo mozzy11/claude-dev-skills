@@ -899,3 +899,8 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - claude-work/ci-watch.py: with --fail-fast, a failed check whose workflow run still has a pending check counts as pending (a `gh run rerun --failed` leaves the gate job's old failure in place until the shards finish). Evidence: two watchers exited on the stale "03 Checkpoint - E2E" while the rerun of shard 3/4 was in progress; the session fell back to `gh run watch`.
 - Memory: Tomcat's authenticator adds `Cache-Control: private` to every response (spec assertion on the whole header failed against the deployment; `public` dropped on review); zsh unmatched-glob abort; direct Tomcat prefix on the dev stack; ci-watch.py lives at the claude-work root, iso-suite.sh under claude-work/bin (a wrong path in the notes cost one watcher launch).
 - Queue: session 3a3f72f5 (the #5108 reviewer) had its own retro entry; line dropped. Permission log empty. No user corrections in this run.
+
+## 2026-11-17 session 45c4131d (review-pr #5109)
+- review-pr: `setTimeout` is undefined inside `browser_run_code_unsafe` too; delay routes with `page.waitForTimeout` (the handler threw and its route outlived the call).
+- review-pr: the ogc-1637 warm-reload spec reads 0 module entries on a Vite dev stack without `--module` (timing buffer); attribute by rerunning with develop's sources.
+- review-pr: quote grep `--include` globs (zsh "no matches found"; third session with this trap, already in memory).
