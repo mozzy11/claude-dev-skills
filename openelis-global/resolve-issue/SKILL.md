@@ -278,6 +278,11 @@ question.
   `frontend/cypress` for the old text and update every spec and helper in the
   same commit (2026-10-14: the save-toast change broke three vector demo
   specs in CI, #4731).
+- **After moving a constant into a package, re-read every assertion that
+  compared the two copies**: once the second side imports the first, the test
+  compares an object with itself and checks nothing (2026-11-17, #5105 review:
+  `expect(sharedSingletons).toEqual(SHARED_SINGLETONS)` after the federation
+  config started importing the list; assert what the consumer receives instead).
 - **Tests for every changed behavior**, and **inversion-verify each new test**:
   revert the fix, watch the test fail, restore the fix. After inversion
   testing in an isolated copy, delete `target/` or rerun clean — stale
@@ -449,6 +454,11 @@ each of which has bitten:
   resolve, retire) and re-reads the new status. (2026-10-28, #4858: the batch
   QC check counted ACKNOWLEDGED violations as open; the dashboard only
   offers Acknowledge, so a recovered lot stayed held. Found by the reviewer.)
+- **A module frontend change is installed with the plugin's own npm before
+  the stack build**: `<module>/target/node/npm ci` in `<module>/frontend`, not
+  the host npm, which may carry user-level config (2026-11-17, #5105: the
+  host install passed on a user `legacy-peer-deps`, Maven's `npm ci` refused
+  TypeScript 6 on react-intl's peer range and the light `up --build` died).
 - **A module-system change is walked with a real module loaded, on both
   stacks** (`scripts/dev-stack up --module <checkout>` for the pages from
   Vite, and the JAR under `volume/modules` or openelis-docker's

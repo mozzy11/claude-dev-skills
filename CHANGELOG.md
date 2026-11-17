@@ -880,3 +880,10 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - claude-work/bin/wait-runs.py: takes run ids only and calls `gh api` itself. Evidence: launched with the gh binary as its first argument, every poll of the #5101 merge-commit runs was an error for an hour.
 - Memory: Playwright MCP facts (Carbon "danger" button names, modal close X is cds--btn--primary, 304 revalidations read as 200 in page.on("response"), read request bodies before ctx.close, session loss after a webapp restart, no digits in login names); the dev-stack proxy "connection reset" after a light rebuild and the readiness probe; AccessionValidationSequentialSignOffTest order dependency; the module follow-up campaign status and the module checkout path.
 - Queue: session 8554aa2c (the #5103 reviewer's own skills-repo retro, 757 lines, no corrections) dropped. Permission log empty.
+
+## 2026-11-17 retro after OGC-1640 (session 5e8586eb, PRs #5104, #5105, openelis-module-specimen-followup #1)
+
+- resolve-issue §3b: a module frontend change is installed with the plugin's own npm (`<module>/target/node/npm ci`) before the stack build. Evidence: the host install passed on a user-level `legacy-peer-deps`, Maven's `npm ci` failed on react-intl's TypeScript peer range and the light `up --build` died.
+- resolve-issue §3: after moving a constant into a package, re-read assertions that compared the two copies. Evidence: the #5105 reviewer found `expect(sharedSingletons).toEqual(SHARED_SINGLETONS)` comparing an object with itself.
+- Memory: module SDK build traps (TS `types` deep path, `resolve.dedupe` for the doubles, vitest missing-import guard reads the source, `gh run list --commit` empty, local `scripts/tests` env failures, lockfile npm 11); the module follow-up campaign status and the unhosted schema `$id`.
+- Queue: sessions 75813b03 and 43e00cc5 (the #5105 and module PR reviewers, no corrections) dropped. Permission log empty. No user corrections in this run.
