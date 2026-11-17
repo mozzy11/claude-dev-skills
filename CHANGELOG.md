@@ -893,3 +893,9 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - review-pr §3 "Module pages from the JAR": Tomcat's dev-stack context is `/api/OpenELIS-Global`; any Playwright route disables the HTTP cache, so cache/warm-load checks drop the route and remove the proxy's 307 location instead (backed up, restored), with an enlarged resource timing buffer; a JAR swap goes in the host's `volume/modules` (read-only in the container). Evidence: the routed warm load showed full transfers (false negative), `/OpenELIS-Global/...` 404s cost four probes, `docker cp` refused the read-only mount.
 - Memory: zsh `${3:+-H "$3"}` passes one word, dropping optional curl headers. Evidence: a 304 probe and a no-session probe both read 200 until rerun with plain curl.
 - Queue empty, permission log empty, no user corrections.
+
+## 2026-11-17 retro after OGC-1638 (#5108), session 5e8586eb
+
+- claude-work/ci-watch.py: with --fail-fast, a failed check whose workflow run still has a pending check counts as pending (a `gh run rerun --failed` leaves the gate job's old failure in place until the shards finish). Evidence: two watchers exited on the stale "03 Checkpoint - E2E" while the rerun of shard 3/4 was in progress; the session fell back to `gh run watch`.
+- Memory: Tomcat's authenticator adds `Cache-Control: private` to every response (spec assertion on the whole header failed against the deployment; `public` dropped on review); zsh unmatched-glob abort; direct Tomcat prefix on the dev stack; ci-watch.py lives at the claude-work root, iso-suite.sh under claude-work/bin (a wrong path in the notes cost one watcher launch).
+- Queue: session 3a3f72f5 (the #5108 reviewer) had its own retro entry; line dropped. Permission log empty. No user corrections in this run.
