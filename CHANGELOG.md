@@ -910,3 +910,7 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - resolve-issue §3b step 4: dev-stack spec runs go through `scripts/dev-stack playwright` with `DB_CONTAINER=<project>-db.openelis.org-1` (two runs failed in the participant setup before the override was found); a case that skips on the default stack is run once in the configuration where it runs before the push; resource-timing specs raise the 250-entry buffer first. Evidence: the review of #5109 found the 1637 warm-reload case failing on a Vite stack with the JAR serving the pages, which no run of mine had covered.
 - Memory: the timing-buffer fact in the Playwright facts; OGC-1639 progress in the follow-up tickets memory.
 - Queue: session 45c4131d (the #5109 reviewer) had its own entry; line dropped. Permission log empty. No user corrections in this run.
+
+## 2026-11-17 (session 74756190, review-pr #5110)
+- review-pr §3: run a parser of generated output against a real artifact with the target removed; the #5110 fixture shape hid that the contract check inspected a loadRemote helper instead of the page chunk (the review's only finding).
+- review-pr §0: key waiters on the process id, not a task output file; a waiter fired early on unrelated output during a long `dev-stack up` pull.

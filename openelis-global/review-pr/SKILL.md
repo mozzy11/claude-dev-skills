@@ -89,6 +89,10 @@ them explicitly, so there is nothing to ask about here either.
   it and the whole chained command is lost (2026-11-03, #4917: `sleep 30;
   docker logs ...` waiting for a redeploy's Liquibase run). Wait with Monitor
   or a bounded `until` loop, then run the check as its own command.
+  Key the loop on the process (`kill -0 <pid>`), never on a background
+  task's output file being non-empty: an unrelated command's output landed
+  there and the waiter fired before `dev-stack up` had finished pulling
+  (2026-11-17, #5110).
 - **A person wrote this code, and you are reviewing it, not grading it**
   (user instruction, 2026-09-21). The author is a colleague who has already
   thought about most of what you are about to notice — often a community
@@ -383,6 +387,12 @@ Run these before reading logic:
     re-read the state and try the next step: on #5073 (2026-11-13) both
     Required items came from this, a value edited after level 1 kept the
     old signature, and the legacy save released at level 1 of 2.
+    For a check that parses generated output (a contract test reading a
+    built `remoteEntry.js`, a lint over a bundle), run its logic against a
+    real artifact with the target removed, not only the PR's fixture: on
+    #5110 (2026-11-17) the fixture had one `import()` per expose, a real
+    federation entry puts a `loadRemote` helper first, and deleting a page
+    chunk still passed the check.
     For a client-side cache the PR adds (a module-level Map, a hook that
     loads once), drive two cases: the data changes elsewhere in the same tab
     (`history.pushState` + `dispatchEvent(new PopStateEvent('popstate'))`
