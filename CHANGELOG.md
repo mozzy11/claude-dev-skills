@@ -936,3 +936,8 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 
 - Memory only this round: the dev frontend image bakes `module-federation.config.js` (`up --build` needed; `--build` and `--skip-build` exclude each other); `provideExternalRuntime` is a runtime plugin that applies in dev and build alike, so a missing `_FEDERATION_RUNTIME_CORE` means the config is not in the running shell; the oed proxy fails to bind 443 until the dev proxy has really released it; dev-stack spec runs and the resource-timing buffer are already in the skill. Evidence: one wasted walk and two stack restarts before `docker exec grep` showed the config was absent from the container.
 - No user corrections in this run; permission log empty.
+
+## 2026-11-17 retro after OGC-1644 (#5116), session 5e8586eb
+
+- Nothing to change: the run followed the skill (draft patch inverted, nginx -t, installer template checked, production image built from the branch and walked on openelis-docker, warm reload measured by transfer size); review approved with no findings. A dev stack whose backend and database carry `restart: always` can come back after `compose stop`; stopped again before the review.
+- No user corrections; permission log empty.
