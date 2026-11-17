@@ -862,3 +862,11 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 
 ## 2026-11-16 (session 04fd3047)
 - resolve-issue §7 + resolve-by-criteria §3e: resolve every acted-on review thread before merging; `--admin` skips the conversation-resolution rule. Evidence: #5098 merged with three fixed threads open; user asked why the PR was "still unresolved".
+
+## 2026-11-17 retro after OGC-1637 (session 5e8586eb, PR #5103)
+
+- resolve-issue §3b: a module-system change is walked with a real module on both stacks through the manifest's whole inventory (menu, routes, slots, filters, create/edit/transitions/cancel/delete, second locale, role gating, JAR upgrade), seeding the deployment's data through the UI. Evidence: the user asked twice ("ensure all is well tested on the module itself", "carefully test everything live with the module") after a walk that stopped at create/start/complete and a list page.
+- resolve-issue §6: a batch of tickets handed over with one go-ahead authorizes merging every PR in it once green and reviewed. Evidence: #5101 sat ready for two hours; "i told you to merge all Prs from the child items".
+- claude-work/bin/wait-runs.py: takes run ids only and calls `gh api` itself. Evidence: launched with the gh binary as its first argument, every poll of the #5101 merge-commit runs was an error for an hour.
+- Memory: Playwright MCP facts (Carbon "danger" button names, modal close X is cds--btn--primary, 304 revalidations read as 200 in page.on("response"), read request bodies before ctx.close, session loss after a webapp restart, no digits in login names); the dev-stack proxy "connection reset" after a light rebuild and the readiness probe; AccessionValidationSequentialSignOffTest order dependency; the module follow-up campaign status and the module checkout path.
+- Queue: session 8554aa2c (the #5103 reviewer's own skills-repo retro, 757 lines, no corrections) dropped. Permission log empty.

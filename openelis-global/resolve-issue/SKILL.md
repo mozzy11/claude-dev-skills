@@ -449,6 +449,22 @@ each of which has bitten:
   resolve, retire) and re-reads the new status. (2026-10-28, #4858: the batch
   QC check counted ACKNOWLEDGED violations as open; the dashboard only
   offers Acknowledge, so a recovered lot stayed held. Found by the reviewer.)
+- **A module-system change is walked with a real module loaded, on both
+  stacks** (`scripts/dev-stack up --module <checkout>` for the pages from
+  Vite, and the JAR under `volume/modules` or openelis-docker's
+  `configs/modules` for the JAR-served pages), through the module's whole
+  inventory from its manifest: every menu entry, every route, each extension
+  slot in the core page that hosts it, list filters and pager, create, edit,
+  every status transition, cancel and delete, the module in a second locale
+  (no raw message ids), role gating with a user outside the module's
+  `defaultRoles` (menu, slot, REST 403, the direct route), and a module
+  upgrade (a JAR with a new digest swapped in, the webapp restarted, the
+  browser fetching the new entry instead of a stale 304). Seed the deployment
+  stack's data through the UI (a referring site, a patient, an order) when it
+  is empty; a list page alone is not a module walk. (2026-11-17, #5103: the
+  user asked twice, "ensure all is well tested on the module itself" and
+  "carefully test everything live with the module", after a walk that had
+  covered create/start/complete on one stack and the list page on the other.)
 - **An installer, compose or install-script change is accepted on both
   paths of the published artifact**: a fresh install, and an upgrade of a
   site on the previous release that already holds data entered through its
@@ -798,6 +814,14 @@ mock agreed with you. Fix the code, then fix the test.
   recipe; run directly, this skill never merges on its own. A merge cancels
   in-flight develop CI (`cancel-in-progress`); don't chase the superseded
   run's failure as if it were real.
+- **A batch of tickets handed over with one go-ahead is a merge instruction
+  for every PR in it.** When the user says "fix all these issues" over a list
+  of child tickets, each PR is squash-merged (`--admin`) the moment CI is
+  green, the review is addressed and its threads are resolved, with no
+  foreign review pending; then Jira, reset, next ticket. Never park a green,
+  reviewed PR behind "say merge" in such a campaign (2026-11-17, #5101 sat
+  ready for two hours; the user: "i told you to merge all Prs from the child
+  items"). A single PR the user asked to see first still waits.
 - Never dismiss or override another reviewer's CHANGES_REQUESTED without
   explicit instruction.
 
