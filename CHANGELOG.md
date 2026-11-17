@@ -887,3 +887,9 @@ Kept by the session-retro skill: one entry per retro, each change with its evide
 - resolve-issue §3: after moving a constant into a package, re-read assertions that compared the two copies. Evidence: the #5105 reviewer found `expect(sharedSingletons).toEqual(SHARED_SINGLETONS)` comparing an object with itself.
 - Memory: module SDK build traps (TS `types` deep path, `resolve.dedupe` for the doubles, vitest missing-import guard reads the source, `gh run list --commit` empty, local `scripts/tests` env failures, lockfile npm 11); the module follow-up campaign status and the unhosted schema `$id`.
 - Queue: sessions 75813b03 and 43e00cc5 (the #5105 and module PR reviewers, no corrections) dropped. Permission log empty. No user corrections in this run.
+
+## 2026-11-17 retro after the #5108 self-review (session 3a3f72f5)
+
+- review-pr §3 "Module pages from the JAR": Tomcat's dev-stack context is `/api/OpenELIS-Global`; any Playwright route disables the HTTP cache, so cache/warm-load checks drop the route and remove the proxy's 307 location instead (backed up, restored), with an enlarged resource timing buffer; a JAR swap goes in the host's `volume/modules` (read-only in the container). Evidence: the routed warm load showed full transfers (false negative), `/OpenELIS-Global/...` 404s cost four probes, `docker cp` refused the read-only mount.
+- Memory: zsh `${3:+-H "$3"}` passes one word, dropping optional curl headers. Evidence: a 304 probe and a no-session probe both read 200 until rerun with plain curl.
+- Queue empty, permission log empty, no user corrections.

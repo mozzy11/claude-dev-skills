@@ -822,7 +822,17 @@ Run these before reading logic:
     Tomcat's published 8443 in `browser_run_code_unsafe` (`page.route` on
     `**/modules/<id>/remoteEntry.js`, `route.fetch` with the JSESSIONID from
     `context.cookies()`, `route.fulfill`); chunks and REST still go through
-    the proxy. `unrouteAll` when done (2026-11-17, #5103).
+    the proxy. `unrouteAll` when done (2026-11-17, #5103). Tomcat's context
+    there is `/api/OpenELIS-Global`; `/OpenELIS-Global/...` 404s on
+    everything. Any active route disables Playwright's HTTP cache, so for a
+    cache or warm-load check drop the route and instead back up
+    `projects/analyzer-harness/volume/nginx/nginx.conf`, delete the module's
+    307 location, `nginx -s reload` in the proxy, measure, restore; add
+    `performance.setResourceTimingBufferSize(20000)` via `addInitScript`
+    (Vite dev files fill the 250-entry buffer). A JAR swap goes on the host
+    in `<checkout>/volume/modules` (read-only in the container, `docker cp`
+    fails), then `docker restart` (2026-11-17, #5108: the routed warm load
+    showed full transfers, a false negative).
   - **Compression or caching PRs: check BREACH on every secret-bearing body.**
     Legacy JSP pages are still served and gzip-eligible as `text/html`;
     `ResultValidation`, `LogbookResults`, `ReportConfiguration`,
