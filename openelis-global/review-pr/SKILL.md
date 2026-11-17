@@ -85,6 +85,10 @@ them explicitly, so there is nothing to ask about here either.
   post a correction rather than let a wrong finding stand.
 - **Newest information wins.** A later comment that withdraws an earlier
   claim (yours or anyone's) supersedes it.
+- **One plain status line at each phase start** (read, structural checks,
+  verification runs, CI attribution, posting, cleanup), also between
+  back-to-back tool calls: on #5121 (2026-11-17) the harness nudged
+  "the user hasn't heard from you" five times during silent stretches.
 - **Never a foreground `sleep`, anywhere in the pipeline.** The harness blocks
   it and the whole chained command is lost (2026-11-03, #4917: `sleep 30;
   docker logs ...` waiting for a redeploy's Liquibase run). Wait with Monitor
@@ -285,14 +289,16 @@ Run these before reading logic:
   dies in checkout with git exit 128 on the gone `refs/pull/N/merge`, which
   is not the change; judge it by a later develop E2E run that contains the
   merge commit (2026-11-05, #4962: merged mid-review, the waiter ran 2 h).
-  Use `python3 -I claude-work/bin/wait-runs.py <ghapi> <run ids...>`, which
+  Use `python3 -I claude-work/bin/wait-runs.py <run ids...>` (run ids
+  only; it calls `gh api` itself since 2026-11-17), which
   logs every poll and exits on all `completed` (not `action_required`):
   two inline zsh `case` loops never exited on green runs, and #4992 sat
   green overnight (2026-11-10). On any "status" ask, query the runs
-  directly rather than trusting a silent waiter. `<ghapi>` is an executable
-  called as `<ghapi> GET <path>`: a two-line scratchpad script running
-  `exec gh api -X "$1" "$2"`. Run one waiter only; a second foreground wait
-  on the same runs just times out (2026-11-12, #5053).
+  directly rather than trusting a silent waiter. Run one waiter only; a
+  second foreground wait on the same runs just times out (2026-11-12, #5053).
+  A shard rerun (attempt 2) after an unrelated red: arm a Monitor that
+  prints each rerun shard's conclusion and exits on the "E2E Gate" job,
+  then re-read the commit status before posting (#5121, 2026-11-17).
 - A test that fails after you did inversion-style experiments may be running
   **stale bytecode** — rerun in a clean copy before believing it.
 - **Live test: mandatory when the PR is cross-stack, behavior-facing, or
@@ -327,7 +333,7 @@ Run these before reading logic:
   run whose headSha is develop's: find it with
   `gh run list --event workflow_run`, then confirm it is yours from its
   "E2E Context" job log, which exists while the run is still going:
-  `<ghapi> repos/<repo>/actions/jobs/<E2E Context job id>/logs | grep "PR #<n>: E2E required"`
+  `gh api repos/<repo>/actions/jobs/<E2E Context job id>/logs | grep "PR #<n>: E2E required"`
   (`gh run view --log` prints nothing until the whole run ends) before
   citing core 4/4 (#4842, 2026-10-27: the "03 Checkpoint - E2E" row showed
   0 s; 2026-11-12: four tries to match an in-progress run to #5061).
@@ -399,6 +405,14 @@ Run these before reading logic:
     marker packages: the head must return the markers and the base must
     not. Run the PR's new test against the base file too (#5112,
     2026-11-17: its only assertion passed on the pre-fix `build.js`).
+    For SDK type declarations or a `tsconfig.base.json` option, use the
+    same layout with real packages: `git archive` the SDK (head and base)
+    and the module branch into the scratchpad, symlink `core`, `npm ci
+    --prefix`, then `tsc --noEmit` on head, on base, and on head with the
+    option turned off by a scratch `tsconfig` that extends the module's;
+    plant one wrong prop (`link: 42`) and import every new subpath with
+    one valid and one wrong use (#5121, 2026-11-17: off, the wrong prop
+    passed; on, TS2322; base, 39 errors).
     For a frontend contract or federation-runtime change, walk every
     shell/module pair the PR claims, old module on the new shell included:
     `git archive` the example module at its pre-change commit into the

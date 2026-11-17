@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5121 self-review (session 46799682)
+
+- Queue empty. Permission log empty. No user corrections.
+- review-pr: `wait-runs.py` takes run ids only (it calls `gh api` itself since 2026-11-17); the `<ghapi>` wrapper is gone from the skill, a scratch helper was written for nothing. A shard rerun after an unrelated red is watched by a Monitor that exits on the "E2E Gate" job.
+- review-pr: SDK type declarations or a `tsconfig.base.json` option are verified in a CI-like scratch layout: tsc on head, base, and head with the option off, plus a planted wrong prop and every new subpath with a valid and a wrong use (#5121: the probe separated `preserveSymlinks` on and off; base gave 39 errors).
+- review-pr: one plain status line at each phase start, also between back-to-back tool calls (#5121: five "the user hasn't heard from you" nudges).
+
 ## 2026-11-17 retro after OGC-1645, OGC-1643 and OGC-1646 (session 5e8586eb)
 
 - Queue: f67ceae0 already had its retro in-session (the entry below); 6b698455 was the headless review of module PR #5 (approved, not corrected): both lines dropped. Permission log empty. No user corrections in this stretch.
