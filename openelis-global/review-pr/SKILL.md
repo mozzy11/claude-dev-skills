@@ -800,7 +800,11 @@ Run these before reading logic:
     the PR's tree, never the main checkout (that is develop: on #4933,
     2026-11-04, the stale menu test passed there and failed on the head):
     `git archive pr-<N> | tar -x -C <scratchpad>/pr<N>`, symlink
-    `frontend/node_modules` from the main checkout, and for a `modula`-based
+    `frontend/node_modules` from the main checkout. Archive the whole tree,
+    not `pr-<N> frontend`: five files read outside `frontend/`
+    (`scripts/analyzer-harness-*`, `scripts/ci-parity-project-policy`,
+    `ConfiguredSideNav`, `legacyOutput`) and fail with ENOENT there
+    (2026-11-17, #5104: 19 false failures, green from the full tree). For a `modula`-based
     PR copy develop's `vite.config.ts` over the copy's (it imports
     `@module-federation/vite`, which develop's node_modules lacks). Never
     `git checkout` anything in the shared checkout to do it. Python tests in

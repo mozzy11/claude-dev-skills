@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5104 self-review (session 13456edb)
+
+- review-pr: archive the whole PR tree for the frontend unit suite; a `pr-N frontend` archive gave 19 false failures in 5 files that read outside `frontend/`.
+- Permission log: one entry from session 5e8586eb (`rm -f .git/gc.log`, a protected path); no allow rule can silence it, `git gc --prune=now` clears that file itself. Log cleared.
+
 ## 2026-11-17 retro after the #5103 self-review (session 8554aa2c)
 
 - review-pr: a single `-Dtest=` class also runs from a copy (`mvn -f`), never the shared checkout; this session ran one in-repo.
