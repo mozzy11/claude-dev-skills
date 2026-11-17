@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after OGC-1645, OGC-1643 and OGC-1646 (session 5e8586eb)
+
+- Queue: f67ceae0 already had its retro in-session (the entry below); 6b698455 was the headless review of module PR #5 (approved, not corrected): both lines dropped. Permission log empty. No user corrections in this stretch.
+- claude-work/bin/spotless-docker.sh: a Markdown-only diff runs spotless cold on this machine with nvm's node instead of entering the container; the container's `apt-get install npm` sat 12 minutes on 2026-11-17 (OGC-1643, killed) after the 25 minutes of 2026-11-16, while the local run took a minute and CI Formatting agreed (#5118).
+- resolve-issue: the formatting rule names that local command and the helper's new behavior; the module-walk rule adds "no English leaking from server-side labels" to the second-locale check (2026-11-17, OGC-1646: the action types came from an enum through `/options` and stayed English in French; fixed in the PR).
+- memory project_module_review_followup_tickets: all eleven review children merged; traps (bundles are read from the JAR even with the module dev server running; the pre-existing react-is dev-server warning; `check-format` outside the module's `mvn verify`).
+
 ## 2026-11-17 retro after the #5117 self-review (session f67ceae0)
 
 - Queue empty. Permission log empty. No user corrections.

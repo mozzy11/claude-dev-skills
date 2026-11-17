@@ -343,9 +343,12 @@ question.
     warm caches hide violations CI will flag. Never hand-build the
     `docker run ... $(git diff ...)` one-liner: it prompted five times on
     2026-10-13 (session ae493b76). For a diff whose only spotless-managed
-    file is Markdown, skip the container: it installs npm for Prettier and
-    sat 25 minutes with no output on 2026-11-16 (#5101); the commit hook
-    already runs Prettier on staged Markdown and the push gate checks cold.
+    file is Markdown the helper itself stays out of the container and runs
+    spotless cold on this machine (`rm -rf target/spotless-*` then
+    `mvn -q spotless:apply -DspotlessFiles='.*/<name>\.md'` with nvm's node
+    on PATH, about a minute, matched CI on #5118): the container's apt-get
+    for npm sat 25 minutes on 2026-11-16 (#5101) and 12 minutes on 2026-11-17
+    (OGC-1643) before being killed. Never wait on it for Markdown.
     Spotless also formats XML test fixtures (`src/test/resources/testdata/*.xml`):
     include changed fixtures in the `-DspotlessFiles` regex, or the push hook
     blocks the push (2026-10-12). Prettier for frontend, and for any
@@ -471,7 +474,11 @@ each of which has bitten:
   inventory from its manifest: every menu entry, every route, each extension
   slot in the core page that hosts it, list filters and pager, create, edit,
   every status transition, cancel and delete, the module in a second locale
-  (no raw message ids), role gating with a user outside the module's
+  (no raw message ids, and no English leaking from server-side labels: enum
+  display names through an options endpoint or a `*Label` field stayed
+  English in the French walk of 2026-11-17, OGC-1646, and were fixed in the
+  PR with one message per value and the API label as the fallback), role
+  gating with a user outside the module's
   `defaultRoles` (menu, slot, REST 403, the direct route), and a module
   upgrade (a JAR with a new digest swapped in, the webapp restarted, the
   browser fetching the new entry instead of a stale 304). Seed the deployment
