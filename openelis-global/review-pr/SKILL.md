@@ -254,7 +254,9 @@ Run these before reading logic:
 
 - Build the merged/head tree; run the full backend suite in an **isolated
   copy** via `claude-work/bin/iso-suite.sh <repo> <sha> <copy> <log>` (never
-  in-repo: IDE rebuilds corrupt `target/`; never a `cd <copy> && mvn` chain),
+  in-repo: IDE rebuilds corrupt `target/`; never a `cd <copy> && mvn` chain;
+  a single `-Dtest=` class too: `mvn -f <copy>/pom.xml`, 2026-11-17 #5103 ran
+  one in the shared checkout),
   and the frontend suite with `npm --prefix frontend run test`. `<repo>` is
   always the main checkout with the PR fetched as a ref
   (`git fetch upstream pull/N/head:pr-N`), never a fork clone made for
@@ -805,7 +807,26 @@ Run these before reading logic:
     the copy run without a `cd` chain:
     `python3 -m unittest discover -s <copy>/scripts/tests -p 'test_x.py'`
     (no `-t`: scripts/tests is not a package) (2026-11-04, #4940: `cd $S && python3 -m unittest` raised
-    a permission request).
+    a permission request). Run `test_dev_stack.py` from the archived copy,
+    not the main checkout: its untracked `.env` (`DEV_STACK_TLS=self-signed`)
+    fails `test_domain_uses_public_standard_ingress_and_letsencrypt`
+    (2026-11-17, #5103: not a PR defect).
+  - **Module pages from the JAR when the proxy is in `--module` mode.** An
+    earlier `up --module` leaves nginx answering the entry with a 307 to the
+    module's Vite (`grep 5174 /etc/nginx/nginx.conf` in the proxy); if that
+    Vite is gone, the module fails with RUNTIME-008. Route only the entry to
+    Tomcat's published 8443 in `browser_run_code_unsafe` (`page.route` on
+    `**/modules/<id>/remoteEntry.js`, `route.fetch` with the JSESSIONID from
+    `context.cookies()`, `route.fulfill`); chunks and REST still go through
+    the proxy. `unrouteAll` when done (2026-11-17, #5103).
+  - **Compression or caching PRs: check BREACH on every secret-bearing body.**
+    Legacy JSP pages are still served and gzip-eligible as `text/html`;
+    `ResultValidation`, `LogbookResults`, `ReportConfiguration`,
+    `PatientManagement` and `AnalyzerResults` echo a query parameter beside
+    `banner.jsp`'s `_csrf`. Fetch a page and `/session` twice and compare the
+    tokens: Spring Security 6 masks them per response, and that masking, not
+    "only /session holds the token", is what makes compression safe
+    (2026-11-17, #5103: the PR body's reasoning was wrong, the conclusion held).
   - For a config variant (an empty property, an env override), recreate only
     the webapp with `claude-work/bin/dev-stack-webapp-override.py <repo>
     <override.yml>` (#4880, 2026-10-29: plain compose on the harness files

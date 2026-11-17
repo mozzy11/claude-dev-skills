@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5103 self-review (session 8554aa2c)
+
+- review-pr: a single `-Dtest=` class also runs from a copy (`mvn -f`), never the shared checkout; this session ran one in-repo.
+- review-pr: run `test_dev_stack.py` from the archived copy; the checkout's untracked `.env` (`DEV_STACK_TLS=self-signed`) fails one TLS test locally.
+- review-pr: when the proxy is left in `--module` mode (nginx 307 to a dead module Vite, RUNTIME-008), route only `remoteEntry.js` to Tomcat's 8443 with the session cookie to walk the JAR-served pages.
+- review-pr: compression PRs get a BREACH check on legacy JSP pages (query echo beside `_csrf`) and a twice-fetched token comparison; per-response masking is what made #5103 safe, not the PR's stated reason.
+
 ## 2026-11-16 retro after OGC-1636 (session 5e8586eb, PR #5101)
 
 - resolve-issue §3 tests: existing tests get the planted-data inversion when a change makes what they consumed lazy or asynchronous, and an operation that becomes asynchronous gets an overtaking test plus a route-delayed live walk (the #5101 review found both: regional-locale suites rendering plain English, and a French-then-English switch race).
