@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5112 self-review (session 6e33f3c0)
+
+- Queue empty. Permission log empty. No user corrections, no failed steps.
+- review-pr: dependency-loading changes (build preset, `file:`-linked SDK) are probed from a scratch SDK copy with no `node_modules` above it against a module root of fake marker packages, and the PR's new test is run against the base file; on #5112 the only new assertion passed on the pre-fix `build.js`.
+
 ## 2026-11-17 retro after the #5105 self-review (session 75813b03)
 
 - Queue: 13456edb dropped (retro already in-session). Permission log empty.

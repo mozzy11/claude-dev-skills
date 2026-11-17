@@ -393,6 +393,12 @@ Run these before reading logic:
     #5110 (2026-11-17) the fixture had one `import()` per expose, a real
     federation entry puts a `loadRemote` helper first, and deleting a page
     chunk still passed the check.
+    For a change to where code loads a dependency from (a build preset, an
+    SDK shipped as a `file:` link), copy the SDK to a scratch folder with no
+    `node_modules` above it and load it against a module root with fake
+    marker packages: the head must return the markers and the base must
+    not. Run the PR's new test against the base file too (#5112,
+    2026-11-17: its only assertion passed on the pre-fix `build.js`).
     For a client-side cache the PR adds (a module-level Map, a hook that
     loads once), drive two cases: the data changes elsewhere in the same tab
     (`history.pushState` + `dispatchEvent(new PopStateEvent('popstate'))`
