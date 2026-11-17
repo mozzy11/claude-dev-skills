@@ -850,9 +850,13 @@ Run these before reading logic:
     module's Vite (`grep 5174 /etc/nginx/nginx.conf` in the proxy); if that
     Vite is gone, the module fails with RUNTIME-008. Route only the entry to
     Tomcat's published 8443 in `browser_run_code_unsafe` (`page.route` on
-    `**/modules/<id>/remoteEntry.js`, `route.fetch` with the JSESSIONID from
-    `context.cookies()`, `route.fulfill`); chunks and REST still go through
-    the proxy. `unrouteAll` when done (2026-11-17, #5103). Tomcat's context
+    `**/modules/<id>/remoteEntry.js`, `route.fetch` with every cookie of
+    `context.cookies('https://localhost/api/OpenELIS-Global/modules/')`
+    and `maxRedirects: 0`, `route.fulfill`); chunks and REST still go through
+    the proxy. `unrouteAll` when done (2026-11-17, #5103). A bare
+    `cookies('https://localhost')` returns nothing (the cookie's path is
+    `/api/OpenELIS-Global`): Tomcat answered a LoginPage redirect and the
+    browser was signed out (2026-11-17, #5117). Tomcat's context
     there is `/api/OpenELIS-Global`; `/OpenELIS-Global/...` 404s on
     everything. Any active route disables Playwright's HTTP cache, so for a
     cache or warm-load check drop the route and instead back up

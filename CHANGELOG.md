@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-17 retro after the #5117 self-review (session f67ceae0)
+
+- Queue empty. Permission log empty. No user corrections.
+- review-pr: the module-entry route recipe now reads cookies with the API path (`cookies('https://localhost/api/OpenELIS-Global/modules/')`) and `maxRedirects: 0`; the bare origin returned no cookie, Tomcat redirected to LoginPage and the walk was signed out once.
+- memory hub_walks: header locale switch needs the User panel opened and selection by value; the IntlProvider key remount means a window marker proves "same document".
+
 ## 2026-11-17 retro after the #5114 self-review (session 0c6dc0b2)
 
 - Queue: 6e33f3c0 dropped (retro already in-session). Permission log empty. No user corrections.
