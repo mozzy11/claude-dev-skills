@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-18 retro at the start of a resolve-by-criteria run (689f0352, 3f7093b2, f0342e18, 04fd3047)
+
+- 04fd3047 (ended 12:47): its tail after 11-16 was the #5098 merge, "was its ci green ??" (answered with run evidence) and the pause; the thread-resolution rule from that session is already in resolve-issue §7 and resolve-by-criteria §3e.
+- f0342e18: the dev-updates skill and the Slack-format memory were written in-session (fe0ddf5, c8cee64).
+- 689f0352 (module PR #6) and 3f7093b2 (#5123): headless reviewers, not corrected; their locale-switch locator misses are already in hub_walks. Dropped.
+- Permission log empty. No skill changes.
+
 ## 2026-11-18 retro after OGC-1653 and OGC-1654 (session 5e8586eb)
 
 - resolve-issue: "pin the behaviour first" for refactors and conversions (tests on the old code, bundle comparison, CI-layout copy, build-time dev-only switch with an image grep). Evidence: the user's repeated "no regression" requests on the TypeScript rewrite; the CI-layout copy found component props untyped on module CI (fixed in #5121); the first production image of #5123 still carried the dev hook.
