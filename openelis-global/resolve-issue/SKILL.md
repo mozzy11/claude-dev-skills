@@ -980,6 +980,13 @@ nohup "${CLAUDE_BIN:-/opt/homebrew/bin/claude}" -p "Use your review-pr skill: re
 > run on the merge sha passed, a later red (or one in another live session's
 > area) is reported in one line, never rerun (2026-10-28, OGC-427).
 >
+> A change to what the images bake (a Dockerfile, the frontend build or
+> module federation config, SDK packaging) is walked again on the published
+> `develop` images, with no local WAR or image, once the merge's publish
+> workflow finished and before the summary says it works (2026-11-18,
+> 5e8586eb: "did you test this out from the published images??" after a run
+> on locally built images).
+>
 > **When Jira cannot be reached** (MCP disconnected or timing out), the first
 > line of your very next message says which ticket step was skipped and asks
 > for `/mcp`; repeat it at the top of every later message until done, and do
@@ -1066,6 +1073,11 @@ session started is removed once the work is done (user instruction, 2026-10-12):
   sessions' items are never touched. The SessionEnd hook runs the same
   script as a safety net, so a session that ends early still cleans up; the
   log is `claude-work/run/sessions/<id>.cleanup.log`.
+- **A session that built images** (`dev-stack up --build`, a `docker build`
+  of a production image) ends, once that test passed and no other build is
+  running, with `docker builder prune -af` and `docker rmi` of the images it
+  built. Nothing is kept "to speed the next build": plain `up` never builds
+  (2026-11-18, 5e8586eb: the user had 12.6 GB of build cache removed).
 - Run `claude-work/bin/teardown-stack.sh <copy-dir-or-compose-project> ...`
   for every isolated stack, `dev-stack` copy or `-p` project you brought up.
   It removes containers, volumes, the project's built images and analyzer

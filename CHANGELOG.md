@@ -2,6 +2,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-18 retro of the 5e8586eb tail (03:19 to 13:02)
+
+- resolve-issue and review-pr cleanup: a session that built images prunes the build cache and removes the images it built once the test passed. Evidence: "we dont build dev images literaly, we just pull by default, so remove that cache" (12.6 GB removed).
+- resolve-issue post-merge: a change to what the images bake is walked again on the published develop images. Evidence: "did you test this out from the published images??" and "please test this fully from the pushed images".
+- Memory was already updated in-session (dev-stack-published-images, cleanup-test-images). Permission log empty.
+
 ## 2026-11-18 retro at the start of a resolve-by-criteria run (689f0352, 3f7093b2, f0342e18, 04fd3047)
 
 - 04fd3047 (ended 12:47): its tail after 11-16 was the #5098 merge, "was its ci green ??" (answered with run evidence) and the pause; the thread-resolution rule from that session is already in resolve-issue §7 and resolve-by-criteria §3e.

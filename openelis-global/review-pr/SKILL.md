@@ -1157,6 +1157,11 @@ session started is removed before it ends (user instruction, 2026-10-12):
   sessions' items are never touched. The SessionEnd hook runs the same
   script as a safety net, so a session that ends early still cleans up; the
   log is `claude-work/run/sessions/<id>.cleanup.log`.
+- **A session that built images** (`dev-stack up --build`, a `docker build`
+  of a production image) ends, once that test passed and no other build is
+  running, with `docker builder prune -af` and `docker rmi` of the images it
+  built. Nothing is kept "to speed the next build": plain `up` never builds
+  (2026-11-18, 5e8586eb: the user had 12.6 GB of build cache removed).
 - Run `claude-work/bin/teardown-stack.sh <copy-dir-or-compose-project> ...`
   for every isolated stack, `dev-stack` copy or `-p` project you brought up.
   It removes containers, volumes, the project's built images and analyzer
