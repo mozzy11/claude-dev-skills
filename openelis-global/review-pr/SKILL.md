@@ -492,6 +492,12 @@ Run these before reading logic:
     equals the one for a missing record, the message lies (#5024,
     2026-11-11: an Ineligible order under a Compliant filter read "No
     environmental order with lab number ...").
+    For a change to how a step loads its record from the URL (`?order=`),
+    besides refresh and deep link, reach the URL through history with an
+    empty context (dashboard full load, open the order, breadcrumb back,
+    reload, Back) and after New Order, then repeat with develop's files
+    swapped in: on #5127 (2026-11-18) the first path rendered an empty page
+    for good (develop: a blank Enter Order), the second matched develop.
     Never judge a flow on the author's fixtures alone: create one record
     through the screens a user uses (order entry, results, the Validation
     screen's "Validate & release") and drive it to the PR's screen. On
@@ -765,6 +771,13 @@ Run these before reading logic:
     decimal) and `abc` and read the request body: `Number()` gives `NaN`,
     `JSON.stringify` sends `null`, and the value vanishes behind a success
     toast (#5047, 2026-11-12, the Required item).
+    When a PR swaps a constrained native input (`datetime-local`, `type=date`)
+    for a free-text one (Carbon `TimePicker`, a text date), type values the
+    old control could not produce (`25:99`, `1430`) key by key, save, and
+    read the row: on #5127 (2026-11-18) Received `25:99` stored the next day,
+    `1430` dropped the date under a "saved" toast, Collected `1430` gave a
+    bare 500 (the Required item). Check refusal messages with
+    `pressSequentially`: `fill` + Enter clears a refused date silently.
   - **Unsaved state vanishing mid-walk:** check the Vite log for an `hmr
     update` of the file under test before calling it a bug. Opening the file
     elsewhere can fire one with no change, and it remounts the form (#5047:

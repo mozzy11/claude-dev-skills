@@ -2,6 +2,13 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-18 retro after the #5127 self-review (session ebd7f7f1)
+
+- No user corrections; queue and permission log empty.
+- review-pr: a PR that swaps a constrained native input for free text gets the values the old control could not produce, typed key by key, saved and read back; refusal messages are checked with `pressSequentially`. Evidence: Received `25:99` stored the next day, `1430` dropped the date under a "saved" toast, Collected `1430` gave a bare 500 (Required item); `fill` + Enter cleared a refused date with no message.
+- review-pr: a change to a step's URL load is also reached through history with an empty context and after New Order, compared with develop's files swapped in. Evidence: dashboard reload then Back rendered an empty Label & Store for good (Required item); the New Order path matched develop.
+- memory hub_walks: live site date-locale flip recipe and its request-date trap (400 on orders entered under the other locale); `run_code` leave-page dialog returns a modal state after the actions ran.
+
 ## 2026-11-18 retro of the 5e8586eb tail (03:19 to 13:02)
 
 - resolve-issue and review-pr cleanup: a session that built images prunes the build cache and removes the images it built once the test passed. Evidence: "we dont build dev images literaly, we just pull by default, so remove that cache" (12.6 GB removed).
