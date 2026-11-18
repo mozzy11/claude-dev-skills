@@ -2,6 +2,15 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-18 retro after OGC-1657 (session dbe887ad, PR #5127 merged as 4fc36f9193)
+
+- Queue: 88015a5a (round-2 reviewer) already had its retro in-session, dropped. Permission log empty. No user messages since the run started.
+- resolve-issue §0 spec rule: a spec branching on a site setting reads the signed-in `/rest/configuration-properties` and runs once per value locally. Evidence: four ogc-1657 tests passed locally on en-US by coincidence and failed on CI's day-first site (open-configuration-properties has no DEFAULT_DATE_LOCALE).
+- resolve-issue §3b: a constrained control swapped for free text keeps its constraints in the field, the Save gate and the server, the server proven by a captured-save replay. Evidence: round-one Required item (`1430` dropped the received date, `25:99` stored the next day); the replay showed the sample-time validator never ran for environmental orders (it stopped at pre-bound patient errors).
+- resolve-issue §3b: a change to an address-driven record load is walked through refresh, deep link, Back after a reload and Back after New Order. Evidence: round-one Required item (reload then Back left an empty Label & Store).
+- Kept: running the existing specs for the touched screens found the reopened-order "Unsaved changes" regression (ogc-1192) before the push.
+- memory: light-stack webapp recreate resets a date-locale flip; MCP walk typing into Carbon date pickers.
+
 ## 2026-11-18 retro after the #5127 round-2 self-review (session 88015a5a)
 
 - Queue: ebd7f7f1 already had its retro in-session, dropped. Permission log empty. No user corrections.

@@ -150,6 +150,12 @@ question.
   `__dirname` is undefined; a path next to the spec is
   `fileURLToPath(new URL("../x", import.meta.url))` (2026-11-16, #5101: the
   first run of the locale spec died on `__dirname`).
+  A spec that branches on a site setting reads it from the signed-in
+  `/rest/configuration-properties` and asserts it is there
+  (`open-configuration-properties` has no `DEFAULT_DATE_LOCALE`), and runs
+  locally once per value of the setting before the push (2026-11-18, #5127:
+  four ogc-1657 tests passed on the local en-US site by coincidence and failed
+  on CI's day-first one).
 - **Live-test the whole affected workflow before every push: UI *and* API,
   every changed function, carefully** (user instruction, repeated 2026-09-18,
   2026-09-21 and 2026-09-26: the step most often skipped and the one that has
@@ -465,6 +471,19 @@ each of which has bitten:
   (2026-10-21, #4800: two review rounds found editor renames dropped, a
   regional locale locking Translation Management, and Reset storing English,
   all on paths the walk skipped.)
+- **A constrained control swapped for free text keeps its constraints.**
+  When a native date, time or datetime input or a select becomes a text
+  field, list what the old control could not produce (`25:99`, `1430`) and
+  refuse each in the field, at the Save gate and on the server; prove the
+  server side by replaying the page's captured save with one value changed
+  (`claude-work/bin/sxml-probe.sh`), since a UI gate hides a server that
+  never checks (2026-11-18, #5127: round one found `1430` dropping the
+  received date; the replay showed the sample-time validator never ran for
+  environmental orders).
+- **A change to how a step loads its record from the address is walked
+  through history**: refresh, deep link, Back after the dashboard was
+  reloaded, and Back after New Order, each landing on the addressed record
+  (2026-11-18, #5127: refresh worked, reload-then-Back left an empty page).
 - **A changed shared component is submitted from every host that renders
   it** (grep its imports). (2026-10-21: InlineNceForm answered 400 from five
   order steps; only the Report NCE page had been walked.)
