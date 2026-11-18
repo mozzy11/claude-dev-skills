@@ -283,6 +283,18 @@ question.
   compares an object with itself and checks nothing (2026-11-17, #5105 review:
   `expect(sharedSingletons).toEqual(SHARED_SINGLETONS)` after the federation
   config started importing the list; assert what the consumer receives instead).
+- **A change claimed to keep behaviour (a refactor, a language conversion):
+  pin the behaviour first.** Write tests against the old code, commit them
+  green, invert a few on purpose, then convert; prove the conversion by
+  building `main` and the branch and comparing the output files with hashes
+  normalised (2026-11-18, OGC-1653: the TypeScript rewrite's bundle matched
+  `main` 20/20; the user asked "please i hope you dont introduce a
+  regression"). Anything that depends on how packages resolve (SDK types, the
+  `file:` link into the core) is checked in a copy laid out like CI (core
+  without `node_modules`): locally the core's `node_modules` hid that every
+  component prop was `any` on CI. Development-only shell code is a
+  build-time choice on `import.meta.env.DEV` written inline; grep the
+  production image for its strings.
 - **Tests for every changed behavior**, and **inversion-verify each new test**:
   revert the fix, watch the test fail, restore the fix. After inversion
   testing in an isolated copy, delete `target/` or rerun clean — stale

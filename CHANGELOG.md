@@ -2,6 +2,11 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-18 retro after OGC-1653 and OGC-1654 (session 5e8586eb)
+
+- resolve-issue: "pin the behaviour first" for refactors and conversions (tests on the old code, bundle comparison, CI-layout copy, build-time dev-only switch with an image grep). Evidence: the user's repeated "no regression" requests on the TypeScript rewrite; the CI-layout copy found component props untyped on module CI (fixed in #5121); the first production image of #5123 still carried the dev hook.
+- memory: module-system build facts (SDK types on CI, type-only conversion proof, dev-only build switch, Vite index fallback for public/), dev-stack hub (dev-stack tests used to kill the module Vite, module checkout switch needs the .vite cache cleared, `npm ci` blinks the editor, polling delay), walks hub (MCP reads scripts only under the core checkout, modal close animation).
+
 ## 2026-11-17 retro after the #5121 self-review (session 46799682)
 
 - Queue empty. Permission log empty. No user corrections.
