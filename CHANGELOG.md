@@ -2,6 +2,14 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-18 retro after the #5127 round-2 self-review (session 88015a5a)
+
+- Queue: ebd7f7f1 already had its retro in-session, dropped. Permission log empty. No user corrections.
+- review-pr: re-review rule (diff from the reviewed sha, the round's new tests against the previous head's files, walk every lane the fix's shared code reaches). Evidence: 7 new tests failed on 15e82898's sources; the OrderContext fix reached clinical and vector, walked clean.
+- review-pr: in a live walk each function row's verdict is written before the next row's first call. Evidence: seven "hasn't heard from you" nudges in a 25-minute walk, after five on #5121.
+- claude-work/bin/sxml-probe.sh: replays a captured order save with sampleXML attributes changed and prints the status, field errors and stored times (env, vector and clinical probes this session).
+- memory: hub_walks (TimePicker invalid icon intercepts a centred click; cleared clinical Received Time refills; save-body capture recipe), v4 order entry recipe (sample type is a searchable input; legacy Add Order needs a requesting site the dev DB lacks), compliance recipe (env manifest ids, Tests & Panels button name).
+
 ## 2026-11-18 retro after the #5127 self-review (session ebd7f7f1)
 
 - No user corrections; queue and permission log empty.

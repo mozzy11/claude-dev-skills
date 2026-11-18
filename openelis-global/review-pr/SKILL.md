@@ -89,6 +89,8 @@ them explicitly, so there is nothing to ask about here either.
   verification runs, CI attribution, posting, cleanup), also between
   back-to-back tool calls: on #5121 (2026-11-17) the harness nudged
   "the user hasn't heard from you" five times during silent stretches.
+  In a live walk, write each function row's verdict as one line before the
+  first call of the next row (#5127 r2, 2026-11-18: seven nudges again).
 - **Never a foreground `sleep`, anywhere in the pipeline.** The harness blocks
   it and the whole chained command is lost (2026-11-03, #4917: `sleep 30;
   docker logs ...` waiting for a redeploy's Liquibase run). Wait with Monitor
@@ -218,6 +220,12 @@ them explicitly, so there is nothing to ask about here either.
   a memory or your own read confirms it (#4753, 2026-10-16: 3 of 13 reader
   leads were wrong, among them a Transifex plural shape that memory
   `project_transifex_plural_shape` lists as uploading fine).
+- **Re-review after a fix round:** diff the sha you reviewed to the head,
+  run the round's new tests against the previous head's sources (`git show
+  <old>:<file>` over the PR copy, restored after), and walk the fixed rows
+  plus every lane the fix's shared code reaches (#5127 r2, 2026-11-18: all
+  7 new tests failed on the old files; the `OrderContext` fix reached the
+  clinical and vector lanes, walked clean).
 
 ## 2. Structural checks that have caught real problems here
 
@@ -787,7 +795,9 @@ Run these before reading logic:
     gives `login <user> <pass>` and `call <METHOD> <path> [json]`, pointed
     at the dev-stack BASE_URL; `call` cuts output at 220 characters, so
     pipe JSON you parse through plain `curl -b $CJ -H "X-CSRF-Token: $T"`
-    instead): one call per function row that
+    instead; an order save replayed with one sampleXML attribute changed
+    goes through `claude-work/bin/sxml-probe.sh`, recipe in hub_walks):
+    one call per function row that
     lives server-side, including the edge inputs the PR claims to handle
     and the invalid input each validation must reject. Assert the status,
     the body and the persisted row (a GET or `psql` in the database
