@@ -1,5 +1,10 @@
 # Skill changelog
 
+## 2026-11-19 dbe887ad (per-issue retro, OGC-1647 #5131)
+- resolve-issue: a frontend fixture copies a real server response; key nothing on a field the server does not fill (#5131 R1: mocks had analysisId, no controller set it).
+- claude-work/bin/wait-runs.py splits each argument on spaces (zsh passed `$ids` as one argument and the merge-sha watch never started).
+- memory: Transifex sync can redden develop's i18n tests; Jira fallback via the claude.ai Atlassian connector.
+
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
 ## 2026-11-18 retro after OGC-1657 (session dbe887ad, PR #5127 merged as 4fc36f9193)

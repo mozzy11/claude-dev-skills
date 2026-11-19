@@ -315,7 +315,13 @@ question.
   the real artifact, not only its fixture: remove from the real build the
   thing it must catch and watch it fail (2026-11-17, #5110: the expose check
   passed its fixture while a real entry's first import was a loader helper,
-  so a deleted page chunk went unnoticed until the review). **Existing tests get the same inversion
+  so a deleted page chunk went unnoticed until the review). **A frontend
+  fixture copies a real server response:** read one from the stack (or the
+  controller that builds it) before writing the mock, and key nothing on a
+  field the server does not fill (2026-11-18, #5131: the mocks carried
+  `analysisId`, no workplan controller set it, and the same test on two
+  samples shared a key; the reviewer found it with an order entered through
+  the UI). **Existing tests get the same inversion
   when the change makes what they consumed lazy or asynchronous** (a message
   bundle, a fetched list): plant wrong data in the fixture they read and
   watch them fail; a suite that stays green with planted data has stopped
