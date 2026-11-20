@@ -7,6 +7,12 @@
 
 Kept by the session-retro skill: one entry per retro, each change with its evidence.
 
+## 2026-11-20 retro of three headless reviews (1aa128e7, e62cac03 for #5131 R1/R2; a10d1610 for #5133)
+
+- No user corrections in any of them; review findings stood (the #5131 R1 analysisId key was fixed by the author). No skill change.
+- AccessionValidationSequentialSignOffTest red in both suites: already in memory (order dependency), develop ffa0674eb9 (OGC-1668) targets it.
+- Permission log: one ad-hoc `cd <repo> && docker exec` chain from dbe887ad, not a skill command; cleared.
+
 ## 2026-11-18 retro after OGC-1657 (session dbe887ad, PR #5127 merged as 4fc36f9193)
 
 - Queue: 88015a5a (round-2 reviewer) already had its retro in-session, dropped. Permission log empty. No user messages since the run started.
