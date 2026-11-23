@@ -1,5 +1,8 @@
 # Skill changelog
 
+## 2026-11-23 retro of 5208f15b (built review-all-prs) and dbe887ad (criteria run, tail after the 2026-11-19 retro)
+- No skill change. 5208f15b's corrections (OpenELIS-Global-2 only, low-risk bypass, every check green) were applied in-session (f62648e, ff8a28d, dbe992e). dbe887ad's later user messages were status pings answered by ECONNRESET/OAuth errors and a resume request already covered by resolve-by-criteria (re-run the resolved JQL); its MCP traps (`main` snapshot, screenshot outside allowed roots) are already in memory. Permission log empty.
+
 ## 2026-11-23 review-all-prs: every validation check must pass; first-run merge is for low-risk only (user)
 - "All PRs must pass validation CI checks": `policy.ci_state` now requires every check on the head to pass (SUCCESS, NEUTRAL or SKIPPED), not only the required ones; a red optional shard, a cancelled job or a fork run awaiting approval blocks the merge, for low-risk PRs too. On the live plan this changed one PR (#4978: checkpoints green, a backend shard red). `test_08b` pins it, and putting back required-only CI fails two tests.
 - SKILL.md §3 states the low-risk flow in the user's words, and that the first-run merge never applies to feature PRs (regular needs a prior approval; major is only approved for the user). 30 tests.
