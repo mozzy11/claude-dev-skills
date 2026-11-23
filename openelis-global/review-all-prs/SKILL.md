@@ -1,6 +1,6 @@
 ---
 name: review-all-prs
-description: Sweep every open pull request in the OpenELIS repositories (DIGI-UW/OpenELIS-Global-2, openelis-docker, openelis-work, OpenELIS-QA, openelisglobal-plugins and every other DIGI-UW repository named openelis*). Leaves the core team's PRs untouched, classifies the rest as low-risk maintenance, regular or major, reviews them with the review-pr skill, fixes minor issues on the PR branch, merges a low-risk maintenance PR on a clean first review with green checks, merges a regular PR only on an approval given before the run, approves major PRs and leaves them for the user's manual merge, closes PRs only on verified evidence that they are obsolete, and reports the run in sections A to H. Never bypasses branch protection. Resumable through a ledger. Trigger: "review all PRs", "review all open PRs", "PR sweep".
+description: Sweep every open pull request in DIGI-UW/OpenELIS-Global-2. Leaves the core team's PRs untouched, classifies the rest as low-risk maintenance, regular or major, reviews them with the review-pr skill, fixes minor issues on the PR branch, merges a low-risk maintenance PR on a clean first review with green checks (past branch-protection rules if needed), merges a regular PR only on an approval given before the run and never past protection, approves major PRs and leaves them for the user's manual merge, closes PRs only on verified evidence that they are obsolete, and reports the run in sections A to H. Resumable through a ledger. Trigger: "review all PRs", "review all open PRs", "PR sweep".
 ---
 
 # Review all PRs
@@ -36,22 +36,37 @@ the report for the user.
   `runs/<id>/run.json` + `inventory.json` (one run), `reports/<id>.md`,
   and `checkouts/` (disposable clones for pushing fixes).
 - Config: `config.json` next to this file (repositories, excluded authors,
-  low-risk and major thresholds, budgets). After changing it or
-  `policy.py`, run `python3 -I <skill>/tests/test_policy.py`.
+  low-risk and major thresholds, budgets). The scope is
+  **DIGI-UW/OpenELIS-Global-2 only** (user, 2026-11-23): `repos` lists it and
+  `discover` is empty. To widen it later, add repositories to `repos` or set
+  `discover` to `{"org": "DIGI-UW", "name_regex": "(?i)openelis",
+  "exclude_regex": "(?i)-ghsa-"}`. After changing the config or `policy.py`,
+  run `python3 -I <skill>/tests/test_policy.py`.
 - Review drafts: `claude-work/reviews/pr<N>-review.md` (review-pr §5).
 
 ## 0. Ground rules (they override other skills where they differ)
 
-1. **Never bypass anything.** No `--admin`, no `--auto`, no toggling
-   `enforce_admins`, no edits to branch protection or rulesets, no
-   dismissing anyone's review, no resolving a thread you did not act on.
+1. **Bypass only what the user allowed, only through `prs.py merge`.**
    Merge only with `prs.py merge`, which re-checks live data and merges with
    `--match-head-commit`. Close only with `prs.py close`. A refusal is final
-   for this run, and the PR goes into the report with the unmet rule. This
-   overrides review-pr §5 ("merge means now") and resolve-by-criteria §3e
-   for this skill. Your account can bypass the develop rulesets
-   (`current_user_can_bypass: always`), so GitHub may not stop a wrong
-   merge. The gate in `prs.py` will.
+   for this run, and the PR goes into the report with the unmet rule.
+   - **Low-risk maintenance may bypass branch-protection rules** (user,
+     2026-11-23): a missing required approval or code-owner review, and a
+     BLOCKED or BEHIND merge state. When those are the only blockers left,
+     `prs.py merge` adds `--admin` and the report names what was bypassed.
+     Switch it off with `low_risk.bypass_protection: false`.
+   - **Never bypassed, for any PR:** required checks failing, pending or
+     absent; CI older than 14 days; merge conflicts; someone else's change
+     request; unresolved review threads; a draft; a moved head; a review that
+     is not clean; the "fixed in this run, merge next run" rule.
+   - **Regular and major PRs never bypass anything.** Never `--auto`, never
+     toggle `enforce_admins`, never edit branch protection or rulesets, never
+     dismiss anyone's review, never resolve a thread you did not act on. If
+     `--admin` itself is refused, report it (G); do not go further.
+   - This replaces review-pr §5 ("merge means now") and resolve-by-criteria
+     §3e inside this skill. Your account can bypass the develop rulesets
+     (`current_user_can_bypass: always`), so GitHub may not stop a wrong
+     merge. The gate in `prs.py` will.
 2. **Excluded PRs get no action of any kind**: no review, comment, label,
    push, update-branch, rerun or close. The author is the PR's opener
    (matched by login and display name in `config.json`
@@ -167,7 +182,9 @@ says "no budget".
   refuses, the PR is in G with the reason; do not retry with anything else.
   After an approve, `merge` re-checks the live review decision, which is
   where a branch rule your approval does not satisfy (code owners, a second
-  reviewer) shows up.
+  reviewer) shows up. For a low-risk PR that rule is bypassed with
+  `--admin` (`decide` lists it under `bypassed_for_low_risk`); for any other
+  PR it is a blocker.
 - **wait-ci**: add the key to the CI sweep (§6) and go on to the next PR.
 
 ## 3. Low-risk maintenance PRs
@@ -207,7 +224,9 @@ Outcomes:
 
 - **No issues and checks green** → `record --review clean --sha <head>` →
   `decide` gives A with `approve, merge` → approve (a two-line body: what
-  you checked) → `prs.py merge <key>`. This is a **first-run merge**.
+  you checked) → `prs.py merge <key>`. This is a **first-run merge**. If a
+  branch rule your approval does not satisfy remains (code owners, a BLOCKED
+  merge state), the merge bypasses it with `--admin` and the report says so.
 - **Issues you can fix safely** (§5) → fix, push, confirm CI started, then
   `record <key> --review fixed --sha <head you reviewed> --issue "..." --fix-sha <sha> --fix-summary "..." --issue-fixed I<n>`
   → `decide` gives D. **Stop there for this PR**: no approval and no merge
@@ -247,9 +266,10 @@ line if any, and invite them to reopen if it still adds something.
 
 - **Never close for age or inactivity alone.** Old with conflicts is a hint
   to look, nothing more.
-- **Automated series** (the OpenELIS-QA "Known reds" PRs): close an older one
-  only after checking that the newest PR contains its changes. If each
-  run's PR removes different entries, they are not superseded.
+- **Automated series** (a bot that opens one PR per run with a numbered
+  title): close an older one only after checking that the newest PR contains
+  its changes. If each run's PR changes different entries, they are not
+  superseded.
 - **Uncertain** → leave it open, `record <key> --remaining "possibly
   superseded by <link>: <why unsure>"`, and `decide`. It ends in the
   report for the user.
@@ -372,7 +392,9 @@ right column names the test that pins each row of the user's scenarios.
 | Verified obsolete or superseded | Close with an explanation (E) | `test_09`, `test_09b` |
 | Core team or your own PR | F; no action | `test_10` |
 | Major dependency upgrade | Never low-risk: regular (needs a prior approval) or major (core framework or runtime, 30+ updates) | `test_11` |
-| Branch protection or rules unmet (code owners, review decision, merge state) | G with the unmet rule; never bypassed | `test_12` |
+| Low-risk, clean, checks green, only branch-protection rules unmet (code owners, review decision, BLOCKED/BEHIND) | Merge with `--admin`, bypass named in the report (A) | `test_12` |
+| Low-risk with red CI, conflicts, a change request, open threads or a draft | Never bypassed: G or C | `test_12b` |
+| Regular or major with branch-protection rules unmet | G with the unmet rule; never bypassed | `test_12c` |
 | Approval followed by author commits | Review the delta: `--delta minor` keeps the approval, substantial needs a new one (next run) | `test_approval_rules` |
 | Someone else's change request, standing | Not merged (G or C); never dismissed | `test_approval_rules` |
 | Change requested, nothing pushed since | C, waiting on the author | plan step |

@@ -1,17 +1,9 @@
 {
   "self_login": "mozzy11",
   "repos": [
-    "DIGI-UW/OpenELIS-Global-2",
-    "DIGI-UW/openelis-docker",
-    "DIGI-UW/openelis-work",
-    "DIGI-UW/OpenELIS-QA",
-    "DIGI-UW/openelisglobal-plugins"
+    "DIGI-UW/OpenELIS-Global-2"
   ],
-  "discover": {
-    "org": "DIGI-UW",
-    "name_regex": "(?i)openelis",
-    "exclude_regex": "(?i)-ghsa-"
-  },
+  "discover": {},
   "excluded_authors": [
     {"login": "pmanko", "names": ["Piotr Mankowski", "Piotr"]},
     {"login": "samuelmale", "names": ["Samuel Male", "Samwe Male"]},
@@ -31,6 +23,7 @@
   "ci_wait_minutes": 120,
   "ci_max_age_days": 14,
   "low_risk": {
+    "bypass_protection": true,
     "max_grouped_updates": 10,
     "max_changed_files": 10,
     "docs_max_changed_lines": 80,

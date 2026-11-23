@@ -76,8 +76,8 @@ def review(login, state, sha, at=BEFORE):
 
 
 def evaluate(pr, *, review_result="clean", reviewed_sha=None, fixes=(), run_id="run2", open_issues=0,
-             delta=None, override=None, why=None, rules=RULES):
-    """Mirror prs.facts_for with plain data: returns (decision, gate blockers)."""
+             delta=None, override=None, why=None, rules=RULES, cfg=CFG):
+    """Mirror prs.facts_for with plain data: returns (decision, hard gate blockers, category)."""
     cls = policy.classify(pr, CFG)
     category, _ = policy.apply_override(cls["category"], override, why)
     own = {f["sha"] for f in fixes}
@@ -96,17 +96,18 @@ def evaluate(pr, *, review_result="clean", reviewed_sha=None, fixes=(), run_id="
         "open_issues": open_issues,
         "rules": rules,
     }
-    gate = policy.merge_gate(dict(pr, ci=ci), ctx, CFG)
-    admin = [g["text"] for g in gate if g["code"] == "admin" or g["text"].startswith("CI last ran")]
+    gate = policy.merge_gate(dict(pr, ci=ci), ctx, cfg)
+    hard, bypassed = policy.split_bypass(gate, category, cfg)
+    admin = [g["text"] for g in hard if g["code"] in ("admin", "protection") or g["text"].startswith("CI last ran")]
     if not self_ok:
         admin = [a for a in admin if not a.startswith("required approval missing")]
     d = policy.decide({
         "excluded": ctx["excluded"], "merged": False, "closed": False, "draft": pr["isDraft"],
         "category": category, "review": review_result, "ci": ci["state"], "approval_counts": approval["counts"],
         "fixed_this_run": fixed_this_run, "prior_fixes": prior, "open_issues": open_issues,
-        "self_approved_head": self_ok, "admin_blockers": admin,
+        "self_approved_head": self_ok, "admin_blockers": admin, "bypass": [g["text"] for g in bypassed],
     })
-    return d, [g["text"] for g in gate], category
+    return d, [g["text"] for g in hard], category
 
 
 def dependabot_pr(title, body, files, **kw):
@@ -327,14 +328,49 @@ class Scenarios(unittest.TestCase):
         d, gate, _ = evaluate(approved)
         self.assertEqual(d["bucket"], "A")
 
-    def test_12_low_risk_blocked_by_branch_protection_is_reported(self):
+    def test_12_low_risk_merges_past_branch_protection(self):
+        """User decision 2026-11-23: low-risk maintenance may bypass admin rules."""
         pr = dict(LODASH, reviews=[review("mozzy11", "APPROVED", "dsha1", DURING)], reviewDecision="REVIEW_REQUIRED",
                   mergeStateStatus="BLOCKED")
         d, gate, _ = evaluate(pr)
+        self.assertEqual(gate, [])
+        self.assertEqual((d["bucket"], d["actions"]), ("A", ["merge"]))
+        self.assertIn("GitHub merge state is BLOCKED", d["bypass"])
+        self.assertTrue(any(b.startswith("required approval missing") for b in d["bypass"]))
+        off = dict(CFG, low_risk=dict(CFG["low_risk"], bypass_protection=False))
+        d, gate, _ = evaluate(pr, cfg=off)
         self.assertEqual(d["bucket"], "G")
         self.assertNotIn("merge", d["actions"])
         self.assertIn("GitHub merge state is BLOCKED", gate)
-        self.assertTrue(any(g.startswith("required approval missing") for g in gate))
+
+    def test_12b_low_risk_never_bypasses_ci_conflicts_reviews_or_policy(self):
+        approved = dict(LODASH, reviews=[review("mozzy11", "APPROVED", "dsha1", DURING)], mergeStateStatus="BLOCKED")
+        red = copy.deepcopy(GREEN)
+        red[0]["conclusion"] = "FAILURE"
+        cases = {
+            "checks failing": dict(approved, contexts=red),
+            "merge conflicts": dict(approved, mergeable="CONFLICTING", mergeStateStatus="DIRTY"),
+            "GitHub merge state is DIRTY": dict(approved, mergeStateStatus="DIRTY"),
+            "unresolved review thread": dict(approved, unresolved_threads=1),
+            "changes requested by okello": dict(approved, reviews=approved["reviews"] + [review("okello", "CHANGES_REQUESTED", "dsha1")]),
+            "draft": dict(approved, isDraft=True),
+        }
+        for want, pr in cases.items():
+            d, gate, _ = evaluate(pr)
+            self.assertNotIn("merge", d["actions"], want)
+            self.assertTrue(any(want in g for g in gate), (want, gate))
+        d, gate, _ = evaluate(approved, review_result="fixed", reviewed_sha="dsha1", fixes=[{"sha": "dsha1", "run": "run2"}])
+        self.assertEqual(d["bucket"], "D")
+
+    def test_12c_regular_and_major_never_bypass(self):
+        blocked = dict(reviewDecision="REVIEW_REQUIRED", mergeStateStatus="BLOCKED",
+                       reviews=[review("kakumba", "APPROVED", "sha2")], reviewer_permissions={"kakumba": "write"})
+        d, gate, category = evaluate(make_pr(**blocked))
+        self.assertEqual((category, d["bucket"]), ("regular", "G"))
+        self.assertNotIn("merge", d["actions"])
+        self.assertIn("GitHub merge state is BLOCKED", gate)
+        hard, bypassed = policy.split_bypass([{"code": "protection", "text": "x"}], "major", CFG)
+        self.assertEqual((len(hard), bypassed), (1, []))
 
 
 class Rules(unittest.TestCase):
@@ -480,15 +516,18 @@ class Rules(unittest.TestCase):
             p.write_text("Walked it end to end, looks good.")
             self.assertTrue(prs._check_body(str(p), other, CFG))
 
-    def test_merge_command_never_bypasses(self):
+    def test_merge_command_bypasses_only_for_low_risk(self):
         src = (ROOT / "scripts" / "prs.py").read_text()
         merge_src = src[src.index("def cmd_merge"):src.index("def _verify_evidence")]
         self.assertIn("--match-head-commit", merge_src)
         self.assertIn("assert not any(f in cmd for f in FORBIDDEN_MERGE_FLAGS)", merge_src)
-        self.assertNotIn('"--admin"', merge_src)
-        self.assertEqual(prs.FORBIDDEN_MERGE_FLAGS, ("--admin", "--auto"))
+        self.assertEqual(merge_src.count('"--admin"'), 1)
+        guard = merge_src.index('if facts["category"] != "low-risk"')
+        self.assertLess(guard, merge_src.index('cmd.append("--admin")'))
+        self.assertEqual(prs.FORBIDDEN_MERGE_FLAGS, ("--auto",))
         self.assertNotIn("enforce_admins", src)
-        self.assertNotIn("bypass", src.lower())
+        self.assertEqual(CFG["repos"], ["DIGI-UW/OpenELIS-Global-2"])
+        self.assertFalse(CFG["discover"])
 
 
 if __name__ == "__main__":

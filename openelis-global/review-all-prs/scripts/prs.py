@@ -20,8 +20,10 @@
 
 GitHub is the source of truth. The ledger (state_home/ledger.json) remembers
 what this skill did across runs; runs/<id>/run.json holds one run. merge and
-close re-check everything from live GitHub data and refuse on any blocker;
-neither ever passes --admin or --auto, nor touches branch protection.
+close re-check everything from live GitHub data and refuse on any blocker.
+merge passes --admin only for a low-risk PR whose remaining blockers are all
+branch-protection rules (policy.split_bypass); it never passes --auto and
+never edits protection settings.
 """
 
 from __future__ import annotations
@@ -43,7 +45,7 @@ sys.path.insert(0, str(HERE))
 import policy  # noqa: E402
 
 CONFIG_PATH = HERE.parent / "config.json"
-FORBIDDEN_MERGE_FLAGS = ("--admin", "--auto")
+FORBIDDEN_MERGE_FLAGS = ("--auto",)
 DASHES = (chr(0x2014), chr(0x2013))
 
 
@@ -124,7 +126,7 @@ def parse_key(raw: str, cfg: dict) -> tuple[str, int]:
     m = re.match(r"^([\w.-]+/)?([\w.-]+)#(\d+)$", raw)
     if not m:
         die(f"cannot read PR key {raw!r}; use owner/repo#number")
-    owner = m.group(1)[:-1] if m.group(1) else cfg["discover"]["org"]
+    owner = m.group(1)[:-1] if m.group(1) else cfg["repos"][0].split("/")[0]
     return f"{owner}/{m.group(2)}", int(m.group(3))
 
 
@@ -478,7 +480,8 @@ def facts_for(key: str, cfg: dict, run: dict, ledger: dict, live: dict, rules: d
         "threads_nonblocking": rec.get("threads_nonblocking"),
     }
     gate = policy.merge_gate(gate_live, ctx, cfg)
-    admin = [g["text"] for g in gate if g["code"] == "admin" or g["text"].startswith("CI last ran")]
+    hard, bypassed = policy.split_bypass(gate, category, cfg)
+    admin = [g["text"] for g in hard if g["code"] in ("admin", "protection") or g["text"].startswith("CI last ran")]
     if not self_approved:
         admin = [a for a in admin if not a.startswith("required approval missing")]
     decision = policy.decide({
@@ -495,13 +498,14 @@ def facts_for(key: str, cfg: dict, run: dict, ledger: dict, live: dict, rules: d
         "open_issues": open_issues,
         "self_approved_head": self_approved,
         "admin_blockers": admin,
+        "bypass": [g["text"] for g in bypassed],
     })
     return {
         "key": key, "category": category, "classification": cls, "override_note": note,
         "approval": approval, "ci": ci, "review": review, "reviewed_sha": reviewed_sha,
         "review_reused": reused, "fixed_this_run": fixed_this_run, "prior_fixes": prior_fixes,
-        "open_issues": open_issues, "self_approved_head": self_approved, "gate": gate,
-        "decision": decision, "excluded": excluded, "head": live["headRefOid"],
+        "open_issues": open_issues, "self_approved_head": self_approved, "gate": hard,
+        "bypassed": bypassed, "decision": decision, "excluded": excluded, "head": live["headRefOid"],
     }
 
 
@@ -800,6 +804,7 @@ def cmd_decide(args, cfg, st):
         "bucket": f"{d['bucket']} ({policy.BUCKETS[d['bucket']]})", "actions": d["actions"], "why": d["why"],
         "category": facts["category"], "review": facts["review"], "review_reused": facts["review_reused"],
         "ci": facts["ci"], "approval": facts["approval"], "merge_gate_blockers": rec["blockers"],
+        "bypassed_for_low_risk": [g["text"] for g in facts["bypassed"]],
     }, indent=2))
 
 
@@ -871,6 +876,12 @@ def cmd_merge(args, cfg, st):
         die("merge refused:\n  - " + "\n  - ".join(dict.fromkeys(blockers)))
     cmd = ["pr", "merge", str(number), "--repo", repo, f"--{cfg['merge_method']}",
            "--match-head-commit", live["headRefOid"]]
+    bypassed = [g["text"] for g in facts["bypassed"]]
+    if bypassed:
+        if facts["category"] != "low-risk" or not cfg["low_risk"].get("bypass_protection"):
+            die("merge refused: a protection bypass is allowed for low-risk maintenance only")
+        cmd.append("--admin")
+        print("bypassing branch protection for low-risk maintenance: " + "; ".join(bypassed))
     assert not any(f in cmd for f in FORBIDDEN_MERGE_FLAGS)
     p = subprocess.run(["gh", *cmd], capture_output=True, text=True)
     merged = None
@@ -890,9 +901,10 @@ def cmd_merge(args, cfg, st):
         die(f"merge did not land: {msg}", 3)
     entry["state"] = "merged"
     entry["merged"] = {"run": run["id"], "sha": merged["mergeCommit"], "at": iso(now_utc()),
-                       "kind": facts["decision"].get("merge_kind")}
-    history(entry, run, f"merged as {merged['mergeCommit']}")
+                       "kind": facts["decision"].get("merge_kind"), "bypassed": bypassed}
+    history(entry, run, f"merged as {merged['mergeCommit']}" + (f" (bypassed: {'; '.join(bypassed)})" if bypassed else ""))
     rec.update({"bucket": "A", "merge_sha": merged["mergeCommit"], "merge_kind": facts["decision"].get("merge_kind"),
+                "bypassed": bypassed,
                 "why": facts["decision"]["why"], "ci": facts["ci"]["state"], "title": live["title"],
                 "author": live["author"].get("login"), "url": live["url"], "category": facts["category"]})
     st.save_ledger(ledger)
@@ -1045,6 +1057,7 @@ def cmd_report(args, cfg, st):
         "A": lambda k, p, r, e: item(k, p, r, e, [
             r.get("summary"), f"why it qualified: {r.get('why')}",
             f"merge: {r.get('merge_kind')} ({'low-risk maintenance' if r.get('category') == 'low-risk' else 'previously approved regular PR'}), {(r.get('merge_sha') or '')[:9]}",
+            "bypassed branch protection: " + "; ".join(r["bypassed"]) if r.get("bypassed") else None,
             "fixes: " + "; ".join(f["summary"] for f in e.get("fixes", [])) if e.get("fixes") else None,
             f"tests: {r.get('tests')}" if r.get("tests") else None, f"CI: {r.get('ci')}"]),
         "B": lambda k, p, r, e: item(k, p, r, e, [r.get("summary"), f"findings: {r.get('findings')}" if r.get("findings") else None,

@@ -465,7 +465,10 @@ def merge_gate(live: dict, ctx: dict, cfg: dict) -> list[dict]:
     ctx:  excluded, ledger_merged, category, review, reviewed_sha, approval
           (approval_analysis), fixed_this_run, open_issues, rules
           {required_approvals, thread_resolution}, threads_nonblocking
-    Each blocker is {code, text}; code is one of policy, review, ci, admin.
+    Each blocker is {code, text}; code is one of policy, review, ci, admin,
+    protection. Only protection blockers (required approvals, code owners,
+    a BLOCKED or BEHIND merge state) can be bypassed, and only for low-risk
+    maintenance (split_bypass).
     """
     b: list[dict] = []
 
@@ -497,7 +500,9 @@ def merge_gate(live: dict, ctx: dict, cfg: dict) -> list[dict]:
     elif live.get("mergeable") != "MERGEABLE":
         add("admin", "GitHub has not computed mergeability yet; check again")
     mss = live.get("mergeStateStatus")
-    if mss in ("BLOCKED", "BEHIND", "DIRTY", "DRAFT", "UNKNOWN"):
+    if mss in ("BLOCKED", "BEHIND"):
+        add("protection", f"GitHub merge state is {mss}")
+    elif mss in ("DIRTY", "DRAFT", "UNKNOWN"):
         add("admin", f"GitHub merge state is {mss}")
 
     ci = live.get("ci") or {"state": "none"}
@@ -510,7 +515,7 @@ def merge_gate(live: dict, ctx: dict, cfg: dict) -> list[dict]:
     rules = ctx.get("rules") or {}
     approval = ctx.get("approval") or {}
     if rules.get("required_approvals") and live.get("reviewDecision") != "APPROVED":
-        add("admin", f"required approval missing (review decision {live.get('reviewDecision')})")
+        add("protection", f"required approval missing (review decision {live.get('reviewDecision')})")
     if approval.get("changes_requested_by"):
         add("admin", "changes requested by " + ", ".join(approval["changes_requested_by"]))
     if approval.get("own_changes_requested"):
@@ -529,6 +534,16 @@ def merge_gate(live: dict, ctx: dict, cfg: dict) -> list[dict]:
     elif category not in CATEGORY_RANK:
         add("policy", f"unknown category {category!r}")
     return b
+
+
+def split_bypass(blockers: list[dict], category: str, cfg: dict) -> tuple[list[dict], list[dict]]:
+    """(hard, bypassed). Low-risk maintenance may merge past branch-protection
+    rules when low_risk.bypass_protection is on (user decision, 2026-11-23).
+    CI, conflicts, change requests, open threads and every policy and review
+    blocker stay hard for every category."""
+    if category == "low-risk" and cfg["low_risk"].get("bypass_protection"):
+        return [x for x in blockers if x["code"] != "protection"], [x for x in blockers if x["code"] == "protection"]
+    return list(blockers), []
 
 
 # --------------------------------------------------------------- decide
@@ -581,7 +596,10 @@ def decide(f: dict) -> dict:
         if admin:
             return out("G", approve, "; ".join(admin))
         kind = "after-fix" if f.get("prior_fixes") else "first-run"
-        return out("A", approve + ["merge"], f"low-risk maintenance, {kind} merge", merge_kind=kind)
+        why = f"low-risk maintenance, {kind} merge"
+        if f.get("bypass"):
+            why += "; bypassing branch protection: " + "; ".join(f["bypass"])
+        return out("A", approve + ["merge"], why, merge_kind=kind, bypass=list(f.get("bypass") or []))
 
     if category == "regular":
         if review == "fixed":
