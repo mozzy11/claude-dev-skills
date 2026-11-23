@@ -1,0 +1,86 @@
+{
+  "self_login": "mozzy11",
+  "repos": [
+    "DIGI-UW/OpenELIS-Global-2",
+    "DIGI-UW/openelis-docker",
+    "DIGI-UW/openelis-work",
+    "DIGI-UW/OpenELIS-QA",
+    "DIGI-UW/openelisglobal-plugins"
+  ],
+  "discover": {
+    "org": "DIGI-UW",
+    "name_regex": "(?i)openelis",
+    "exclude_regex": "(?i)-ghsa-"
+  },
+  "excluded_authors": [
+    {"login": "pmanko", "names": ["Piotr Mankowski", "Piotr"]},
+    {"login": "samuelmale", "names": ["Samuel Male", "Samwe Male"]},
+    {"login": "mherman22", "names": ["Herman Muhereza", "Herman"]},
+    {"login": "reagan-meant", "names": ["MAKOBA REAGAN PATRICK", "Reagan"]},
+    {"login": "ibacher", "names": ["Ian", "Ian Bacher"]}
+  ],
+  "bots": {
+    "dependency": ["dependabot", "renovate"],
+    "automation": ["github-actions", "openelis-bot"]
+  },
+  "state_home": "/Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/claude-work/review-all-prs",
+  "merge_method": "squash",
+  "authorized_reviewer_permissions": ["admin", "maintain", "write"],
+  "resume_window_hours": 12,
+  "deep_review_budget": 6,
+  "ci_wait_minutes": 120,
+  "ci_max_age_days": 14,
+  "low_risk": {
+    "max_grouped_updates": 10,
+    "max_changed_files": 10,
+    "docs_max_changed_lines": 80,
+    "config_max_changed_lines": 40,
+    "patch_only_packages": [
+      "springframework", "^org\\.springframework", "hibernate", "^jakarta\\.", "jackson",
+      "^react$", "^react-dom$", "^react-router", "^@carbon/", "carbon-components",
+      "^vite$", "^webpack$", "tomcat", "liquibase", "postgres", "hapi", "^ca\\.uhn\\.",
+      "temurin", "openjdk", "^maven$", "^node$", "^nginx$", "^@playwright/", "^playwright$"
+    ],
+    "dependency_globs": [
+      "pom.xml", "**/pom.xml",
+      "package.json", "**/package.json",
+      "package-lock.json", "**/package-lock.json",
+      "yarn.lock", "**/yarn.lock", "pnpm-lock.yaml", "**/pnpm-lock.yaml",
+      "requirements*.txt", "**/requirements*.txt",
+      "Dockerfile*", "**/Dockerfile*",
+      ".github/workflows/*.yml", ".github/workflows/*.yaml",
+      ".mvn/wrapper/*", "**/.nvmrc"
+    ],
+    "docs_globs": ["*.md", "**/*.md", "docs/**", "LICENSE*"],
+    "simple_config_globs": [
+      ".gitignore", "**/.gitignore", ".editorconfig", ".gitattributes",
+      ".github/dependabot.yml", ".github/ISSUE_TEMPLATE/**",
+      ".github/pull_request_template.md", ".prettierignore", "**/.prettierignore"
+    ],
+    "never_globs": [
+      "**/liquibase/**", "**/*.sql", "**/migrations/**",
+      "src/main/java/**", "src/main/resources/**", "frontend/src/**",
+      ".github/workflows/**/*.sh", "**/security/**"
+    ],
+    "docs_not_maintenance_repos": ["DIGI-UW/openelis-work"],
+    "docs_not_maintenance_title_regex": "(?i)\\b(design|spec|frs|architecture|proposal|adr|rfc)\\b"
+  },
+  "major": {
+    "min_changed_lines": 400,
+    "min_changed_files": 15,
+    "feature_min_changed_lines": 150,
+    "cross_stack_min_changed_lines": 200,
+    "feature_title_regex": "(?i)^(feat|feature)\\b|\\bnew (screen|page|workflow|module)\\b",
+    "architecture_title_regex": "(?i)\\b(architecture|refactor|migrat\\w*|redesign|framework|upgrade)\\b",
+    "schema_globs": ["**/liquibase/**", "**/*.sql", "**/migrations/**"],
+    "sensitive_globs": [
+      "**/security/**", "**/SecurityConfig*", "**/web.xml",
+      "**/*Interceptor*.java", "**/*Filter.java", "docker-compose*.yml", "**/docker-compose*.yml"
+    ],
+    "large_dependency_group": 30
+  },
+  "obsolete": {
+    "merged_history": 400,
+    "age_hint_days": 180
+  }
+}

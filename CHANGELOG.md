@@ -1,5 +1,11 @@
 # Skill changelog
 
+## 2026-11-23 new skill: review-all-prs
+- `openelis-global/review-all-prs`: "review all PRs" sweeps every open PR in the OpenELIS repositories (configured list plus every DIGI-UW repository named openelis*, security-advisory forks excluded). It orchestrates review-pr; the rules live in `scripts/policy.py` and the state in a ledger under `claude-work/review-all-prs/`.
+- Policy as the user set it: core team PRs (pmanko, samuelmale, mherman22, reagan-meant, ibacher) and your own get no action; low-risk maintenance merges on a clean first review with green checks and no prior approval; a low-risk PR fixed in a run stops and merges on the next run; a regular PR merges only on an approval given before the run; major PRs are approved and left for a manual merge; a PR is closed only on a verified merged PR, closed issue or default-branch commit.
+- Unlike resolve-by-criteria §3e, this skill never bypasses: `prs.py merge` re-checks live data, merges with `--match-head-commit`, and never passes `--admin` or `--auto` (the develop rulesets let this account bypass, so the gate is in code).
+- Validation: 27 tests (the user's 12 scenarios plus classifier cases built from the real bodies of #4606, #4751 and #4902), each key rule mutated to confirm a test fails; a read-only live inventory and plan over 233 open PRs in 33 repositories; refusal paths (merge on red CI, review of a core team PR, close without evidence) exercised live with no GitHub write.
+
 ## 2026-11-23 retro of five headless reviews (31696c37 #5151, 855650ce #5152, 04fdafd0 #5153, ebbcf2b7 and 3602570c #5156 r1/r2)
 - No user corrections; each review's findings were taken up by the author's next round. dbe887ad left queued: it is still running and owns its retro.
 - review-pr re-review rule: the old-file swap spells every `cp` and `>` target as a literal absolute path. Evidence: the permission log's one entry, 3602570c's `git show ... > $S/$F` raised a prompt in bypass mode.

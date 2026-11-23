@@ -7,6 +7,7 @@ project they work on.
 |---|---|---|---|
 | [OpenELIS-Global-2](https://github.com/DIGI-UW/OpenELIS-Global-2) | [resolve-issue](openelis-global/resolve-issue/SKILL.md) | Jira issue end to end: implement with tests, live UI and API test on the dev stack, draft PR, CI, independent review | `resolve issue <key or link>` |
 | OpenELIS-Global-2 | [review-pr](openelis-global/review-pr/SKILL.md) | Maintainer-style PR review, deployed and tested through the UI and the API | `review PR <link>` |
+| OpenELIS repositories | [review-all-prs](openelis-global/review-all-prs/SKILL.md) | Sweeps every open PR in the OpenELIS repositories: leaves the core team's PRs alone, merges clean low-risk maintenance on the first run and previously approved regular PRs, approves major PRs for a manual merge, closes verified obsolete ones, reports A to H; never bypasses branch protection | `review all PRs` |
 | OpenELIS-Global-2 | [resolve-by-criteria](openelis-global/resolve-by-criteria/SKILL.md) | Batch Jira resolution from a filter, one issue at a time, merged after review | `resolve by criteria <criteria>` |
 | [openelis-docker](https://github.com/DIGI-UW/openelis-docker) | [prepare-for-next-release](openelis-docker/prepare-for-next-release/SKILL.md) | Release readiness: last release upgraded to develop on the same database, Liquibase and metadata migration evidence, Playwright MCP regression, fixes, detailed report | `prepare for next release` |
 | all | [session-retro](shared/session-retro/SKILL.md) | Audits finished sessions and improves the skills and memory | `retro` |
