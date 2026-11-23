@@ -2,7 +2,7 @@
 
 ## 2026-11-23 review-all-prs: OpenELIS-Global-2 only; low-risk maintenance may bypass protection (user)
 - Scope narrowed to DIGI-UW/OpenELIS-Global-2 (`repos` only, `discover` empty); a live plan read 170 open PRs, 36 excluded.
-- Low-risk maintenance may merge past branch-protection rules (missing required approval or code-owner review, BLOCKED or BEHIND merge state) with `--admin`, named in the report; `low_risk.bypass_protection` turns it off. Red, pending or stale CI, conflicts, change requests, open threads, drafts and the fixed-this-run rule are never bypassed; regular and major PRs never bypass. 30 tests; the category guard, the protection code and the DIRTY state each fail a test when mutated.
+- Low-risk maintenance may merge past branch-protection rules (missing required approval or code-owner review, BLOCKED or BEHIND merge state) with `--admin`, named in the report; `low_risk.bypass_protection` turns it off. Red, pending or stale CI, conflicts, change requests, open threads, drafts and the fixed-this-run rule are never bypassed; regular and major PRs never bypass. 29 tests; the category guard, the protection code and the DIRTY state each fail a test when mutated.
 
 ## 2026-11-23 retro of 057541f2 (self-review of #5159, decision approve, not corrected)
 - No user corrections and no skill change. dbe887ad left queued: it is still running and owns its retro.
