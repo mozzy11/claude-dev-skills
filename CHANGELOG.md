@@ -1,5 +1,9 @@
 # Skill changelog
 
+## 2026-11-23 retro of 057541f2 (self-review of #5159, decision approve, not corrected)
+- No user corrections and no skill change. dbe887ad left queued: it is still running and owns its retro.
+- memory (hub_walks): `browser_snapshot` target "main" never matches on OpenELIS pages (six failures in 057541f2) and `browser_run_code_unsafe` has no `URL` global.
+
 ## 2026-11-23 new skill: review-all-prs
 - `openelis-global/review-all-prs`: "review all PRs" sweeps every open PR in the OpenELIS repositories (configured list plus every DIGI-UW repository named openelis*, security-advisory forks excluded). It orchestrates review-pr; the rules live in `scripts/policy.py` and the state in a ledger under `claude-work/review-all-prs/`.
 - Policy as the user set it: core team PRs (pmanko, samuelmale, mherman22, reagan-meant, ibacher) and your own get no action; low-risk maintenance merges on a clean first review with green checks and no prior approval; a low-risk PR fixed in a run stops and merges on the next run; a regular PR merges only on an approval given before the run; major PRs are approved and left for a manual merge; a PR is closed only on a verified merged PR, closed issue or default-branch commit.
