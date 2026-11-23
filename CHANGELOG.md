@@ -1,5 +1,10 @@
 # Skill changelog
 
+## 2026-11-23 retro of 2ebcd288 (first review-all-prs run, 3 merged) and 245b04ce (self-review of #5160)
+- review-all-prs §5c: fix clones are now `git clone --shared` from the main checkout, with a `fork` remote and the PR branch tracking it. A blob:none clone of a contributor fork passed 10 minutes, and the push from a detached HEAD was blocked because the pre-push gate fell back to develop and checked develop's frontend changes (#3922).
+- review-all-prs §6: after `update-branch`, the head is your base merge and `decide` reports "the head moved after the review". Confirm the parents and the unchanged diff, then `record --review clean --sha <new head> --delta minor` (#4263 sat in N on a green head until re-recorded).
+- Memory: the SQL column-name trap now also lists `history.reference_table` and `localization_value.locale/value`; both sessions failed on guessed names (`h.tbl_id`, `l.english`). 245b04ce had no user corrections. Permission log empty.
+
 ## 2026-11-23 retro of 5208f15b (built review-all-prs) and dbe887ad (criteria run, tail after the 2026-11-19 retro)
 - No skill change. 5208f15b's corrections (OpenELIS-Global-2 only, low-risk bypass, every check green) were applied in-session (f62648e, ff8a28d, dbe992e). dbe887ad's later user messages were status pings answered by ECONNRESET/OAuth errors and a resume request already covered by resolve-by-criteria (re-run the resolved JQL); its MCP traps (`main` snapshot, screenshot outside allowed roots) are already in memory. Permission log empty.
 

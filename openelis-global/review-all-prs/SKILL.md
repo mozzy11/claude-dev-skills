@@ -311,20 +311,28 @@ for the author. Pushing to a Dependabot branch stops Dependabot from
 rebasing it; say so in the fix summary.
 
 **5c. How:**
-- No worktree and no branch in the main checkout. Use a disposable clone,
-  registered for cleanup:
+- No worktree and no branch in the main checkout. Use a disposable clone
+  that shares the main checkout's objects, with the PR branch tracking the
+  fork, registered for cleanup:
   ```
-  git clone --filter=blob:none --no-checkout https://github.com/<head repo>.git /Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/claude-work/review-all-prs/checkouts/<repo>-<n>
+  git clone --shared --no-checkout /Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/develop/OpenELIS-Global-2 /Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/claude-work/review-all-prs/checkouts/<repo>-<n>
   /Users/mosesmutesasira/Desktop/DEV/Projects/OpenELIS/claude-work/bin/session-track.sh dir <that path>
-  git -C <that path> fetch origin <head branch> && git -C <that path> checkout --detach FETCH_HEAD
+  git -C <that path> remote add fork https://github.com/<head repo>.git
+  git -C <that path> fetch fork <head branch>
+  git -C <that path> checkout -b <head branch> --track fork/<head branch>
   ```
+  The tracking branch matters: the pre-push gate diffs against `@{u}`, and
+  from a detached HEAD it falls back to develop and checks develop's own
+  changes. A `--filter=blob:none` clone of a contributor fork took over 10
+  minutes; the shared clone fetches only the PR's new objects (2026-11-23,
+  #3922). For a repository other than OpenELIS-Global-2, share its local
+  checkout the same way, or clone it blob:none if there is none.
 - Commit as mozzy11 with a conventional message and no AI trailer. Format
   what you touched (cold `mvn spotless:apply`, `npm run format`).
 - Test from the main checkout as review-pr §3 says (`git fetch upstream
   pull/<n>/head:pr-<n>` after the push, `iso-suite.sh` for backend runs),
   never from the clone: its submodules are empty.
-- Push without force:
-  `git -C <that path> push https://github.com/<head repo>.git HEAD:<head branch>`.
+- Push without force: `git -C <that path> push fork HEAD:<head branch>`.
   If it is rejected, the author pushed meanwhile: fetch, re-review, and
   start again.
 - Confirm CI started: `prs.py approve-runs <key>` approves fork workflow
@@ -362,6 +370,12 @@ notice ends the wait. Then for each key:
   what you reviewed. Record `--review clean --sha <new head>`, then
   `decide`, then act (a regular PR with a prior approval merges; a major PR
   is approved and goes to B).
+- A PR whose branch you updated: the head moved to your base merge, so
+  `decide` says "the head moved after the review". Confirm the head's
+  parents are the reviewed sha and the base, and that `gh pr diff` shows the
+  same lines you reviewed; then `record --review clean --sha <new head>
+  --delta minor`, `decide`, and act (2026-11-23: #4263 fell to N on a green
+  head until re-recorded).
 - A low-risk or regular PR that was only waiting for checks: `decide`, then
   act.
 - Still running at the deadline: `decide` gives G ("checks still
