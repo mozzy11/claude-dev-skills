@@ -222,7 +222,10 @@ them explicitly, so there is nothing to ask about here either.
   `project_transifex_plural_shape` lists as uploading fine).
 - **Re-review after a fix round:** diff the sha you reviewed to the head,
   run the round's new tests against the previous head's sources (`git show
-  <old>:<file>` over the PR copy, restored after), and walk the fixed rows
+  <old>:<file>` over the PR copy, restored after; every `cp` and `>` target
+  spelled as a literal absolute path, never `$S/$F`: a variable redirect
+  target raised a permission prompt in bypass mode on #5156 r2,
+  2026-11-23), and walk the fixed rows
   plus every lane the fix's shared code reaches (#5127 r2, 2026-11-18: all
   7 new tests failed on the old files; the `OrderContext` fix reached the
   clinical and vector lanes, walked clean).

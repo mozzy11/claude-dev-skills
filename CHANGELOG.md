@@ -1,5 +1,9 @@
 # Skill changelog
 
+## 2026-11-23 retro of five headless reviews (31696c37 #5151, 855650ce #5152, 04fdafd0 #5153, ebbcf2b7 and 3602570c #5156 r1/r2)
+- No user corrections; each review's findings were taken up by the author's next round. dbe887ad left queued: it is still running and owns its retro.
+- review-pr re-review rule: the old-file swap spells every `cp` and `>` target as a literal absolute path. Evidence: the permission log's one entry, 3602570c's `git show ... > $S/$F` raised a prompt in bypass mode.
+
 ## 2026-11-23 retro of 85274e4e (headless review of #5142, approve, not corrected: skipped) and 64c6e8ff (integration wiki pages)
 - No skill change. 64c6e8ff's only correction ("what do you mean ??" after an offer that named no page or section) is covered by the named-locations and be-direct memories; the Mermaid `;` trap is already in the integration-wiki memory.
 
