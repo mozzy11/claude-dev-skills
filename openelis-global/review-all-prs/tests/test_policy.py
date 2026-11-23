@@ -276,6 +276,21 @@ class Scenarios(unittest.TestCase):
         self.assertEqual((d["bucket"], d["actions"]), ("G", []))
         self.assertTrue(any(g.startswith("checks none") for g in gate))
 
+    def test_08b_every_validation_check_must_pass_not_only_required(self):
+        """User, 2026-11-23: all PRs must pass validation CI checks before a merge."""
+        shard = {"name": "Backend shard ${{ matrix.shard }}", "status": "COMPLETED", "conclusion": "FAILURE",
+                 "required": False, "at": "2026-11-23T11:00:00Z"}
+        d, gate, _ = evaluate(dict(LODASH, contexts=GREEN + [shard]))
+        self.assertEqual((d["bucket"], d["actions"]), ("G", []))
+        self.assertTrue(any("Backend shard" in g for g in gate), gate)
+        running = dict(shard, status="IN_PROGRESS", conclusion=None)
+        d, gate, _ = evaluate(dict(LODASH, contexts=GREEN + [running]))
+        self.assertEqual((d["bucket"], d["actions"]), ("G", ["wait-ci"]))
+        approved = make_pr(reviews=[review("kakumba", "APPROVED", "sha2")], reviewer_permissions={"kakumba": "write"},
+                           reviewDecision="APPROVED", contexts=GREEN + [shard])
+        d, gate, _ = evaluate(approved)
+        self.assertNotIn("merge", d["actions"])
+
     def test_09_outdated_pr_is_flagged_and_closed(self):
         pr = make_pr(title="OGC-1234: show the unit on the results page", headRefName="ogc-1234-unit",
                      url="u", closing_issues=[], mergeable="MERGEABLE")
@@ -473,9 +488,13 @@ class Rules(unittest.TestCase):
     def test_ci_state(self):
         self.assertEqual(policy.ci_state([], ["a"])["state"], "pending")
         self.assertEqual(policy.ci_state([], [])["state"], "none")
-        extra = GREEN + [{"name": "codecov", "status": "COMPLETED", "conclusion": "FAILURE", "required": False, "at": "x"}]
+        extra = GREEN + [{"name": "Backend shard 3", "status": "COMPLETED", "conclusion": "FAILURE", "required": False, "at": "x"}]
         s = policy.ci_state(extra, RULES["required_checks"])
-        self.assertEqual((s["state"], s["other_failing"]), ("green", ["codecov"]))
+        self.assertEqual((s["state"], s["other_failing"]), ("failing", ["Backend shard 3"]))
+        skipped = GREEN + [{"name": "Docs", "status": "COMPLETED", "conclusion": "SKIPPED", "required": False, "at": "x"}]
+        self.assertEqual(policy.ci_state(skipped, RULES["required_checks"])["state"], "green")
+        waiting = GREEN + [{"name": "fork run", "status": "COMPLETED", "conclusion": "ACTION_REQUIRED", "required": False, "at": "x"}]
+        self.assertEqual(policy.ci_state(waiting, RULES["required_checks"])["state"], "failing")
         rerun = GREEN + [dict(GREEN[0], conclusion="FAILURE", at="2026-11-22T00:00:00Z")]
         self.assertEqual(policy.ci_state(rerun, RULES["required_checks"])["state"], "green")
         old = policy.ci_state(GREEN, RULES["required_checks"], datetime(2026, 12, 30, tzinfo=timezone.utc))

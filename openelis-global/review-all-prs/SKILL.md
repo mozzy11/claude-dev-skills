@@ -55,10 +55,10 @@ the report for the user.
      BLOCKED or BEHIND merge state. When those are the only blockers left,
      `prs.py merge` adds `--admin` and the report names what was bypassed.
      Switch it off with `low_risk.bypass_protection: false`.
-   - **Never bypassed, for any PR:** required checks failing, pending or
-     absent; CI older than 14 days; merge conflicts; someone else's change
-     request; unresolved review threads; a draft; a moved head; a review that
-     is not clean; the "fixed in this run, merge next run" rule.
+   - **Never bypassed, for any PR:** any validation check that is not green
+     (see rule 2); CI older than 14 days; merge conflicts; someone else's
+     change request; unresolved review threads; a draft; a moved head; a
+     review that is not clean; the "fixed in this run, merge next run" rule.
    - **Regular and major PRs never bypass anything.** Never `--auto`, never
      toggle `enforce_admins`, never edit branch protection or rulesets, never
      dismiss anyone's review, never resolve a thread you did not act on. If
@@ -67,7 +67,14 @@ the report for the user.
      §3e inside this skill. Your account can bypass the develop rulesets
      (`current_user_can_bypass: always`), so GitHub may not stop a wrong
      merge. The gate in `prs.py` will.
-2. **Excluded PRs get no action of any kind**: no review, comment, label,
+2. **Every PR must pass every validation check before it merges** (user,
+   2026-11-23: "all PRs must pass validation CI checks"). That means every
+   check run and status reported on the head, required or not, is
+   SUCCESS, NEUTRAL or SKIPPED, and every required check has reported. A
+   failing optional shard, a cancelled job or a fork run waiting for approval
+   (ACTION_REQUIRED) blocks the merge like a red checkpoint. Low-risk PRs
+   included: a bypass covers branch-protection rules only, never a check.
+3. **Excluded PRs get no action of any kind**: no review, comment, label,
    push, update-branch, rerun or close. The author is the PR's opener
    (matched by login and display name in `config.json`
    `excluded_authors`): Piotr (pmanko), Samuel Male (samuelmale), Herman
@@ -75,30 +82,30 @@ the report for the user.
    excluded, because resolve-issue owns them. `prs.py review/close/
    update-branch/approve-runs` refuse excluded PRs. To add a person, add
    `{"login": ..., "names": [...]}` to the list.
-3. **A previous approval** (needed to merge a regular PR) is the reviewer's
+4. **A previous approval** (needed to merge a regular PR) is the reviewer's
    latest decisive review (not dismissed, not followed by their own change
    request), from a person with write, maintain or admin access who is not
    the author, **submitted before this run started** (`prs.py run-start`).
    It counts if what landed after it is nothing, base merges, your recorded
    fixes, or author commits you reviewed and recorded as `--delta minor`.
    Approvals you post during this run never count for a merge in this run.
-4. **Low-risk is mechanical** (`policy.classify`). You can raise a category
+5. **Low-risk is mechanical** (`policy.classify`). You can raise a category
    (`record --category major --why ...`). You can lower major to regular
    only with a reason. You can never make a PR low-risk by hand. When unsure,
    raise it.
-5. **The review method is review-pr**: its §0 rules (the blocking bar,
+6. **The review method is review-pr**: its §0 rules (the blocking bar,
    respecting standing reviews, authorship as mozzy11 with no AI attribution
    and no "Decision:" line on other people's PRs), §1 reading, §2 structural
    checks, §3 verification by running (including the live UI and API walk
    where §3 requires one, and its "batch sweep" rule), §4 inline comments
    and §5 review text. This skill changes only who merges, when, and how the
    batch is run.
-6. **One PR at a time, at most two parallel tool calls or agents.** One
+7. **One PR at a time, at most two parallel tool calls or agents.** One
    status line at each phase and after each PR.
-7. **Never a foreground `sleep`.** Long waits (`wait-ci`, a slow
+8. **Never a foreground `sleep`.** Long waits (`wait-ci`, a slow
    `inventory`) run with `run_in_background`, and their completion notice
    ends the wait.
-8. **GitHub is the source of truth; the ledger is the memory.** Every claim
+9. **GitHub is the source of truth; the ledger is the memory.** Every claim
    in the report comes from a command run in this session.
 
 ## 1. Start or resume
@@ -198,6 +205,19 @@ schema or code changes, and documents in `openelis-work` are never low-risk
 (`show` lists the blockers). There is **no previous-approval requirement**
 for this category: that exception is deliberate.
 
+In plain terms (user, 2026-11-23):
+- **The first-run merge is for low-risk maintenance only.** A feature PR,
+  small or large, never merges on the run that first reviews it: a regular
+  PR needs an approval from before the run, and a major PR (a large
+  feature) is never merged by this skill at all, only approved for the
+  user (B).
+- **The review finds nothing** (a clean version bump) and **every validation
+  check is green** → merge it in this run.
+- **You push a fix** → stop. Its checks run, and the **next** run verifies
+  the fix and merges it once every check is green.
+- **Anything else** (a check red or still running, an issue you cannot fix)
+  → not merged.
+
 Review it fully, on the first encounter:
 
 1. Read the whole diff (`gh pr diff <n> --repo <repo>`). Only the announced
@@ -216,7 +236,8 @@ Review it fully, on the first encounter:
    run actionlint per review-pr §2.
 5. Docs-only: read every line, and check each link and each stated fact
    against the code.
-6. CI: `decide` shows the required checks. Results older than
+6. CI: `decide` shows every check on the head (`required`, `other_failing`,
+   `other_pending`); all must pass (§0 rule 2). Results older than
    `ci_max_age_days` (14) need `prs.py update-branch <key>` first; for
    Dependabot that comments `@dependabot rebase`. Then wait-ci.
 
@@ -237,7 +258,7 @@ Outcomes:
 - **CI failing** → attribute it per review-pr §3. Caused by the bump and
   fixable: the fix path above. Not fixable: C. Infrastructure: rerun the
   failed jobs once (`gh run rerun <id> --failed`) and wait-ci. Never merge
-  on red or pending required checks.
+  with any check red or pending, required or not.
 
 ## 4. Outdated and superseded PRs
 
@@ -328,7 +349,7 @@ A PR with issues left stays in C.
 ## 6. CI sweep (after the per-PR loop)
 
 For every key that got `wait-ci` in this run (a regular or major PR you fixed,
-a PR whose required checks were still running, a PR whose branch you
+a PR whose checks were still running, a PR whose branch you
 updated), and **never a D PR**:
 
 ```
@@ -380,7 +401,7 @@ right column names the test that pins each row of the user's scenarios.
 
 | Situation | Outcome | Test |
 |---|---|---|
-| Regular, approved before the run, requested changes addressed, review clean, required checks green, mergeable | Approve if not yet on this head, then merge (A, approved-regular) | `test_01` |
+| Regular, approved before the run, requested changes addressed, review clean, every check green, mergeable | Approve if not yet on this head, then merge (A, approved-regular) | `test_01` |
 | Regular, approved before the run, minor issues you fixed this run | wait-ci; green → re-check your commits → merge (A) | `test_02` |
 | Major (any approval history), review clean, checks green | Approve, leave open (B) | `test_03` |
 | Regular, never reviewed, review clean | Approve; not merged (G: mergeable next run if unchanged). A large feature is major → B | `test_04` |
@@ -388,7 +409,8 @@ right column names the test that pins each row of the user's scenarios.
 | Low-risk, first encounter, no issues, checks green, rules met | Approve and merge (A, first-run) | `test_05` |
 | Low-risk, issues you fixed and pushed this run | D; stop, even if CI turns green | `test_06` |
 | Low-risk, fixed in an earlier run, fixes verified, checks green | Merge (A, after-fix); an issue still open → C | `test_07` |
-| Low-risk, required checks failing / running / absent | G / wait-ci / G | `test_08` |
+| Low-risk, checks failing / running / absent | G / wait-ci / G | `test_08` |
+| Any PR with a required check green but another check red or running (an optional shard, a cancelled job, a fork run awaiting approval) | Not merged | `test_08b` |
 | Verified obsolete or superseded | Close with an explanation (E) | `test_09`, `test_09b` |
 | Core team or your own PR | F; no action | `test_10` |
 | Major dependency upgrade | Never low-risk: regular (needs a prior approval) or major (core framework or runtime, 30+ updates) | `test_11` |

@@ -413,8 +413,10 @@ def waiting_on_author(pr: dict, cfg: dict) -> str | None:
 def ci_state(contexts: list[dict], required_names: list[str] | set[str], now: datetime | None = None) -> dict:
     """contexts: normalised [{name, status, conclusion, required, at}].
 
-    green | pending | failing | none. With required checks configured only
-    they decide; without any, every reported check must be green.
+    green | pending | failing | none. Every check that reported on the head
+    must pass, required or not (user, 2026-11-23: "all PRs must pass
+    validation CI checks"), and a required check that has not reported yet
+    counts as pending. SUCCESS, NEUTRAL and SKIPPED pass.
     """
     by: dict[str, list[dict]] = {}
     for c in contexts:
@@ -432,7 +434,7 @@ def ci_state(contexts: list[dict], required_names: list[str] | set[str], now: da
     required = set(required_names) | {c["name"] for c in contexts if c.get("required")}
     detail = {n: one(n) for n in sorted(required)}
     others = {n: one(n) for n in sorted(by) if n not in required}
-    considered = detail if required else others
+    considered = {**detail, **others}
     if not considered:
         state = "none"
     elif any(v == "failing" for v in considered.values()):
@@ -449,8 +451,8 @@ def ci_state(contexts: list[dict], required_names: list[str] | set[str], now: da
     return {
         "state": state,
         "required": detail,
-        "other_failing": sorted(n for n, v in others.items() if v == "failing") if required else [],
-        "other_pending": sorted(n for n, v in others.items() if v == "pending") if required else [],
+        "other_failing": sorted(n for n, v in others.items() if v == "failing"),
+        "other_pending": sorted(n for n, v in others.items() if v == "pending"),
         "age_days": age_days,
     }
 
@@ -507,8 +509,10 @@ def merge_gate(live: dict, ctx: dict, cfg: dict) -> list[dict]:
 
     ci = live.get("ci") or {"state": "none"}
     if ci["state"] != "green":
-        detail = ", ".join(f"{k}: {v}" for k, v in (ci.get("required") or {}).items() if v != "ok")
-        add("ci", f"checks {ci['state']}" + (f" ({detail})" if detail else ""))
+        bad = [f"{k}: {v}" for k, v in (ci.get("required") or {}).items() if v != "ok"]
+        bad += [f"{k}: failing" for k in ci.get("other_failing") or []]
+        bad += [f"{k}: pending" for k in ci.get("other_pending") or []]
+        add("ci", f"checks {ci['state']}" + (f" ({', '.join(bad)})" if bad else ""))
     elif ci.get("age_days") is not None and ci["age_days"] > cfg["ci_max_age_days"]:
         add("ci", f"CI last ran {ci['age_days']} days ago: update the branch and let it run again")
 

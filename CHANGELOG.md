@@ -1,5 +1,9 @@
 # Skill changelog
 
+## 2026-11-23 review-all-prs: every validation check must pass; first-run merge is for low-risk only (user)
+- "All PRs must pass validation CI checks": `policy.ci_state` now requires every check on the head to pass (SUCCESS, NEUTRAL or SKIPPED), not only the required ones; a red optional shard, a cancelled job or a fork run awaiting approval blocks the merge, for low-risk PRs too. On the live plan this changed one PR (#4978: checkpoints green, a backend shard red). `test_08b` pins it, and putting back required-only CI fails two tests.
+- SKILL.md §3 states the low-risk flow in the user's words, and that the first-run merge never applies to feature PRs (regular needs a prior approval; major is only approved for the user). 30 tests.
+
 ## 2026-11-23 review-all-prs: OpenELIS-Global-2 only; low-risk maintenance may bypass protection (user)
 - Scope narrowed to DIGI-UW/OpenELIS-Global-2 (`repos` only, `discover` empty); a live plan read 170 open PRs, 36 excluded.
 - Low-risk maintenance may merge past branch-protection rules (missing required approval or code-owner review, BLOCKED or BEHIND merge state) with `--admin`, named in the report; `low_risk.bypass_protection` turns it off. Red, pending or stale CI, conflicts, change requests, open threads, drafts and the fixed-this-run rule are never bypassed; regular and major PRs never bypass. 29 tests; the category guard, the protection code and the DIRTY state each fail a test when mutated.
