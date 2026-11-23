@@ -1,5 +1,8 @@
 # Skill changelog
 
+## 2026-11-23 retro of 85274e4e (headless review of #5142, approve, not corrected: skipped) and 64c6e8ff (integration wiki pages)
+- No skill change. 64c6e8ff's only correction ("what do you mean ??" after an offer that named no page or section) is covered by the named-locations and be-direct memories; the Mermaid `;` trap is already in the integration-wiki memory.
+
 ## 2026-11-19 dbe887ad (per-issue retro, OGC-1647 #5131)
 - resolve-issue: a frontend fixture copies a real server response; key nothing on a field the server does not fill (#5131 R1: mocks had analysisId, no controller set it).
 - claude-work/bin/wait-runs.py splits each argument on spaces (zsh passed `$ids` as one argument and the merge-sha watch never started).
