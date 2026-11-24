@@ -6,6 +6,7 @@
 - SKILL.md §2a: disk first under about 6 GB free; script tests get a `git archive` of only the paths they read. A whole-tree extract next to an iso-suite run and another session's Playwright filled the disk, Docker hung and the shared stack was restarted. iso-suite deletes its copy on exit, so a rerun after a fix uses the light-stack copy.
 - Review drafts are per run (`pr<N>-<run id>.md`): rewriting `pr<N>-review.md` overwrote the previous run's drafts of #3233 and #3069.
 - Memory: Docker disk-full hang variant and its recovery added to project_docker_vm_readonly_kills_postgres.
+- SKILL.md §2a: update-branch before approve-runs when a fork head's waiting runs are over a day old or it has no E2E run (#3074's approved 11-11 runs failed every E2E shard from a stale merge ref; #3233 had no E2E run).
 
 ## 2026-11-24 retro of twelve headless reviews (bfa5856b #5161, c68df4ad/e27a507a #5162 r1/r2, aa7fc989 #5165, 689a21f7/b2091d11 #5166 r1/r2, fef26813/fd18e190 #5168 r1/r2, afff08f2 #5170, 765624ff #5171, 81b8fb4f #5174, dc0fb98f #5180)
 - No skill change: none of the twelve was corrected (eight PRs merged after the rounds, #5180 open), and the three request-changes rounds were answered by fix commits, so the review rules held.

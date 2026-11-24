@@ -182,6 +182,12 @@ says "no budget".
    `iso-suite.sh` deletes its copy when it exits; to rerun one class after
    a fix, use the light-stack copy (`mvn test` without `clean` keeps the
    mounted WAR).
+   CI on a fork head: if its waiting runs are more than a day old, or no
+   `03 - E2E` run exists on the head, run `prs.py update-branch` before
+   `approve-runs`. Approving #3074's 2026-11-11 runs built E2E from that
+   day's merge ref and every shard failed against today's specs; #3233's
+   head had no E2E run at all (2026-11-24, memory
+   `project_ci_rerun_stale_merge_ref`).
 4. Findings: a minor issue you fix yourself (§5). A blocking issue, measured
    against the review-pr §0 bar, becomes `--issue "..."` and a change
    request.
