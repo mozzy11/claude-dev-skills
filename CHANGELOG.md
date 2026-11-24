@@ -1,5 +1,9 @@
 # Skill changelog
 
+## 2026-11-24 retro of twelve headless reviews (bfa5856b #5161, c68df4ad/e27a507a #5162 r1/r2, aa7fc989 #5165, 689a21f7/b2091d11 #5166 r1/r2, fef26813/fd18e190 #5168 r1/r2, afff08f2 #5170, 765624ff #5171, 81b8fb4f #5174, dc0fb98f #5180)
+- No skill change: none of the twelve was corrected (eight PRs merged after the rounds, #5180 open), and the three request-changes rounds were answered by fix commits, so the review rules held.
+- Memory: the Add User recipe for a lab-scoped walk user (Save stays disabled with no visible error for a digit in the login or `-` in the password; four reviews retried it), and four more guessed SQL column names (organization_type.short_name, report_definition.last_updated, test_alert_rule.is_enabled, no actor_id on the run event table). Permission log empty.
+
 ## 2026-11-23 retro of 2ebcd288 (first review-all-prs run, 3 merged) and 245b04ce (self-review of #5160)
 - review-all-prs §5c: fix clones are now `git clone --shared` from the main checkout, with a `fork` remote and the PR branch tracking it. A blob:none clone of a contributor fork passed 10 minutes, and the push from a detached HEAD was blocked because the pre-push gate fell back to develop and checked develop's frontend changes (#3922).
 - review-all-prs §6: after `update-branch`, the head is your base merge and `decide` reports "the head moved after the review". Confirm the parents and the unchanged diff, then `record --review clean --sha <new head> --delta minor` (#4263 sat in N on a green head until re-recorded).
