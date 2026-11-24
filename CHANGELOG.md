@@ -1,5 +1,8 @@
 # Skill changelog
 
+## 2026-11-25 retro of 872b93f2 (headless #5180 round 2, not corrected; #5180 merged)
+- No skill change. Memory: `lab_unit_roles` has no `id`, and `analyzer_run.label` was guessed again despite the column memory. Permission log empty.
+
 ## 2026-11-24 review-all-prs fixes from run 20261124-191420 (session cf108ef8)
 - prs.py `record` refuses a `--sha`/`--fix-sha` that is not a full 40-character commit GitHub knows: a padded sha (`f307ccc7c4` plus zeros) was recorded for #3776 before the real head was. Both bad forms now exit 2 and change nothing; 30 policy tests pass.
 - SKILL.md §2a: a head unchanged since your last review or comment is waiting-on-author and takes no budget slot (#4021, #2552, #4133); mark each ledger issue the author fixed with `--issue-fixed` before `--review clean` (#3233 decided C until I1 was marked).
