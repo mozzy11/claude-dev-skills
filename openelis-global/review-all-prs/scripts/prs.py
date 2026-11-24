@@ -707,6 +707,14 @@ def cmd_show(args, cfg, st):
     print(json.dumps(out, indent=2, default=str))
 
 
+def require_commit(repo: str, sha: str, flag: str):
+    """A recorded sha must be a full commit GitHub knows (2026-11-24: a padded sha was accepted)."""
+    if not re.fullmatch(r"[0-9a-f]{40}", sha or ""):
+        die(f"{flag} must be a full 40-character commit sha, got {sha!r}")
+    if gh(["api", f"repos/{repo}/commits/{sha}", "--jq", ".sha"], check=False) is None:
+        die(f"{flag} {sha[:12]} is not a commit in {repo}")
+
+
 def cmd_record(args, cfg, st):
     repo, number = parse_key(args.key, cfg)
     key = key_of(repo, number)
@@ -717,6 +725,8 @@ def cmd_record(args, cfg, st):
     if args.review:
         if args.review != "waiting-on-author" and not args.sha:
             die("--review needs --sha (the head you reviewed)")
+        if args.sha:
+            require_commit(repo, args.sha, "--sha")
         rec["review"] = args.review
         rec["review_sha"] = args.sha
         entry["reviews"].append({"run": run["id"], "sha": args.sha, "result": args.review, "at": iso(now_utc())})
@@ -740,6 +750,7 @@ def cmd_record(args, cfg, st):
             die("--issue-dropped needs --why")
         _set_issue(entry, iid, "dropped", run, args.why)
     if args.fix_sha:
+        require_commit(repo, args.fix_sha, "--fix-sha")
         if not args.fix_summary:
             die("--fix-sha needs --fix-summary")
         entry["fixes"].append({"run": run["id"], "sha": args.fix_sha, "summary": args.fix_summary, "at": iso(now_utc())})

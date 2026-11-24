@@ -42,7 +42,9 @@ the report for the user.
   `discover` to `{"org": "DIGI-UW", "name_regex": "(?i)openelis",
   "exclude_regex": "(?i)-ghsa-"}`. After changing the config or `policy.py`,
   run `python3 -I <skill>/tests/test_policy.py`.
-- Review drafts: `claude-work/reviews/pr<N>-review.md` (review-pr §5).
+- Review drafts: `claude-work/reviews/pr<N>-<run id>.md`, one per run
+  (2026-11-24: writing `pr<N>-review.md` again overwrote the earlier
+  run's posted drafts of #3233 and #3069).
 
 ## 0. Ground rules (they override other skills where they differ)
 
@@ -155,7 +157,13 @@ says "no budget".
    re-review, use review-pr §1 "Re-review after a fix round": diff the
    approved sha (`show` → `facts.approval.approved_sha`) to the head, and
    for author commits after the approval record `--delta minor` or
-   `--delta substantial`.
+   `--delta substantial`. When the head equals the sha of your last
+   review or comment and nothing new was said, it is `waiting-on-author`,
+   not a deep review, and it does not use a budget slot (2026-11-24:
+   #4021, #2552 and #4133). For each ledger issue (`show` →
+   `ledger.issues`) the author's new commits fix, record `--issue-fixed
+   I<n>` before `--review clean`; an open one keeps the review from
+   counting as clean (#3233).
 2. Confirm the category from the diff, not the heuristics. Record
    `--category major --why ...` for a new workflow, a new screen, a schema
    change, an architectural change or a substantial change to existing
@@ -164,7 +172,16 @@ says "no budget".
 3. Live test exactly where review-pr §3 requires it, with its "batch sweep"
    rule: deploy several app-code candidates together on one isolated stack
    and walk each before approving. Dependency and test-only PRs may approve
-   on green CI.
+   on green CI. Disk first: with under about 6 GB free, remove stale
+   copies (`claude-work/iso/*` of merged tickets) before any copy, WAR
+   build or extract, and give a script test a `git archive <sha> <paths>`
+   of only what it reads. A whole-tree extract next to a running
+   `iso-suite.sh` and another session's Playwright took the disk from
+   4.1 GB to 0, Docker hung and the shared stack had to be restarted
+   (2026-11-24, memory `project_docker_vm_readonly_kills_postgres`).
+   `iso-suite.sh` deletes its copy when it exits; to rerun one class after
+   a fix, use the light-stack copy (`mvn test` without `clean` keeps the
+   mounted WAR).
 4. Findings: a minor issue you fix yourself (§5). A blocking issue, measured
    against the review-pr §0 bar, becomes `--issue "..."` and a change
    request.

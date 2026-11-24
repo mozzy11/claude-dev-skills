@@ -1,5 +1,12 @@
 # Skill changelog
 
+## 2026-11-24 review-all-prs fixes from run 20261124-191420 (session cf108ef8)
+- prs.py `record` refuses a `--sha`/`--fix-sha` that is not a full 40-character commit GitHub knows: a padded sha (`f307ccc7c4` plus zeros) was recorded for #3776 before the real head was. Both bad forms now exit 2 and change nothing; 30 policy tests pass.
+- SKILL.md §2a: a head unchanged since your last review or comment is waiting-on-author and takes no budget slot (#4021, #2552, #4133); mark each ledger issue the author fixed with `--issue-fixed` before `--review clean` (#3233 decided C until I1 was marked).
+- SKILL.md §2a: disk first under about 6 GB free; script tests get a `git archive` of only the paths they read. A whole-tree extract next to an iso-suite run and another session's Playwright filled the disk, Docker hung and the shared stack was restarted. iso-suite deletes its copy on exit, so a rerun after a fix uses the light-stack copy.
+- Review drafts are per run (`pr<N>-<run id>.md`): rewriting `pr<N>-review.md` overwrote the previous run's drafts of #3233 and #3069.
+- Memory: Docker disk-full hang variant and its recovery added to project_docker_vm_readonly_kills_postgres.
+
 ## 2026-11-24 retro of twelve headless reviews (bfa5856b #5161, c68df4ad/e27a507a #5162 r1/r2, aa7fc989 #5165, 689a21f7/b2091d11 #5166 r1/r2, fef26813/fd18e190 #5168 r1/r2, afff08f2 #5170, 765624ff #5171, 81b8fb4f #5174, dc0fb98f #5180)
 - No skill change: none of the twelve was corrected (eight PRs merged after the rounds, #5180 open), and the three request-changes rounds were answered by fix commits, so the review rules held.
 - Memory: the Add User recipe for a lab-scoped walk user (Save stays disabled with no visible error for a digit in the login or `-` in the password; four reviews retried it), and four more guessed SQL column names (organization_type.short_name, report_definition.last_updated, test_alert_rule.is_enabled, no actor_id on the run event table). Permission log empty.
