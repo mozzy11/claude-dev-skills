@@ -1,5 +1,12 @@
 # Skill changelog
 
+## 2026-11-25 review-all-prs: batch walks, early CI kicks, drafts at record time (session cf108ef8)
+- SKILL.md §2a: kick a fork PR's CI right after its review is recorded, in waves of 7 or 8 (`scripts/kick_ci.py`, moved from the scratchpad); kicked at the end, the 40 to 84 queued runs kept most approvals out of the session.
+- SKILL.md §2a: write the approval draft when recording `--review clean`; 79 of 82 drafts were missing at the end of the run.
+- SKILL.md §2a batch walks: `scripts/build_batch.sh` (merge-tree batch ref, no checkout); a ReferenceError can come from another batch PR (#4737 removed the `handleResolveAlert` #4008 calls); `CONFIG_DIR` for PRs that ship configuration CSVs; seed with the repo's API-only helpers from a minimal config, never a repo spec project (its participant-setup runs psql on the shared clinlims).
+- claude-work/bin/light-stack-up.sh: `CONFIG_DIR` overrides the configuration mount (#5102 ships `pathology-stains.csv`).
+- Memory hub_walks: batch walk traps (cross-PR bindings, psql-seeding setup project, Nairobi zone, accession generator on seeded data, per-row Save in Unified Results, CONFIG_DIR).
+
 ## 2026-11-25 review-all-prs: no deep-review budget (user)
 - User: "why would you miss reviewing this PR #5083? Are there PRs skipped for any reason? ... please review all PRs, except from the core team." The cap of 6 deep reviews per run had left 97 PRs queued in N. `deep_review_budget` is now 10000 and SKILL.md says every non-core PR is reviewed in the run, resuming across sessions from the ledger.
 

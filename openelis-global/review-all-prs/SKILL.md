@@ -215,12 +215,39 @@ reason, and the final message names that count.
    day's merge ref and every shard failed against today's specs; #3233's
    head had no E2E run at all (2026-11-24, memory
    `project_ci_rerun_stale_merge_ref`).
+   Kick a fork PR's CI as soon as its review is recorded, not at the end
+   of the run: `python3 -I <skill>/scripts/kick_ci.py <n> ...` does
+   update-branch, waits for the new head and approves its waiting runs.
+   Send waves of 7 or 8 and add the next wave when the queue drops; on
+   2026-11-25 the queue held 40 to 60 runs and one E2E status job waited
+   over 90 minutes for a runner, so approvals kicked late did not land in
+   the session.
+   Batch walks (several PRs merged on one light stack): build the batch ref
+   with `<skill>/scripts/build_batch.sh <ref name> <pr>...` (merge-tree on
+   upstream/develop, no checkout; a PR it reports as CONFLICT goes to its
+   own batch), `git archive` that ref into `claude-work/pr9001`, build the
+   WAR, then `light-stack-up.sh 9001`. A `ReferenceError`
+   can come from another PR in the batch (#4737 deleted the then-unused
+   `handleResolveAlert` that #4008 starts calling; git merged both
+   cleanly): diff the other batch PRs on that file, walk with the binding
+   restored in the copy, and note the order on both reviews. A PR that
+   adds shipped configuration CSVs needs `CONFIG_DIR=<copy>/volume/configuration`
+   on `light-stack-up.sh` (startup then loads the copy's CSVs for a few
+   minutes). Seed walk data with the repository's API-only helpers
+   (`seed-pathology-data.ts`, `program-order.ts`) from a minimal
+   Playwright config in the copy with no setup projects; never run a repo
+   spec project on a light stack, since `participant-setup` seeds through
+   `docker exec <db> psql -d clinlims`, the shared database.
 4. Findings: a minor issue you fix yourself (§5). A blocking issue, measured
    against the review-pr §0 bar, becomes `--issue "..."` and a change
    request.
 5. Record what you found:
    `prs.py record <key> --review clean|fixed|changes --sha <head you reviewed> --summary "..." --findings "..." --tests "..."`
-   adding `--issue "..."` for each blocking finding.
+   adding `--issue "..."` for each blocking finding. With `--review
+   clean`, write the approval body to the review draft file at the same
+   time, from the walk and test evidence, so whoever posts it when CI
+   turns green (a resumed session included) has it (2026-11-25: 79 of 82
+   drafts were missing at the end and had to be rebuilt from the logs).
 6. `prs.py decide <key>`, then §2b.
 
 ### 2b. Carrying out the decision
