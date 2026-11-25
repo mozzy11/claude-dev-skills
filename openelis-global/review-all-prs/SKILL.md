@@ -59,12 +59,33 @@ the report for the user.
      Switch it off with `low_risk.bypass_protection: false`.
    - **Never bypassed, for any PR:** any validation check that is not green
      (see rule 2); CI older than 14 days; merge conflicts; someone else's
-     change request; unresolved review threads; a draft; a moved head; a
-     review that is not clean; the "fixed in this run, merge next run" rule.
-   - **Regular and major PRs never bypass anything.** Never `--auto`, never
-     toggle `enforce_admins`, never edit branch protection or rulesets, never
-     dismiss anyone's review, never resolve a thread you did not act on. If
-     `--admin` itself is refused, report it (G); do not go further.
+     change request that is not implemented; unresolved review threads; a
+     draft; a moved head; a review that is not clean; the "fixed in this run,
+     merge next run" rule.
+   - **Clear a change request that is implemented** (user, 2026-11-25, on
+     #3233: "clear the change request as long as you're sure the requested
+     change was implemented"). Read the reviewer's review and inline
+     comments, list each thing they asked for, and find the commit on the
+     head that implements each one (diff and, where it is behaviour, a test
+     or a probe). Only when every item is implemented:
+     `prs.py dismiss <key> --reviewer <login> --asked "..." --evidence-sha <commit> --message-file <file>`.
+     The message is in mozzy11's voice, names what was asked and the commit
+     that implements it, and thanks the reviewer; a dismissal stays on the
+     timeline for good, so it must be accurate. Anything not implemented, or
+     a request that is a judgement call rather than a defect, stays: report
+     it in G or C. Excluded PRs are never touched.
+   - **Regular and major PRs never bypass anything else.** Never `--auto`,
+     never toggle `enforce_admins`, never edit branch protection or
+     rulesets, never resolve a thread you did not act on or verify as
+     addressed. If `--admin` itself is refused, report it (G); do not go
+     further.
+   - **A PR the user tells you to merge** (2026-11-25, #3069: "ensure it's
+     thoroughly and carefully tested and all reviews are addressed, please
+     merge") merges outside the category gate after that verification:
+     every check green on the head, every review and thread addressed
+     (resolve the addressed ones), then `gh pr merge --squash
+     --match-head-commit <sha>`, adding `--admin` only for the up-to-date
+     rule (memory `merge-means-now-admin-bypass`).
    - This replaces review-pr §5 ("merge means now") and resolve-by-criteria
      §3e inside this skill. Your account can bypass the develop rulesets
      (`current_user_can_bypass: always`), so GitHub may not stop a wrong
@@ -455,6 +476,7 @@ right column names the test that pins each row of the user's scenarios.
 | Low-risk with red CI, conflicts, a change request, open threads or a draft | Never bypassed: G or C | `test_12b` |
 | Regular or major with branch-protection rules unmet | G with the unmet rule; never bypassed | `test_12c` |
 | Approval followed by author commits | Review the delta: `--delta minor` keeps the approval, substantial needs a new one (next run) | `test_approval_rules` |
-| Someone else's change request, standing | Not merged (G or C); never dismissed | `test_approval_rules` |
+| Someone else's change request, every item verifiably implemented | `prs.py dismiss` with the evidence commit, then decide as usual | user, 2026-11-25 |
+| Someone else's change request, not (fully) implemented | Not merged (G or C); left standing | `test_approval_rules` |
 | Change requested, nothing pushed since | C, waiting on the author | plan step |
 | Head moved after your review, conflicts, unresolved threads, draft, CI older than 14 days | Not merged until resolved | `test_gate_refuses_moved_head_conflicts_and_threads`, `test_ci_state` |

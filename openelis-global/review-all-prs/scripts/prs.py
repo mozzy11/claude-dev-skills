@@ -8,6 +8,7 @@
     python3 -I prs.py record <key> [--review clean|fixed|changes|waiting-on-author --sha SHA] [...]
     python3 -I prs.py decide <key>
     python3 -I prs.py review <key> --event approve|request-changes|comment --body-file F [--sha SHA]
+    python3 -I prs.py dismiss <key> --reviewer LOGIN --asked TEXT --evidence-sha SHA --message-file F
     python3 -I prs.py merge <key>
     python3 -I prs.py close <key> --why TEXT --evidence URL [--evidence URL] --salvage TEXT --comment-file F
     python3 -I prs.py update-branch <key>
@@ -866,6 +867,42 @@ def cmd_review(args, cfg, st):
     print(f"posted {args.event} on {key} @{live['headRefOid'][:9]}")
 
 
+def cmd_dismiss(args, cfg, st):
+    """Clear a reviewer's standing change request once you verified it is implemented (user, 2026-11-25)."""
+    repo, number = parse_key(args.key, cfg)
+    key = key_of(repo, number)
+    run = st.require_run()
+    ledger = st.ledger()
+    live = fetch_live(repo, number)
+    _refuse_excluded(live, cfg)
+    require_commit(repo, args.evidence_sha, "--evidence-sha")
+    reviewer = policy.norm_login(args.reviewer)
+    raw = json.loads(gh(["api", "--paginate", "--slurp", f"repos/{repo}/pulls/{number}/reviews"]) or "[]")
+    reviews = [r for page in raw for r in page] if raw and isinstance(raw[0], list) else raw
+    decisive = [
+        r for r in reviews
+        if policy.norm_login((r.get("user") or {}).get("login")) == reviewer
+        and r.get("state") in ("APPROVED", "CHANGES_REQUESTED", "DISMISSED")
+    ]
+    if not decisive or decisive[-1]["state"] != "CHANGES_REQUESTED":
+        die(f"refused: {args.reviewer} has no standing change request on {key}")
+    target = decisive[-1]
+    message = _check_body(args.message_file, live, cfg).strip()
+    if args.evidence_sha[:7] not in message:
+        die("refused: the message must name the commit that implements the request")
+    gh(["api", "-X", "PUT", f"repos/{repo}/pulls/{number}/reviews/{target['id']}/dismissals",
+        "-f", f"message={message}", "-f", "event=DISMISS"], retries=1)
+    entry = entry_for(ledger, key)
+    entry.setdefault("dismissed", []).append({
+        "run": run["id"], "reviewer": args.reviewer, "review_id": target["id"],
+        "asked": args.asked, "evidence_sha": args.evidence_sha, "at": iso(now_utc())})
+    history(entry, run, f"dismissed {args.reviewer}'s change request: {args.asked} (implemented in {args.evidence_sha[:9]})")
+    rec_for(run, key).setdefault("dismissed", []).append(f"{args.reviewer}: {args.asked} ({args.evidence_sha[:9]})")
+    st.save_ledger(ledger)
+    st.save_run(run)
+    print(f"dismissed {args.reviewer}'s change request {target['id']} on {key}")
+
+
 def cmd_merge(args, cfg, st):
     repo, number = parse_key(args.key, cfg)
     key = key_of(repo, number)
@@ -1179,6 +1216,12 @@ def main(argv=None):
     s.add_argument("--event", required=True, choices=["approve", "request-changes", "comment"])
     s.add_argument("--body-file", required=True)
     s.add_argument("--sha")
+    s = sub.add_parser("dismiss")
+    s.add_argument("key")
+    s.add_argument("--reviewer", required=True)
+    s.add_argument("--asked", required=True, help="what the change request asked for")
+    s.add_argument("--evidence-sha", required=True, help="the commit that implements it")
+    s.add_argument("--message-file", required=True)
     s = sub.add_parser("merge")
     s.add_argument("key")
     s = sub.add_parser("close")

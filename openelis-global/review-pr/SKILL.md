@@ -133,7 +133,11 @@ them explicitly, so there is nothing to ask about here either.
   Before writing anything, read every existing review and inline comment, and
   check whether the nits in a standing CHANGES_REQUESTED were already fixed in
   the head tree — they usually have been, and saying so helps the author get
-  it cleared.
+  it cleared. When every item of another reviewer's change request is
+  verifiably implemented (diff plus a test or probe for behaviour), clear it:
+  dismiss that review with a message naming what was asked and the commit
+  that implements it (user, 2026-11-25, #3233). A partly implemented request
+  or a judgement call stays standing.
 - **Relaying an author's comment**: tell the user first, in plain words,
   what the author said and what your reply says, then act (2026-10-28, #4859:
   "can you explain what his concern was and what your reply is about").

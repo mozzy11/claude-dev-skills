@@ -1,5 +1,10 @@
 # Skill changelog
 
+## 2026-11-25 review-all-prs and review-pr: clear implemented change requests; user-directed merges (user)
+- User: "for cases like 3233 where there's a change request from someone but the issues were fixed, please clear the change request as long as you're sure the requested change was implemented." New `prs.py dismiss <key> --reviewer --asked --evidence-sha --message-file`: refuses excluded PRs, a reviewer without a standing change request, an unknown commit, and a message that does not name the commit; logs the dismissal in the ledger. SKILL.md ground rule 1 and the decision table now say implemented change requests are cleared, unimplemented ones stay. review-pr §0 "Respect standing reviews" says the same.
+- User on #3069: "ensure it's thoroughly and carefully tested and all reviews are addressed, please merge." SKILL.md: a PR the user tells you to merge merges outside the category gate after that verification.
+- Memory: respect-existing-reviews and review-all-prs policy updated.
+
 ## 2026-11-25 retro of 872b93f2 (headless #5180 round 2, not corrected; #5180 merged)
 - No skill change. Memory: `lab_unit_roles` has no `id`, and `analyzer_run.label` was guessed again despite the column memory. Permission log empty.
 
