@@ -168,11 +168,15 @@ then the step below, then `prs.py decide <key>`, then carry out its actions
 | `low-risk-review` | §3. |
 | `review-approved`, `re-review`, `review-major`, `review` | Deep review, §2a. |
 
-**Budget.** At most `deep_review_budget` (6) deep reviews per run, in plan
-order: previously approved regular PRs first, then re-reviews, majors, then
-never-reviewed PRs, oldest first. The rest show `[queued: budget]`, stay in N
-and come first next run. Raise the number in `config.json`, or when the user
-says "no budget".
+**No budget: every PR outside the core team is reviewed in the run**
+(user, 2026-11-25: "why would you miss reviewing this PR #5083? ... please
+review all PRs, except from the core team"; the old cap of 6 left 97 PRs in
+N). `deep_review_budget` is 10000, so nothing is `[queued: budget]`. Work in
+plan order: previously approved regular PRs first, then re-reviews, majors,
+then never-reviewed PRs, oldest first. A run that outlives a session resumes
+from the ledger (`run-start` within 12 h) and carries on where it stopped;
+the report's N section lists only what the run truly did not reach, with the
+reason, and the final message names that count.
 
 ### 2a. Deep review (regular and major PRs)
 

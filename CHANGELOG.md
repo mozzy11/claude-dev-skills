@@ -1,5 +1,8 @@
 # Skill changelog
 
+## 2026-11-25 review-all-prs: no deep-review budget (user)
+- User: "why would you miss reviewing this PR #5083? Are there PRs skipped for any reason? ... please review all PRs, except from the core team." The cap of 6 deep reviews per run had left 97 PRs queued in N. `deep_review_budget` is now 10000 and SKILL.md says every non-core PR is reviewed in the run, resuming across sessions from the ledger.
+
 ## 2026-11-25 review-all-prs and review-pr: clear implemented change requests; user-directed merges (user)
 - User: "for cases like 3233 where there's a change request from someone but the issues were fixed, please clear the change request as long as you're sure the requested change was implemented." New `prs.py dismiss <key> --reviewer --asked --evidence-sha --message-file`: refuses excluded PRs, a reviewer without a standing change request, an unknown commit, and a message that does not name the commit; logs the dismissal in the ledger. SKILL.md ground rule 1 and the decision table now say implemented change requests are cleared, unimplemented ones stay. review-pr §0 "Respect standing reviews" says the same.
 - User on #3069: "ensure it's thoroughly and carefully tested and all reviews are addressed, please merge." SKILL.md: a PR the user tells you to merge merges outside the category gate after that verification.

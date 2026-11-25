@@ -19,7 +19,7 @@
   "merge_method": "squash",
   "authorized_reviewer_permissions": ["admin", "maintain", "write"],
   "resume_window_hours": 12,
-  "deep_review_budget": 6,
+  "deep_review_budget": 10000,
   "ci_wait_minutes": 120,
   "ci_max_age_days": 14,
   "low_risk": {
