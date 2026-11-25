@@ -269,7 +269,17 @@ reason, and the final message names that count.
   reviewer) shows up. For a low-risk PR that rule is bypassed with
   `--admin` (`decide` lists it under `bypassed_for_low_risk`); for any other
   PR it is a blocker.
-- **wait-ci**: add the key to the CI sweep (§6) and go on to the next PR.
+- **wait-ci**: post the review now, then add the key to the CI sweep (§6)
+  and go on. A clean review whose checks are still running gets its
+  approval at once, with a last line saying where CI stands ("The backend
+  and frontend checks are green; E2E is still queued", or "CI is still
+  running on the current head, which only adds a merge of develop"); only
+  the merge waits for green, and `prs.py merge` still enforces that. A
+  check that is red because of the PR blocks the approval; a red job you
+  traced to infrastructure gets one rerun and a note in the body. (User,
+  2026-11-25, after two hours of recorded but unposted reviews: "please
+  review all PRs including #5083"; #5083 had been walked and recorded
+  clean, but nothing showed on GitHub while E2E waited in the queue.)
 
 ## 3. Low-risk maintenance PRs
 

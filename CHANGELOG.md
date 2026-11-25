@@ -1,5 +1,8 @@
 # Skill changelog
 
+## 2026-11-25 review-all-prs: post reviews at once, only the merge waits for CI (user)
+- User: "please review all prs including #5083" while #5083 had been walked and recorded clean but nothing was on GitHub: approvals were held for CI with 40 to 84 runs queued. SKILL.md §2b: wait-ci now posts the approval at once with a CI-status line; `prs.py merge` still enforces green. Memory: feedback_post_reviews_without_waiting_for_ci.
+
 ## 2026-11-25 review-all-prs: batch walks, early CI kicks, drafts at record time (session cf108ef8)
 - SKILL.md §2a: kick a fork PR's CI right after its review is recorded, in waves of 7 or 8 (`scripts/kick_ci.py`, moved from the scratchpad); kicked at the end, the 40 to 84 queued runs kept most approvals out of the session.
 - SKILL.md §2a: write the approval draft when recording `--review clean`; 79 of 82 drafts were missing at the end of the run.
