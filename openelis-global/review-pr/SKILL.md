@@ -134,7 +134,7 @@ them explicitly, so there is nothing to ask about here either.
   check whether the nits in a standing CHANGES_REQUESTED were already fixed in
   the head tree — they usually have been, and saying so helps the author get
   it cleared. When every item of another reviewer's change request is
-  verifiably implemented (diff plus a test or probe for behaviour), clear it:
+  implemented and you have confirmed it works (a test you ran, or a live probe), clear it:
   dismiss that review with a message naming what was asked and the commit
   that implements it (user, 2026-11-25, #3233). A partly implemented request
   or a judgement call stays standing.

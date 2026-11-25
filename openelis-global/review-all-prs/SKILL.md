@@ -66,8 +66,10 @@ the report for the user.
      #3233: "clear the change request as long as you're sure the requested
      change was implemented"). Read the reviewer's review and inline
      comments, list each thing they asked for, and find the commit on the
-     head that implements each one (diff and, where it is behaviour, a test
-     or a probe). Only when every item is implemented:
+     head that implements each one, then confirm it works: a test you ran
+     that fails without the change, or a live UI/API probe for behaviour
+     (user, same day: "only if the change was implemented and you're sure
+     it works"). Only when every item is implemented and verified working:
      `prs.py dismiss <key> --reviewer <login> --asked "..." --evidence-sha <commit> --message-file <file>`.
      The message is in mozzy11's voice, names what was asked and the commit
      that implements it, and thanks the reviewer; a dismissal stays on the
