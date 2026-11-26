@@ -8,6 +8,7 @@
 - `kick_ci.py` names a workflow GitHub never created on the new head: #4184, #4765, #4961, #5082 sat a day with a required checkpoint missing until a second update-branch.
 - SKILL.md §5c: link `frontend/node_modules` into a fix clone before pushing a frontend change (the gate's `npx --no-install prettier` blocked #4008's push).
 - SKILL.md §2a: binding-removal PRs get an ESLint `no-undef` pass on a merge with today's develop (#4737 dropped `fireEvent`, a new develop test used it); `light-stack-up.sh` `WEB_PORT`; Vite-http login through `fetch(ValidateLogin?apiCall=true)`.
+- policy.approval_analysis: an in-run re-approval no longer voids the same reviewer's approval from before the run. `decide` asked to approve #4008's fixed head first, and the merge was then refused ("no qualifying approval from before this run"); test_02 now covers it.
 - claude-work/bin: `overlay-test.sh` gains `OVERLAY_TWO_DOT` for inversions; `light-stack-up.sh` gains `WEB_PORT`. Memory hub_walks: light-stack login, role users, module-permission 401s, TB and compliance data absent on the dev site.
 
 ## 2026-11-26 retro of cf108ef8 (review-all-prs, tail) and eight headless OGC-1200 reviews (b49582ab, 640c977e, bf44ac5e, f9ecc103, 567397a6, d48e3413, fa117f9a, 85c8fea2)

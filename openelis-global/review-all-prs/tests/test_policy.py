@@ -198,6 +198,14 @@ class Scenarios(unittest.TestCase):
         d, gate, _ = evaluate(fixed, fixes=[{"sha": "fix1", "run": "run2"}])
         self.assertEqual(gate, [])
         self.assertEqual(d["bucket"], "A")
+        reapproved = dict(fixed, reviews=pr["reviews"] + [review("kakumba", "APPROVED", "fix1", DURING)])
+        d, gate, _ = evaluate(reapproved, fixes=[{"sha": "fix1", "run": "run2"}])
+        self.assertEqual(gate, [], "an in-run re-approval must not void the approval from before the run (#4008)")
+        self.assertEqual(d["bucket"], "A")
+        after_cr = dict(fixed, reviews=[review("kakumba", "CHANGES_REQUESTED", "sha2"),
+                                        review("kakumba", "APPROVED", "fix1", DURING)])
+        d, gate, _ = evaluate(after_cr, fixes=[{"sha": "fix1", "run": "run2"}])
+        self.assertIn("no qualifying approval from before this run", gate)
 
     def test_03_previously_approved_major_feature_is_approved_not_merged(self):
         files = [{"path": f"frontend/src/components/x/F{i}.js"} for i in range(8)] + [

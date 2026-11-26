@@ -345,8 +345,14 @@ def approval_analysis(
         who = norm_login((r.get("author") or {}).get("login"))
         if not who or who == author:
             continue
-        if r.get("state") in ("APPROVED", "CHANGES_REQUESTED", "DISMISSED"):
-            latest[who] = r
+        if r.get("state") not in ("APPROVED", "CHANGES_REQUESTED", "DISMISSED"):
+            continue
+        prev = latest.get(who)
+        in_run = bool(r.get("submittedAt")) and parse_time(r["submittedAt"]) >= run_started
+        if (r["state"] == "APPROVED" and in_run and prev and prev["state"] == "APPROVED"
+                and prev.get("submittedAt") and parse_time(prev["submittedAt"]) < run_started):
+            continue
+        latest[who] = r
     perms = pr.get("reviewer_permissions") or {}
     allowed = set(cfg["authorized_reviewer_permissions"])
     qualifying = [
