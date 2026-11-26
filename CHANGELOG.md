@@ -1,5 +1,10 @@
 # Skill changelog
 
+## 2026-11-26 retro of cf108ef8 (review-all-prs, tail) and eight headless OGC-1200 reviews (b49582ab, 640c977e, bf44ac5e, f9ecc103, 567397a6, d48e3413, fa117f9a, 85c8fea2)
+- User in cf108ef8: "please go ahead and merge all the PRs approved, don't rebase ... merge each one at a time without rebasing the next". It worked (28 merged, user: "thanks") through scratchpad scripts, now lost, and the first gate read a thread reply (COMMENTED) as the latest review. New `prs.py merge-approved [--dry-run] [keys]` with `policy.approved_merge_blockers` (own latest decisive review approves the head, all checks green and fresh, no other change request, no open thread, GitHub CLEAN; no update-branch, no --admin); one new policy test, 31 pass. SKILL.md ground rule 1 names it.
+- Permission log (5 prompts, all cf108ef8): hand-written backup/overlay/restore chains to run one PR test or spotless check on a scratch copy. New `claude-work/bin/overlay-test.sh`; SKILL.md §2a points at it; `Bash(<claude-work>/bin/*)` allow rule added.
+- The eight reviews were not corrected (all OGC-1200 PRs merged after their rounds): no review-pr change. All eight again guessed SQL column names (`result_run.created_at`, `ar.is_control`, `ts.typeofsample_id`). `claude-work/bin/oe-sql.sh` now prints the columns of each named table on "column does not exist"; memory analyzer-run-sql-columns says to read that line.
+
 ## 2026-11-25 review-all-prs: post reviews at once, only the merge waits for CI (user)
 - User: "please review all prs including #5083" while #5083 had been walked and recorded clean but nothing was on GitHub: approvals were held for CI with 40 to 84 runs queued. SKILL.md §2b: wait-ci now posts the approval at once with a CI-status line; `prs.py merge` still enforces green. Memory: feedback_post_reviews_without_waiting_for_ci.
 

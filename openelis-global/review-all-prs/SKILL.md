@@ -88,6 +88,17 @@ the report for the user.
      (resolve the addressed ones), then `gh pr merge --squash
      --match-head-commit <sha>`, adding `--admin` only for the up-to-date
      rule (memory `merge-means-now-admin-bypass`).
+   - **"Merge all the approved PRs"** (user, 2026-11-26: "don't rebase,
+     just ensure all are merged as long as their CI is green, merge each
+     one at a time without rebasing the next"): `prs.py merge-approved
+     --dry-run`, then `prs.py merge-approved`. It merges every open PR whose
+     own latest decisive review (thread replies are COMMENTED and do not
+     count) approves the current head, with every check green, no other
+     change request, no open thread and GitHub CLEAN; no update-branch and
+     no `--admin` between merges. For each SKIP, act on the reason: a moved
+     head gets the new commits reviewed, a thread the code already
+     addresses gets a reply and resolve, then rerun the command for those
+     keys. Report every PR not merged with its reason.
    - This replaces review-pr §5 ("merge means now") and resolve-by-criteria
      §3e inside this skill. Your account can bypass the develop rulesets
      (`current_user_can_bypass: always`), so GitHub may not stop a wrong
@@ -208,7 +219,12 @@ reason, and the final message names that count.
    (2026-11-24, memory `project_docker_vm_readonly_kills_postgres`).
    `iso-suite.sh` deletes its copy when it exits; to rerun one class after
    a fix, use the light-stack copy (`mvn test` without `clean` keeps the
-   mounted WAR).
+   mounted WAR). To run one PR's test class or spotless check on an
+   already built copy, use `claude-work/bin/overlay-test.sh <copy> <repo>
+   <pr ref> <log> <mvn args>` (lays the PR's files over the copy, runs
+   Maven, restores the copy); a hand-written backup/overlay/restore chain
+   with `$(...)` and loops raised a permission prompt five times on
+   2026-11-25.
    CI on a fork head: if its waiting runs are more than a day old, or no
    `03 - E2E` run exists on the head, run `prs.py update-branch` before
    `approve-runs`. Approving #3074's 2026-11-11 runs built E2E from that

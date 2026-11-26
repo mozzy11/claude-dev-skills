@@ -535,6 +535,35 @@ class Rules(unittest.TestCase):
             p.write_text("Walked it end to end, looks good.")
             self.assertTrue(prs._check_body(str(p), other, CFG))
 
+    def test_merge_approved_needs_own_approval_of_head_green_and_clean(self):
+        ci = policy.ci_state(GREEN, RULES["required_checks"], NOW)
+        ok = make_pr(reviews=[review("mozzy11", "APPROVED", "sha2", DURING)])
+        self.assertEqual(policy.approved_merge_blockers(ok, ci, CFG), [])
+        reply_after = make_pr(reviews=[review("mozzy11", "APPROVED", "sha2"), review("mozzy11", "COMMENTED", "sha2", DURING)])
+        self.assertEqual(policy.approved_merge_blockers(reply_after, ci, CFG), [])
+        moved = make_pr(reviews=[review("mozzy11", "APPROVED", "sha1")])
+        self.assertIn("head moved", " ".join(policy.approved_merge_blockers(moved, ci, CFG)))
+        none = make_pr(reviews=[review("maintainer1", "APPROVED", "sha2")])
+        self.assertIn("no standing approval of yours", policy.approved_merge_blockers(none, ci, CFG))
+        other_cr = make_pr(reviews=[review("mozzy11", "APPROVED", "sha2"), review("someone", "CHANGES_REQUESTED", "sha2")])
+        self.assertIn("changes requested by someone", policy.approved_merge_blockers(other_cr, ci, CFG))
+        behind = make_pr(reviews=[review("mozzy11", "APPROVED", "sha2")], mergeStateStatus="BEHIND")
+        self.assertIn("GitHub merge state is BEHIND", policy.approved_merge_blockers(behind, ci, CFG))
+        threads = make_pr(reviews=[review("mozzy11", "APPROVED", "sha2")], unresolved_threads=2)
+        self.assertIn("2 unresolved review thread(s)", policy.approved_merge_blockers(threads, ci, CFG))
+        red = copy.deepcopy(GREEN)
+        red[2]["conclusion"] = "FAILURE"
+        red_ci = policy.ci_state(red, RULES["required_checks"], NOW)
+        self.assertTrue(policy.approved_merge_blockers(ok, red_ci, CFG)[0].startswith("checks failing"))
+        core = make_pr(reviews=[review("mozzy11", "APPROVED", "sha2")], author={"__typename": "User", "login": "pmanko"})
+        self.assertTrue(policy.approved_merge_blockers(core, ci, CFG)[0].startswith("excluded"))
+        src = (ROOT / "scripts" / "prs.py").read_text()
+        body = src[src.index("def cmd_merge_approved"):src.index("def cmd_wait_ci")]
+        self.assertNotIn("--admin", body)
+        self.assertNotIn("cmd_update_branch", body)
+        self.assertNotIn("update-branch\"", body)
+        self.assertIn("--match-head-commit", body)
+
     def test_merge_command_bypasses_only_for_low_risk(self):
         src = (ROOT / "scripts" / "prs.py").read_text()
         merge_src = src[src.index("def cmd_merge"):src.index("def _verify_evidence")]

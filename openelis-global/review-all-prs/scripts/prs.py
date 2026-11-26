@@ -10,6 +10,7 @@
     python3 -I prs.py review <key> --event approve|request-changes|comment --body-file F [--sha SHA]
     python3 -I prs.py dismiss <key> --reviewer LOGIN --asked TEXT --evidence-sha SHA --message-file F
     python3 -I prs.py merge <key>
+    python3 -I prs.py merge-approved [<key> ...] [--dry-run]
     python3 -I prs.py close <key> --why TEXT --evidence URL [--evidence URL] --salvage TEXT --comment-file F
     python3 -I prs.py update-branch <key>
     python3 -I prs.py approve-runs <key>
@@ -1041,6 +1042,77 @@ def cmd_approve_runs(args, cfg, st):
         print(f"no run waits for approval; {len(started)} run(s) exist for {live['headRefOid'][:9]}")
 
 
+def _my_approved_open_prs(repo: str, me: str) -> list[int]:
+    out = gh(["pr", "list", "--repo", repo, "--state", "open", "--limit", "500", "--json", "number,latestReviews",
+              "--jq", f'.[]|select([.latestReviews[]|select(.author.login=="{me}" and .state=="APPROVED")]|length>0)|.number'])
+    return sorted(int(n) for n in (out or "").split())
+
+
+def cmd_merge_approved(args, cfg, st):
+    """Merge, one at a time, every open PR your standing approval covers (policy.approved_merge_blockers).
+
+    No update-branch, no rerun and no protection bypass between merges: a PR
+    that GitHub reports BEHIND or BLOCKED after an earlier merge is skipped
+    with that reason, never rebased. Every PR is re-fetched just before its
+    merge, and the merge is pinned to the head that passed the gate.
+    """
+    run = st.open_run()
+    ledger = st.ledger()
+    me = cfg["self_login"]
+    keys = [key_of(*parse_key(k, cfg)) for k in args.keys] if args.keys else [
+        key_of(repo, n) for repo in cfg["repos"] for n in _my_approved_open_prs(repo, me)]
+    merged, skipped = [], []
+    for key in keys:
+        repo, number = key.split("#")
+        number = int(number)
+        live = fetch_live(repo, number)
+        if live["state"] == "MERGED":
+            continue
+        if live.get("mergeable") == "UNKNOWN":
+            time.sleep(5)
+            live = fetch_live(repo, number)
+        rules = branch_rules(repo, live["baseRefName"])
+        ci = policy.ci_state(live["contexts"], rules["required_checks"], now_utc())
+        blockers = policy.approved_merge_blockers(live, ci, cfg)
+        if blockers:
+            skipped.append((key, blockers))
+            print(f"{number} SKIP {'; '.join(blockers)}", flush=True)
+            continue
+        if args.dry_run:
+            print(f"{number} READY {live['headRefOid'][:10]}", flush=True)
+            continue
+        cmd = ["pr", "merge", str(number), "--repo", repo, f"--{cfg['merge_method']}",
+               "--match-head-commit", live["headRefOid"]]
+        assert not any(f in cmd for f in FORBIDDEN_MERGE_FLAGS)
+        p = subprocess.run(["gh", *cmd], capture_output=True, text=True)
+        landed = None
+        for _ in range(10):
+            state = fetch_live(repo, number)
+            if state["state"] == "MERGED":
+                landed = state
+                break
+            time.sleep(6)
+        if not landed:
+            msg = (p.stderr or p.stdout).strip()[:300]
+            skipped.append((key, [f"merge did not land: {msg}"]))
+            print(f"{number} FAILED {msg}", flush=True)
+            continue
+        entry = entry_for(ledger, key)
+        entry["state"] = "merged"
+        entry["merged"] = {"run": (run or {}).get("id"), "sha": landed["mergeCommit"], "at": iso(now_utc()),
+                           "kind": "user-directed: merge the approved PRs", "bypassed": []}
+        if run:
+            history(entry, run, f"merged as {landed['mergeCommit']} (user: merge the approved PRs)")
+            rec_for(run, key).update({"bucket": "A", "merge_sha": landed["mergeCommit"], "url": live["url"],
+                                      "title": live["title"], "author": live["author"].get("login"),
+                                      "merge_kind": "user-directed", "bypassed": []})
+            st.save_run(run)
+        st.save_ledger(ledger)
+        merged.append(key)
+        print(f"{number} MERGED {landed['mergeCommit'][:10]}", flush=True)
+    print(f"merged {len(merged)}, skipped {len(skipped)}")
+
+
 def cmd_wait_ci(args, cfg, st):
     run = st.require_run()
     keys = [key_of(*parse_key(k, cfg)) for k in args.keys]
@@ -1224,6 +1296,9 @@ def main(argv=None):
     s.add_argument("--message-file", required=True)
     s = sub.add_parser("merge")
     s.add_argument("key")
+    s = sub.add_parser("merge-approved")
+    s.add_argument("keys", nargs="*", help="limit to these PRs; default every open PR you approved")
+    s.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("close")
     s.add_argument("key")
     s.add_argument("--why", required=True)

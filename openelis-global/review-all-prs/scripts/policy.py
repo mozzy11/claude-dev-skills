@@ -540,6 +540,57 @@ def merge_gate(live: dict, ctx: dict, cfg: dict) -> list[dict]:
     return b
 
 
+def approved_merge_blockers(live: dict, ci: dict, cfg: dict) -> list[str]:
+    """Why an open PR may not merge on the user's "merge all the approved PRs".
+
+    User, 2026-11-26: "merge all the PRs approved, don't rebase, just ensure
+    all are merged as long as their CI is green, merge each one at a time
+    without rebasing the next". Your own latest decisive review must be an
+    approval of the current head; every check green and fresh; no other
+    standing change request; no unresolved thread; GitHub reports the PR
+    CLEAN. No bypass of any kind: an empty list means a plain squash merge.
+    """
+    out: list[str] = []
+    excluded = exclusion_reason(live["author"], cfg)
+    if excluded:
+        out.append(f"excluded: {excluded}")
+    if live.get("state") != "OPEN":
+        out.append(f"PR is {str(live.get('state')).lower()}")
+    if live.get("isDraft"):
+        out.append("draft")
+    if live.get("baseRefName") != live.get("defaultBranch"):
+        out.append(f"targets {live.get('baseRefName')}, not {live.get('defaultBranch')}")
+    me = norm_login(cfg["self_login"])
+    author = norm_login(live["author"].get("login"))
+    latest: dict[str, dict] = {}
+    for r in sorted(live.get("reviews") or [], key=lambda r: r.get("submittedAt") or ""):
+        who = norm_login((r.get("author") or {}).get("login"))
+        if who and who != author and r.get("state") in ("APPROVED", "CHANGES_REQUESTED", "DISMISSED"):
+            latest[who] = r
+    mine = latest.get(me)
+    if not mine or mine["state"] != "APPROVED":
+        out.append("no standing approval of yours")
+    elif (mine.get("commit") or {}).get("oid") != live.get("headRefOid"):
+        out.append("head moved after your approval: review the new commits first")
+    others = sorted(w for w, r in latest.items() if r["state"] == "CHANGES_REQUESTED" and w != me)
+    if others:
+        out.append("changes requested by " + ", ".join(others))
+    if live.get("unresolved_threads"):
+        out.append(f"{live['unresolved_threads']} unresolved review thread(s)")
+    if live.get("mergeable") != "MERGEABLE":
+        out.append(f"mergeable is {live.get('mergeable')}")
+    if live.get("mergeStateStatus") not in ("CLEAN", "HAS_HOOKS"):
+        out.append(f"GitHub merge state is {live.get('mergeStateStatus')}")
+    if ci["state"] != "green":
+        bad = [f"{k}: {v}" for k, v in (ci.get("required") or {}).items() if v != "ok"]
+        bad += [f"{k}: failing" for k in ci.get("other_failing") or []]
+        bad += [f"{k}: pending" for k in ci.get("other_pending") or []]
+        out.append(f"checks {ci['state']}" + (f" ({', '.join(bad)})" if bad else ""))
+    elif ci.get("age_days") is not None and ci["age_days"] > cfg["ci_max_age_days"]:
+        out.append(f"CI last ran {ci['age_days']} days ago")
+    return out
+
+
 def split_bypass(blockers: list[dict], category: str, cfg: dict) -> tuple[list[dict], list[dict]]:
     """(hard, bypassed). Low-risk maintenance may merge past branch-protection
     rules when low_risk.bypass_protection is on (user decision, 2026-11-23).
