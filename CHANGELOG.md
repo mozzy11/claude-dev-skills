@@ -1,5 +1,8 @@
 # Skill changelog
 
+## 2026-11-26 retro of afae697d (headless #5200 round 2, not corrected; #5200 merged)
+- No skill change. Memory zsh-no-word-split-reset-trap: `grep -c ... || echo 0` prints two zeros on no match and broke a Monitor's `$((n+1))`. Permission log empty.
+
 ## 2026-11-26 review-all-prs: lessons from run 20261126-051820 (this session)
 - `prs.py record --review clean` warns when ledger issues are still open: three re-reviews (#5064, #5081, #5154) landed in C because their earlier issues were not marked fixed.
 - `kick_ci.py` names a workflow GitHub never created on the new head: #4184, #4765, #4961, #5082 sat a day with a required checkpoint missing until a second update-branch.
