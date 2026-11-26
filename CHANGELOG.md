@@ -1,5 +1,10 @@
 # Skill changelog
 
+## 2026-11-26 retro of 6fe09b27 (review-pr #5202, self-review, request changes)
+- review-pr §3: for an audit or history view that derives a row's new value from the next row or the current record, change the same field afterwards through every other writer and re-read the trail. The walk found the Required item this way (aliquot after usage read "blank -> 3.000", order cancel after disposal read "-> Entered").
+- review-pr ground rules: take a waiter's pid from `pgrep -f` in a separate call; a background `until ! kill -0 $(pgrep -f ...)` matched its own zsh line again despite the memory. Memory pgrep-waiter-self-match notes the repeat.
+- Permission log empty.
+
 ## 2026-11-26 retro of afae697d (headless #5200 round 2, not corrected; #5200 merged)
 - No skill change. Memory zsh-no-word-split-reset-trap: `grep -c ... || echo 0` prints two zeros on no match and broke a Monitor's `$((n+1))`. Permission log empty.
 

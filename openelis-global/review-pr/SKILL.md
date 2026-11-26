@@ -98,7 +98,9 @@ them explicitly, so there is nothing to ask about here either.
   Key the loop on the process (`kill -0 <pid>`), never on a background
   task's output file being non-empty: an unrelated command's output landed
   there and the waiter fired before `dev-stack up` had finished pulling
-  (2026-11-17, #5110).
+  (2026-11-17, #5110). Take the pid from `pgrep -f` in a separate call,
+  never inside the loop: the waiter's own `zsh -c` line matches and it
+  never exits (2026-11-26, #5202, again despite the memory).
 - **A person wrote this code, and you are reviewing it, not grading it**
   (user instruction, 2026-09-21). The author is a colleague who has already
   thought about most of what you are about to notice — often a community
@@ -408,6 +410,12 @@ Run these before reading logic:
     re-read the state and try the next step: on #5073 (2026-11-13) both
     Required items came from this, a value edited after level 1 kept the
     old signature, and the legacy save released at level 1 of 2.
+    For an audit or history view that takes a row's new value from the
+    next row or from the record as it is now, change the same field
+    afterwards through every other writer (grep the setter's callers) and
+    re-read the trail: on #5202 (2026-11-26) an aliquot after a usage, and
+    an order cancel after a disposal, wrote no history row, so the usage
+    read "blank -> 3.000" and the disposal "-> Entered" (the Required item).
     For a check that parses generated output (a contract test reading a
     built `remoteEntry.js`, a lint over a bundle), run its logic against a
     real artifact with the target removed, not only the PR's fixture: on
