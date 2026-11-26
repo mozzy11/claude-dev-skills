@@ -1,5 +1,12 @@
 # Skill changelog
 
+## 2026-11-26 review-all-prs: lessons from run 20261126-051820 (this session)
+- `prs.py record --review clean` warns when ledger issues are still open: three re-reviews (#5064, #5081, #5154) landed in C because their earlier issues were not marked fixed.
+- `kick_ci.py` names a workflow GitHub never created on the new head: #4184, #4765, #4961, #5082 sat a day with a required checkpoint missing until a second update-branch.
+- SKILL.md §5c: link `frontend/node_modules` into a fix clone before pushing a frontend change (the gate's `npx --no-install prettier` blocked #4008's push).
+- SKILL.md §2a: binding-removal PRs get an ESLint `no-undef` pass on a merge with today's develop (#4737 dropped `fireEvent`, a new develop test used it); `light-stack-up.sh` `WEB_PORT`; Vite-http login through `fetch(ValidateLogin?apiCall=true)`.
+- claude-work/bin: `overlay-test.sh` gains `OVERLAY_TWO_DOT` for inversions; `light-stack-up.sh` gains `WEB_PORT`. Memory hub_walks: light-stack login, role users, module-permission 401s, TB and compliance data absent on the dev site.
+
 ## 2026-11-26 retro of cf108ef8 (review-all-prs, tail) and eight headless OGC-1200 reviews (b49582ab, 640c977e, bf44ac5e, f9ecc103, 567397a6, d48e3413, fa117f9a, 85c8fea2)
 - User in cf108ef8: "please go ahead and merge all the PRs approved, don't rebase ... merge each one at a time without rebasing the next". It worked (28 merged, user: "thanks") through scratchpad scripts, now lost, and the first gate read a thread reply (COMMENTED) as the latest review. New `prs.py merge-approved [--dry-run] [keys]` with `policy.approved_merge_blockers` (own latest decisive review approves the head, all checks green and fresh, no other change request, no open thread, GitHub CLEAN; no update-branch, no --admin); one new policy test, 31 pass. SKILL.md ground rule 1 names it.
 - Permission log (5 prompts, all cf108ef8): hand-written backup/overlay/restore chains to run one PR test or spotless check on a scratch copy. New `claude-work/bin/overlay-test.sh`; SKILL.md §2a points at it; `Bash(<claude-work>/bin/*)` allow rule added.

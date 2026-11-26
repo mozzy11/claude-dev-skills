@@ -773,6 +773,12 @@ def cmd_record(args, cfg, st):
     st.save_ledger(ledger)
     st.save_run(run)
     print(f"recorded {key}")
+    if args.review == "clean":
+        still_open = [i for i in entry["issues"] if i.get("status") == "open"]
+        if still_open:
+            print(f"warning: {len(still_open)} ledger issue(s) still open, so the review cannot count as clean; "
+                  "mark each one the head fixes with --issue-fixed I<n>: "
+                  + "; ".join(f"{i['id']} {i['text'][:70]}" for i in still_open))
 
 
 def _set_issue(entry, iid, status, run, why=None):

@@ -40,3 +40,8 @@ for n in sys.argv[1:]:
         time.sleep(15)
     ap = sh(["python3", "-I", PRS, "approve-runs", f"{REPO}#{n}"])
     print(f"#{n}: head {h[:10]}; {ap.stdout.strip().replace(chr(10), '; ')[:300]}")
+    runs = json.loads(sh(["gh", "api", f"repos/{REPO}/actions/runs?head_sha={h}"]).stdout or "{}").get("workflow_runs", [])
+    missing = [w for w in ("01 - Backend", "02 - Frontend", "03 - E2E") if w not in {r["name"] for r in runs}]
+    if missing:
+        print(f"#{n}: GitHub created no {', '.join(missing)} run on {h[:10]}; kick again later "
+              "(2026-11-26: four heads sat with a required checkpoint missing for a day)")

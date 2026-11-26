@@ -231,6 +231,10 @@ reason, and the final message names that count.
    day's merge ref and every shard failed against today's specs; #3233's
    head had no E2E run at all (2026-11-24, memory
    `project_ci_rerun_stale_merge_ref`).
+   GitHub sometimes creates no run for one workflow on a new head (four
+   heads sat a day with `02 Checkpoint - Frontend` or `03 Checkpoint - E2E`
+   missing, 2026-11-26); `kick_ci.py` now names a missing one, and a second
+   kick fixes it.
    Kick a fork PR's CI as soon as its review is recorded, not at the end
    of the run: `python3 -I <skill>/scripts/kick_ci.py <n> ...` does
    update-branch, waits for the new head and approves its waiting runs.
@@ -247,6 +251,15 @@ reason, and the final message names that count.
    `handleResolveAlert` that #4008 starts calling; git merged both
    cleanly): diff the other batch PRs on that file, walk with the binding
    restored in the copy, and note the order on both reviews. A PR that
+   For a PR that only removes bindings (unused imports and variables,
+   the #3459 series), lint the PR's changed files on a merge with today's
+   develop with `--rule '{"no-undef":"error"}'` and run their tests:
+   develop keeps adding code that uses a binding the PR dropped (#4737
+   removed `fireEvent`, then a new develop test used it, 2026-11-26).
+   `light-stack-up.sh` takes `WEB_PORT` when another session's stack
+   holds 18443. On the plain-http Vite the login form fails (its redirect
+   goes to https); log in from the page with `fetch(ValidateLogin?apiCall=true)`.
+   A PR that
    adds shipped configuration CSVs needs `CONFIG_DIR=<copy>/volume/configuration`
    on `light-stack-up.sh` (startup then loads the copy's CSVs for a few
    minutes). Seed walk data with the repository's API-only helpers
@@ -424,6 +437,9 @@ rebasing it; say so in the fix summary.
   git -C <that path> fetch fork <head branch>
   git -C <that path> checkout -b <head branch> --track fork/<head branch>
   ```
+  For a fix that touches `frontend/`, also `ln -s <main checkout>/frontend/node_modules
+  <clone>/frontend/node_modules` before pushing: the gate runs `npx --no-install
+  prettier` inside the clone and blocks the push without it (#4008, 2026-11-26).
   The tracking branch matters: the pre-push gate diffs against `@{u}`, and
   from a detached HEAD it falls back to develop and checks develop's own
   changes. A `--filter=blob:none` clone of a contributor fork took over 10
